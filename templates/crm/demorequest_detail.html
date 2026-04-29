@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="grid-2">
+  <div class="card">
+    <div class="card-header">
+      <h1 class="h1">Detalle de solicitud</h1>
+      <p class="p">Revisión y conversión a Lead sin depender del Admin.</p>
+    </div>
+
+    <div class="card-body">
+      <div class="topline">
+        {% if "Convert" in status_label %}
+          <span class="status cerrado">Convertida</span>
+        {% elif "Archiv" in status_label or "Descart" in status_label %}
+          <span class="status perdido">Archivada</span>
+        {% else %}
+          <span class="status nuevo">Nueva</span>
+        {% endif %}
+
+        <div class="muted">
+          {% if req_data.fecha %}
+            {{ req_data.fecha|date:"d-m-Y H:i" }}
+          {% else %}
+            Solicitud #{{ req.id }}
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="kv">
+        <div class="k">Empresa</div>
+        <div class="v"><strong>{% if req_data.empresa %}{{ req_data.empresa }}{% else %}—{% endif %}</strong></div>
+      </div>
+
+      <div class="kv">
+        <div class="k">Nombre</div>
+        <div class="v">{% if req_data.nombre %}{{ req_data.nombre }}{% else %}—{% endif %}</div>
+      </div>
+
+      <div class="kv">
+        <div class="k">Email</div>
+        <div class="v">{% if req_data.email %}{{ req_data.email }}{% else %}—{% endif %}</div>
+      </div>
+
+      <div class="kv">
+        <div class="k">Teléfono</div>
+        <div class="v">{% if req_data.telefono %}{{ req_data.telefono }}{% else %}—{% endif %}</div>
+      </div>
+
+      <div class="kv">
+        <div class="k">Asunto</div>
+        <div class="v">{% if req_data.asunto %}{{ req_data.asunto }}{% else %}—{% endif %}</div>
+      </div>
+
+      <div class="kv">
+        <div class="k">Mensaje</div>
+        <div class="v">
+          <div class="msgbox">
+            {% if req_data.mensaje %}{{ req_data.mensaje|linebreaksbr }}{% else %}—{% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="actions" style="margin-top:18px;">
+        <a class="btn btn-ghost" href="{% url 'crm:demorequest_list' %}">← Volver a bandeja</a>
+
+        {% if not is_converted and not is_archived %}
+          <form method="post" action="{% url 'crm:demorequest_convert' req.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button class="btn btn-primary" type="submit">Convertir a Lead</button>
+          </form>
+
+          <form method="post" action="{% url 'crm:demorequest_archive' req.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button class="btn btn-danger" type="submit">Archivar</button>
+          </form>
+        {% endif %}
+      </div>
+
+      <div class="hint">
+        <strong>Consejo:</strong> si esta solicitud corresponde a licitación o compra pública, conviértela a Lead y registra el contexto en el seguimiento comercial.
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="h2">Checklist comercial</h2>
+      <p class="p">Criterios rápidos para priorizar oportunidades.</p>
+    </div>
+
+    <div class="card-body">
+      <ul class="check">
+        <li>¿Es entidad pública?</li>
+        <li>¿Hay urgencia o fecha de cierre?</li>
+        <li>¿Encaja con servicios principales?</li>
+        <li>¿Hay decisor identificado?</li>
+        <li>¿Existe siguiente acción definida?</li>
+      </ul>
+
+      <hr class="hr">
+
+      <div class="note">
+        <div class="note-title">Buenas prácticas SaaS</div>
+        <div class="note-body">
+          Toda solicitud debería terminar como <span class="status cerrado">Convertida</span>,
+          <span class="status perdido">Archivada</span>
+          o <span class="status nuevo">Nueva</span>.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

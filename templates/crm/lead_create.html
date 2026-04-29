@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+  <div class="page-header">
+    <div>
+      <h1>Nuevo lead</h1>
+      <p class="muted">Creación manual interna (panel). Quedará asociado al workspace actual.</p>
+    </div>
+    <div class="actions">
+      <a class="btn btn-ghost" href="{% url 'crm:leads_list' %}">Volver</a>
+    </div>
+  </div>
+
+  {# --- UX Enterprise: Duplicado detectado con CTA --- #}
+  {% if existing_lead_url %}
+    <div class="alert alert-warning" style="margin-bottom: 14px;">
+      <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+        <div>
+          <strong>Duplicado detectado.</strong>
+          <div class="muted" style="margin-top:6px;">
+            Ya existe un lead con este email en este workspace. Para evitar duplicar datos, abre el lead existente o búscalo en el listado.
+          </div>
+        </div>
+
+        <div style="display:flex; gap:10px; align-items:center;">
+          <a class="btn" href="{{ existing_lead_url }}">Abrir lead existente</a>
+
+          {% if search_q %}
+            <a class="btn btn-ghost" href="{% url 'crm:leads_list' %}?q={{ search_q|urlencode }}">Buscar en listado</a>
+          {% else %}
+            <a class="btn btn-ghost" href="{% url 'crm:leads_list' %}">Ir al listado</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="card">
+    <div class="card-body">
+      <form method="post" class="form" novalidate>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <div class="grid-2">
+          <div class="form-row">
+            <label>Nombre</label>
+            {{ form.nombre }}
+            {{ form.nombre.errors }}
+          </div>
+
+          <div class="form-row">
+            <label>Email</label>
+            {# Si hay error en email o duplicado, es mejor que el usuario lo vea altiro #}
+            {{ form.email }}
+            {{ form.email.errors }}
+
+            {% if existing_lead_url %}
+              <div class="muted" style="margin-top:6px;">
+                Tip: usa el botón <strong>“Abrir lead existente”</strong> para continuar sin duplicar.
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="form-row">
+            <label>Teléfono</label>
+            {{ form.telefono }}
+            {{ form.telefono.errors }}
+          </div>
+
+          <div class="form-row">
+            <label>Empresa</label>
+            {{ form.empresa }}
+            {{ form.empresa.errors }}
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label>Asunto</label>
+          {{ form.asunto }}
+          {{ form.asunto.errors }}
+        </div>
+
+        <div class="form-row">
+          <label>Mensaje</label>
+          {{ form.mensaje }}
+          {{ form.mensaje.errors }}
+        </div>
+
+        <div class="btn-row">
+          <button class="btn" type="submit">Crear lead</button>
+          <a class="btn btn-ghost" href="{% url 'crm:leads_list' %}">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

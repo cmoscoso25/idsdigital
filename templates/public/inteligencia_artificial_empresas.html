@@ -1,0 +1,537 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inteligencia Artificial para empresas en Chile | Inteligencia Digital y Sistemas</title>
+  <meta
+    name="description"
+    content="Implementamos soluciones de inteligencia artificial para empresas e instituciones en Chile: automatización inteligente, asistentes virtuales, análisis de datos y mejora de procesos."
+  />
+  <link rel="stylesheet" href="{% static 'css/public.css' %}">
+</head>
+
+<body class="public" id="top">
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <div class="topbar-row">
+        <a class="brand" href="/" aria-label="Ir al inicio">
+          <div class="logo-chip" aria-hidden="true">
+            <img class="brand-logo" src="{% static 'img/logo1.png' %}" alt="" loading="eager">
+          </div>
+
+          <div class="brand-text">
+            <div class="brand-name">Inteligencia Digital y Sistemas</div>
+            <div class="brand-pill">Consultora tecnológica · Software · IA · Automatización</div>
+          </div>
+        </a>
+
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Abrir menú"
+          aria-controls="public-nav"
+          aria-expanded="false">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+
+        <nav class="topbar-actions topbar-actions-desktop">
+          <a class="link" href="#soluciones">Soluciones</a>
+          <a class="link" href="#servicios-clave">Servicios IA</a>
+          <a class="link" href="#mercado-publico">Empresas e instituciones</a>
+          <a class="link" href="#como-trabajamos">Metodología</a>
+          <a class="link" href="#contacto">Contacto</a>
+          <a class="btn btn-primary" href="#contacto">Solicitar diagnóstico</a>
+        </nav>
+      </div>
+
+      <nav class="topbar-actions topbar-actions-mobile" id="public-nav">
+        <a class="link" href="#soluciones">Soluciones</a>
+        <a class="link" href="#servicios-clave">Servicios IA</a>
+        <a class="link" href="#mercado-publico">Empresas e instituciones</a>
+        <a class="link" href="#como-trabajamos">Metodología</a>
+        <a class="link" href="#contacto">Contacto</a>
+        <a class="btn btn-primary" href="#contacto">Solicitar diagnóstico</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <div class="hero-badge">Soluciones de inteligencia artificial para empresas e instituciones</div>
+
+        <h1>
+          Inteligencia Artificial para empresas en Chile
+          <span class="hero-highlight">aplicada a procesos reales de gestión, análisis y automatización</span>
+        </h1>
+
+        <p class="lead">
+          Ayudamos a organizaciones que necesitan incorporar inteligencia artificial de manera útil,
+          concreta y alineada a su operación: automatización de tareas, asistentes inteligentes,
+          análisis de información y apoyo real a la toma de decisiones.
+        </p>
+
+        <div class="hero-points">
+          <div class="hero-point">
+            <div class="hero-point-icon">✓</div>
+            <div>
+              <div class="hero-point-title">IA aplicada a problemas reales</div>
+              <div class="hero-point-text">Diseñamos soluciones que resuelven necesidades concretas, no implementaciones vacías o de moda.</div>
+            </div>
+          </div>
+
+          <div class="hero-point">
+            <div class="hero-point-icon">✓</div>
+            <div>
+              <div class="hero-point-title">Automatización con inteligencia</div>
+              <div class="hero-point-text">Reducimos carga manual incorporando lógica, clasificación, análisis y asistencia automatizada.</div>
+            </div>
+          </div>
+
+          <div class="hero-point">
+            <div class="hero-point-icon">✓</div>
+            <div>
+              <div class="hero-point-title">Visión consultiva y ejecución técnica</div>
+              <div class="hero-point-text">Analizamos el proceso, proponemos un enfoque realista y construimos soluciones útiles para tu organización.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#contacto">Solicitar diagnóstico</a>
+          <a class="btn btn-secondary" href="#servicios-clave">Ver servicios IA</a>
+        </div>
+
+        <div class="trust">
+          <div class="trust-item">✔ Implementación útil</div>
+          <div class="trust-item">✔ Enfoque profesional</div>
+          <div class="trust-item">✔ Soluciones a medida</div>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-card">
+            <div class="stat-value">Asistentes</div>
+            <div class="stat-label">Soluciones conversacionales y agentes que apoyan atención, soporte o gestión interna</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-value">Automatización</div>
+            <div class="stat-label">Procesos más ágiles con clasificación, derivación y respuesta inteligente</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-value">Análisis</div>
+            <div class="stat-label">Uso de IA para interpretar datos, detectar patrones y apoyar decisiones</div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="hero-card" id="contacto">
+        <div class="card-head">
+          <div class="card-kicker">Contacto inicial</div>
+          <div class="card-title">Solicita un diagnóstico gratuito</div>
+          <div class="card-subtitle">
+            Cuéntanos tu necesidad y te propondremos una forma clara y realista de aplicar inteligencia artificial en tu organización.
+          </div>
+        </div>
+
+        <div class="form-trust">
+          <div class="form-trust-item">Evaluación inicial profesional</div>
+          <div class="form-trust-item">Enfoque según tu realidad</div>
+          <div class="form-trust-item">Sin compromiso inicial</div>
+        </div>
+
+        <form method="post" action="{% url 'public:submit_demo' %}" class="form" novalidate>
+          {% csrf_token %}
+
+          <div class="grid-2">
+            <div class="form-row">
+              <label>Nombre</label>
+              <input class="input" name="nombre" placeholder="Tu nombre" required />
+            </div>
+
+            <div class="form-row">
+              <label>Email</label>
+              <input class="input" type="email" name="email" placeholder="correo@empresa.cl" required />
+            </div>
+
+            <div class="form-row">
+              <label>Teléfono</label>
+              <input class="input" name="telefono" placeholder="+56 9 ..." />
+            </div>
+
+            <div class="form-row">
+              <label>Empresa / Institución</label>
+              <input class="input" name="empresa" placeholder="Nombre de la organización" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label>Asunto</label>
+            <input class="input" name="asunto" placeholder="Ej: chatbot / análisis de datos / automatización con IA" />
+          </div>
+
+          <div class="form-row">
+            <label>Mensaje</label>
+            <textarea class="input" name="mensaje" placeholder="Cuéntanos qué proceso deseas mejorar, automatizar o fortalecer con inteligencia artificial." rows="5"></textarea>
+          </div>
+
+          <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" />
+
+          <button class="btn btn-primary w-full" type="submit">
+            Solicitar diagnóstico
+          </button>
+
+          <div class="legal">
+            ✔ Respuesta rápida · ✔ Información confidencial · ✔ Sin compromiso<br>
+            Al enviar aceptas ser contactado por nuestro equipo. No compartimos tu información.
+          </div>
+        </form>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section-soft section-tight">
+    <div class="wrap">
+      <div class="authority-strip">
+        <div class="authority-item">
+          <div class="authority-title">IA con enfoque consultivo</div>
+          <div class="authority-text">Analizamos el problema real antes de proponer una solución tecnológica.</div>
+        </div>
+        <div class="authority-item">
+          <div class="authority-title">Aplicación con sentido operativo</div>
+          <div class="authority-text">La inteligencia artificial debe generar utilidad, eficiencia y mejor gestión.</div>
+        </div>
+        <div class="authority-item">
+          <div class="authority-title">Soluciones a medida</div>
+          <div class="authority-text">Diseñamos implementaciones alineadas a procesos, usuarios y objetivos concretos.</div>
+        </div>
+        <div class="authority-item">
+          <div class="authority-title">Trabajo con empresas e instituciones</div>
+          <div class="authority-text">Lenguaje profesional, orden técnico y foco en continuidad operativa.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="wrap">
+      <div class="mini-banner">
+        <div class="mini-banner-title">IA aplicada de forma seria, útil y conectada con la gestión real</div>
+        <div class="mini-banner-text">
+          Diseñamos soluciones para organizaciones que quieren incorporar inteligencia artificial con criterio, estructura y foco en resultados concretos.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="soluciones">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">Qué resolvemos</div>
+        <h2>Problemas que la inteligencia artificial puede ayudar a resolver</h2>
+        <p class="muted">
+          La IA no reemplaza la gestión: la fortalece cuando se aplica a procesos concretos y bien definidos.
+        </p>
+      </div>
+
+      <div class="cards-3">
+        <article class="card">
+          <div class="icon">⏱️</div>
+          <div class="card-title">Demasiadas tareas manuales</div>
+          <div class="card-text">Automatizamos clasificación, derivación, respuestas y tareas repetitivas para reducir carga operativa.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">💬</div>
+          <div class="card-title">Atención lenta o poco escalable</div>
+          <div class="card-text">Implementamos asistentes virtuales y flujos conversacionales para mejorar soporte y respuesta.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">📊</div>
+          <div class="card-title">Muchos datos y poca claridad</div>
+          <div class="card-text">Usamos IA para resumir, clasificar, interpretar información y apoyar decisiones más oportunas.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">📥</div>
+          <div class="card-title">Información desordenada</div>
+          <div class="card-text">La IA puede ayudar a organizar documentos, solicitudes, mensajes y registros con mayor consistencia.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">🧠</div>
+          <div class="card-title">Oportunidades no aprovechadas</div>
+          <div class="card-text">Detectamos puntos del proceso donde la IA puede generar valor real y medible.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">📈</div>
+          <div class="card-title">Operación que no escala</div>
+          <div class="card-text">Ayudamos a crear una base tecnológica más inteligente para crecer con más orden y eficiencia.</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-soft" id="servicios-clave">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">Servicios IA</div>
+        <h2>Servicios de inteligencia artificial para organizaciones que necesitan avanzar con seriedad</h2>
+        <p class="muted">
+          Implementaciones orientadas a mejorar procesos, apoyar equipos y convertir información en acciones más útiles.
+        </p>
+      </div>
+
+      <div class="cards-3">
+        <article class="card card-feature">
+          <div class="card-feature-top">
+            <div class="icon">🤖</div>
+            <div class="feature-pill">Asistentes</div>
+          </div>
+          <div class="card-title">Asistentes virtuales y agentes inteligentes</div>
+          <div class="card-text">Chatbots y agentes para atención, soporte interno, orientación, respuesta automática y acompañamiento de usuarios.</div>
+        </article>
+
+        <article class="card card-feature">
+          <div class="card-feature-top">
+            <div class="icon">🔄</div>
+            <div class="feature-pill">Automatización</div>
+          </div>
+          <div class="card-title">Automatización inteligente de procesos</div>
+          <div class="card-text">Clasificación automática, derivación de solicitudes, respuestas asistidas y flujos con lógica aplicada.</div>
+        </article>
+
+        <article class="card card-feature">
+          <div class="card-feature-top">
+            <div class="icon">📚</div>
+            <div class="feature-pill">Conocimiento</div>
+          </div>
+          <div class="card-title">Sistemas de consulta inteligente</div>
+          <div class="card-text">Herramientas que responden en base a reglamentos, documentos, bases de conocimiento o información interna estructurada.</div>
+        </article>
+
+        <article class="card card-feature">
+          <div class="card-feature-top">
+            <div class="icon">📊</div>
+            <div class="feature-pill">Análisis</div>
+          </div>
+          <div class="card-title">Análisis de datos con apoyo de IA</div>
+          <div class="card-text">Interpretación de información, detección de patrones y apoyo a decisiones en procesos de gestión.</div>
+        </article>
+
+        <article class="card card-feature">
+          <div class="card-feature-top">
+            <div class="icon">🔌</div>
+            <div class="feature-pill">Integración</div>
+          </div>
+          <div class="card-title">Integración de IA en flujos existentes</div>
+          <div class="card-text">Conectamos IA con formularios, paneles, bases de datos, sistemas o plataformas que ya usas.</div>
+        </article>
+
+        <article class="card card-feature">
+          <div class="card-feature-top">
+            <div class="icon">🧭</div>
+            <div class="feature-pill">Consultoría</div>
+          </div>
+          <div class="card-title">Consultoría para adopción de IA</div>
+          <div class="card-text">Diagnóstico, casos de uso, priorización e implementación realista según capacidad y contexto de la organización.</div>
+        </article>
+      </div>
+
+      <div class="cta-banner">
+        <div>
+          <div class="cta-title">¿Tienes una necesidad específica?</div>
+          <div class="cta-text">Podemos analizar tu caso y proponerte una forma concreta de aplicar inteligencia artificial, sin compromiso inicial.</div>
+        </div>
+        <a class="btn btn-primary" href="#contacto">Conversemos</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="beneficios">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">Valor que entregamos</div>
+        <h2>Qué gana tu organización al incorporar inteligencia artificial con criterio</h2>
+        <p class="muted">
+          Un enfoque serio, útil y orientado a mejorar procesos, experiencia y capacidad de gestión.
+        </p>
+      </div>
+
+      <div class="benefit-grid">
+        <div class="benefit-card">
+          <div class="benefit-title">Mayor eficiencia operativa</div>
+          <div class="benefit-text">Menos tiempo en tareas repetitivas y más foco en actividades de mayor valor.</div>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-title">Respuestas más rápidas y consistentes</div>
+          <div class="benefit-text">Asistentes y automatizaciones ayudan a reducir tiempos y mejorar continuidad en la atención.</div>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-title">Mejor uso de la información</div>
+          <div class="benefit-text">La IA ayuda a ordenar, interpretar y convertir datos en apoyo real para decidir.</div>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-title">Soluciones alineadas a tu realidad</div>
+          <div class="benefit-text">No implementamos IA por moda, sino donde tiene sentido y valor concreto.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-soft" id="mercado-publico">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">Empresas e instituciones</div>
+        <h2>Preparados para proyectos de IA con enfoque formal, trazable y orientado a cumplimiento</h2>
+        <p class="muted">
+          Nuestra propuesta también conversa bien con organizaciones que requieren lenguaje corporativo,
+          control, soporte documental, trazabilidad y evolución tecnológica responsable.
+        </p>
+      </div>
+
+      <div class="cards-3">
+        <article class="card">
+          <div class="icon">🏛️</div>
+          <div class="card-title">Lenguaje y enfoque institucional</div>
+          <div class="card-text">Proyectos pensados para organizaciones que valoran seriedad, estructura y claridad en la ejecución.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">🗂️</div>
+          <div class="card-title">Gestión, control y seguimiento</div>
+          <div class="card-text">Diseños orientados a trazabilidad, control de estados, soporte y mejora de procesos.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">🔐</div>
+          <div class="card-title">Confianza y continuidad</div>
+          <div class="card-text">Soluciones con mirada de largo plazo, orden técnico y capacidad de evolución progresiva.</div>
+        </article>
+      </div>
+
+      <div class="institution-banner">
+        <div class="institution-banner-content">
+          <div class="institution-title">Una propuesta seria para aplicar IA con valor real en organizaciones que necesitan avanzar con respaldo</div>
+          <div class="institution-text">
+            Asistentes, automatización, análisis y consultoría en inteligencia artificial bajo una lógica profesional, clara y adaptable.
+          </div>
+        </div>
+        <a class="btn btn-secondary" href="#contacto">Solicitar contacto</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="como-trabajamos">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">Metodología</div>
+        <h2>Cómo trabajamos</h2>
+        <p class="muted">
+          Un proceso claro para transformar una necesidad en una solución de inteligencia artificial concreta y ejecutable.
+        </p>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-title">Diagnóstico</div>
+            <div class="step-text">Levantamos el problema, el contexto, los usuarios, los datos disponibles y el objetivo de negocio o gestión.</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-title">Propuesta de solución</div>
+            <div class="step-text">Definimos caso de uso, alcance, enfoque técnico, prioridades y una hoja de ruta realista.</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-title">Implementación</div>
+            <div class="step-text">Construimos la solución, validamos su utilidad y ajustamos según el proceso real de la organización.</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">4</div>
+          <div>
+            <div class="step-title">Entrega y mejora continua</div>
+            <div class="step-text">Acompañamos la puesta en marcha y dejamos una base sólida para evolucionar la solución.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-final">
+    <div class="wrap final-box">
+      <div class="final-copy">
+        <div class="section-kicker">¿Conversemos?</div>
+        <h2>Si quieres aplicar inteligencia artificial de forma útil y con sentido real, podemos ayudarte a estructurar esa solución</h2>
+        <p class="muted">
+          Asistentes, automatización, análisis de información y consultoría tecnológica con enfoque serio, claro y profesional.
+        </p>
+      </div>
+      <div class="final-actions">
+        <a class="btn btn-primary" href="#contacto">Solicitar diagnóstico</a>
+        <a class="btn btn-secondary" href="/servicios/">Ver servicios</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer footer-center">
+    <div class="wrap footer-center-inner">
+      <div class="footer-center-logo">
+        <img src="{% static 'img/logo1.png' %}" alt="Inteligencia Digital y Sistemas" loading="lazy" />
+      </div>
+      <div class="footer-center-title">Inteligencia Digital y Sistemas</div>
+      <div class="footer-center-sub muted">
+        Consultora tecnológica orientada al desarrollo de software, automatización, inteligencia artificial e integración de soluciones digitales.
+      </div>
+      <div class="footer-center-legal">© 2026 Inteligencia Digital y Sistemas. Todos los derechos reservados.</div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const toggle = document.querySelector('.nav-toggle');
+      const nav = document.getElementById('public-nav');
+      if (!toggle || !nav) return;
+
+      const setOpen = (open) => {
+        document.body.classList.toggle('nav-open', open);
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      };
+
+      toggle.addEventListener('click', () => {
+        const isOpen = document.body.classList.contains('nav-open');
+        setOpen(!isOpen);
+      });
+
+      nav.addEventListener('click', (e) => {
+        const a = e.target.closest('a');
+        if (a) setOpen(false);
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') setOpen(false);
+      });
+    })();
+  </script>
+</body>
+</html>

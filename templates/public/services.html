@@ -1,0 +1,537 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Servicios tecnológicos para empresas en Chile | Inteligencia Digital y Sistemas</title>
+  <meta
+    name="description"
+    content="Servicios tecnológicos a medida para empresas e instituciones en Chile: desarrollo de software, automatización de procesos, inteligencia artificial, dashboards, integración de plataformas y consultoría tecnológica."
+  />
+  <link rel="stylesheet" href="{% static 'css/public.css' %}">
+</head>
+
+<body class="public" id="top">
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <div class="topbar-row">
+        <a class="brand" href="/" aria-label="Ir al inicio">
+          <div class="logo-chip" aria-hidden="true">
+            <img class="brand-logo" src="{% static 'img/logo1.png' %}" alt="" loading="eager">
+          </div>
+
+          <div class="brand-text">
+            <div class="brand-name">Inteligencia Digital y Sistemas</div>
+            <div class="brand-pill">Consultora tecnológica · Software · IA · Automatización</div>
+          </div>
+        </a>
+
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Abrir menú"
+          aria-controls="public-nav"
+          aria-expanded="false">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+
+        <nav class="topbar-actions topbar-actions-desktop">
+          <a class="link" href="#soluciones">Soluciones</a>
+          <a class="link" href="#servicios-clave">Servicios</a>
+          <a class="link" href="#mercado-publico">Empresas e instituciones</a>
+          <a class="link" href="#como-trabajamos">Metodología</a>
+          <a class="link" href="#contacto">Contacto</a>
+          <a class="btn btn-primary" href="#contacto">Solicitar diagnóstico</a>
+        </nav>
+      </div>
+
+      <nav class="topbar-actions topbar-actions-mobile" id="public-nav">
+        <a class="link" href="#soluciones">Soluciones</a>
+        <a class="link" href="#servicios-clave">Servicios</a>
+        <a class="link" href="#mercado-publico">Empresas e instituciones</a>
+        <a class="link" href="#como-trabajamos">Metodología</a>
+        <a class="link" href="#contacto">Contacto</a>
+        <a class="btn btn-primary" href="#contacto">Solicitar diagnóstico</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <div class="hero-badge">Servicios tecnológicos para empresas e instituciones</div>
+
+        <h1>
+          Servicios tecnológicos a medida
+          <span class="hero-highlight">para resolver necesidades reales de gestión, operación y crecimiento</span>
+        </h1>
+
+        <p class="lead">
+          En Inteligencia Digital y Sistemas diseñamos e implementamos soluciones tecnológicas para
+          organizaciones que necesitan más control, eficiencia, trazabilidad y mejores herramientas
+          para su operación diaria.
+        </p>
+
+        <div class="hero-points">
+          <div class="hero-point">
+            <div class="hero-point-icon">✓</div>
+            <div>
+              <div class="hero-point-title">Soluciones alineadas a tu realidad</div>
+              <div class="hero-point-text">No trabajamos con recetas genéricas: analizamos tu necesidad y construimos una propuesta útil.</div>
+            </div>
+          </div>
+
+          <div class="hero-point">
+            <div class="hero-point-icon">✓</div>
+            <div>
+              <div class="hero-point-title">Tecnología con foco operativo</div>
+              <div class="hero-point-text">Buscamos resolver problemas concretos de gestión, seguimiento, control y productividad.</div>
+            </div>
+          </div>
+
+          <div class="hero-point">
+            <div class="hero-point-icon">✓</div>
+            <div>
+              <div class="hero-point-title">Diagnóstico, implementación y continuidad</div>
+              <div class="hero-point-text">Acompañamos desde la definición del problema hasta la solución tecnológica aplicable.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#contacto">Solicitar diagnóstico</a>
+          <a class="btn btn-secondary" href="#servicios-clave">Ver servicios</a>
+        </div>
+
+        <div class="trust">
+          <div class="trust-item">✔ Enfoque consultivo</div>
+          <div class="trust-item">✔ Soluciones a medida</div>
+          <div class="trust-item">✔ Implementación profesional</div>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-card">
+            <div class="stat-value">Software</div>
+            <div class="stat-label">Sistemas internos, plataformas web y herramientas diseñadas según el proceso real</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-value">Automatización</div>
+            <div class="stat-label">Procesos más ágiles, menos trabajo manual y mejor coordinación entre áreas</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-value">Inteligencia</div>
+            <div class="stat-label">IA, dashboards e integración de datos para una gestión más clara y útil</div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="hero-card" id="contacto">
+        <div class="card-head">
+          <div class="card-kicker">Contacto inicial</div>
+          <div class="card-title">Solicita un diagnóstico gratuito</div>
+          <div class="card-subtitle">
+            Cuéntanos tu necesidad y te propondremos un enfoque claro, profesional y alineado a tu organización.
+          </div>
+        </div>
+
+        <div class="form-trust">
+          <div class="form-trust-item">Respuesta inicial en corto plazo</div>
+          <div class="form-trust-item">Propuesta según tu necesidad</div>
+          <div class="form-trust-item">Sin compromiso inicial</div>
+        </div>
+
+        <form method="post" action="{% url 'public:submit_demo' %}" class="form" novalidate>
+          {% csrf_token %}
+
+          <div class="grid-2">
+            <div class="form-row">
+              <label>Nombre</label>
+              <input class="input" name="nombre" placeholder="Tu nombre" required />
+            </div>
+
+            <div class="form-row">
+              <label>Email</label>
+              <input class="input" type="email" name="email" placeholder="correo@empresa.cl" required />
+            </div>
+
+            <div class="form-row">
+              <label>Teléfono</label>
+              <input class="input" name="telefono" placeholder="+56 9 ..." />
+            </div>
+
+            <div class="form-row">
+              <label>Empresa / Institución</label>
+              <input class="input" name="empresa" placeholder="Nombre de la organización" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label>Asunto</label>
+            <input class="input" name="asunto" placeholder="Ej: software / automatización / IA / dashboard / integración" />
+          </div>
+
+          <div class="form-row">
+            <label>Mensaje</label>
+            <textarea class="input" name="mensaje" placeholder="Cuéntanos qué proceso deseas mejorar, automatizar o desarrollar." rows="5"></textarea>
+          </div>
+
+          <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" />
+
+          <button class="btn btn-primary w-full" type="submit">
+            Solicitar diagnóstico
+          </button>
+
+          <div class="legal">
+            ✔ Respuesta rápida · ✔ Información confidencial · ✔ Sin compromiso<br>
+            Al enviar aceptas ser contactado por nuestro equipo. No compartimos tu información.
+          </div>
+        </form>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section-soft section-tight">
+    <div class="wrap">
+      <div class="authority-strip">
+        <div class="authority-item">
+          <div class="authority-title">Enfoque consultivo</div>
+          <div class="authority-text">Analizamos necesidades reales antes de definir una solución tecnológica.</div>
+        </div>
+        <div class="authority-item">
+          <div class="authority-title">Servicios a medida</div>
+          <div class="authority-text">Cada propuesta se ajusta a procesos, equipos y objetivos específicos.</div>
+        </div>
+        <div class="authority-item">
+          <div class="authority-title">Tecnología con propósito</div>
+          <div class="authority-text">Software, IA y automatización aplicados a problemas concretos de gestión.</div>
+        </div>
+        <div class="authority-item">
+          <div class="authority-title">Trabajo con empresas e instituciones</div>
+          <div class="authority-text">Lenguaje profesional, orden técnico y foco en continuidad operativa.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="wrap">
+      <div class="mini-banner">
+        <div class="mini-banner-title">Servicios tecnológicos diseñados para organizaciones que necesitan avanzar con seriedad</div>
+        <div class="mini-banner-text">
+          Combinamos consultoría, desarrollo e implementación para resolver necesidades reales de operación, control y crecimiento.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="soluciones">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">Qué abordamos</div>
+        <h2>Necesidades que resolvemos con tecnología aplicada al negocio</h2>
+        <p class="muted">
+          No solo implementamos herramientas: ayudamos a estructurar mejores procesos y una gestión más ordenada.
+        </p>
+      </div>
+
+      <div class="cards-3">
+        <article class="card">
+          <div class="icon">⚙️</div>
+          <div class="card-title">Procesos manuales y lentos</div>
+          <div class="card-text">Automatizamos tareas repetitivas para reducir tiempos, errores y dependencia de trabajo manual.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">🧩</div>
+          <div class="card-title">Sistemas desconectados</div>
+          <div class="card-text">Integramos herramientas y fuentes de información para evitar dispersión y doble digitación.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">📊</div>
+          <div class="card-title">Poca visibilidad para decidir</div>
+          <div class="card-text">Construimos indicadores y paneles para monitorear resultados y tomar decisiones oportunas.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">🛡️</div>
+          <div class="card-title">Falta de trazabilidad y control</div>
+          <div class="card-text">Diseñamos sistemas con seguimiento, estados, permisos y estructura para una gestión más confiable.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">🤖</div>
+          <div class="card-title">Oportunidades de uso de IA</div>
+          <div class="card-text">Aplicamos inteligencia artificial en casos concretos de asistencia, análisis y automatización.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">📈</div>
+          <div class="card-title">Operación que no escala</div>
+          <div class="card-text">Creamos bases tecnológicas más sólidas para que tu organización crezca con orden y continuidad.</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-soft" id="servicios-clave">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">Servicios clave</div>
+        <h2>Servicios tecnológicos para organizaciones que necesitan avanzar con respaldo profesional</h2>
+        <p class="muted">
+          Una combinación de consultoría, diseño, desarrollo e implementación para proyectos con sentido operativo.
+        </p>
+      </div>
+
+      <div class="cards-3">
+        <article class="card card-feature">
+          <div class="card-feature-top">
+            <div class="icon">💻</div>
+            <div class="feature-pill">Desarrollo</div>
+          </div>
+          <div class="card-title">Desarrollo de software a medida</div>
+          <div class="card-text">Sistemas internos, plataformas web, portales, paneles de control y soluciones digitales adaptadas a cada necesidad.</div>
+        </article>
+
+        <article class="card card-feature">
+          <div class="card-feature-top">
+            <div class="icon">🔄</div>
+            <div class="feature-pill">Automatización</div>
+          </div>
+          <div class="card-title">Automatización de procesos</div>
+          <div class="card-text">Flujos de trabajo más ágiles, menos tareas manuales y mejor coordinación entre áreas y sistemas.</div>
+        </article>
+
+        <article class="card card-feature">
+          <div class="card-feature-top">
+            <div class="icon">🧠</div>
+            <div class="feature-pill">Inteligencia artificial</div>
+          </div>
+          <div class="card-title">Soluciones con IA aplicada</div>
+          <div class="card-text">Asistentes, clasificación inteligente, análisis de información y soporte automatizado orientado a casos reales.</div>
+        </article>
+
+        <article class="card card-feature">
+          <div class="card-feature-top">
+            <div class="icon">🔌</div>
+            <div class="feature-pill">Integración</div>
+          </div>
+          <div class="card-title">Integración de plataformas</div>
+          <div class="card-text">Conectamos herramientas, bases de datos y servicios para crear una operación más fluida y menos fragmentada.</div>
+        </article>
+
+        <article class="card card-feature">
+          <div class="card-feature-top">
+            <div class="icon">📋</div>
+            <div class="feature-pill">Consultoría</div>
+          </div>
+          <div class="card-title">Consultoría tecnológica</div>
+          <div class="card-text">Diagnóstico, levantamiento de requerimientos, diseño funcional y acompañamiento estratégico para cada proyecto.</div>
+        </article>
+
+        <article class="card card-feature">
+          <div class="card-feature-top">
+            <div class="icon">📌</div>
+            <div class="feature-pill">Gestión</div>
+          </div>
+          <div class="card-title">Dashboards e indicadores</div>
+          <div class="card-text">Visualización clara de datos, métricas y estados para una gestión ejecutiva más simple y útil.</div>
+        </article>
+      </div>
+
+      <div class="cta-banner">
+        <div>
+          <div class="cta-title">¿Tienes una necesidad específica?</div>
+          <div class="cta-text">Podemos analizar tu caso y proponerte una solución a medida, sin compromiso inicial.</div>
+        </div>
+        <a class="btn btn-primary" href="#contacto">Conversemos</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="beneficios">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">Valor que entregamos</div>
+        <h2>Qué gana tu organización al trabajar con un partner tecnológico serio</h2>
+        <p class="muted">
+          Un enfoque profesional, técnico y orientado a resultados reales de operación y gestión.
+        </p>
+      </div>
+
+      <div class="benefit-grid">
+        <div class="benefit-card">
+          <div class="benefit-title">Mayor eficiencia operativa</div>
+          <div class="benefit-text">Menos tiempo en tareas repetitivas y más foco en actividades de mayor valor.</div>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-title">Más control y trazabilidad</div>
+          <div class="benefit-text">Seguimiento claro de procesos, acciones, estados y responsables dentro de la operación.</div>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-title">Información más útil para decidir</div>
+          <div class="benefit-text">Datos visibles, organizados y convertidos en indicadores realmente accionables.</div>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-title">Soluciones alineadas a tu realidad</div>
+          <div class="benefit-text">Proyectos diseñados según tus procesos, estructura y necesidades concretas.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-soft" id="mercado-publico">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">Empresas e instituciones</div>
+        <h2>Preparados para proyectos con enfoque formal, trazable y orientado a cumplimiento</h2>
+        <p class="muted">
+          Nuestra propuesta también conversa bien con organizaciones que requieren lenguaje corporativo,
+          orden documental, continuidad operativa y soluciones tecnológicas confiables.
+        </p>
+      </div>
+
+      <div class="cards-3">
+        <article class="card">
+          <div class="icon">🏛️</div>
+          <div class="card-title">Lenguaje y enfoque institucional</div>
+          <div class="card-text">Proyectos pensados para organizaciones que valoran seriedad, estructura y claridad en la ejecución.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">🗂️</div>
+          <div class="card-title">Gestión, control y seguimiento</div>
+          <div class="card-text">Diseños orientados a trazabilidad, control de estados, seguimiento y soporte a la toma de decisiones.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">🔐</div>
+          <div class="card-title">Confianza y continuidad</div>
+          <div class="card-text">Soluciones con mirada de largo plazo, orden técnico y capacidad de evolución progresiva.</div>
+        </article>
+      </div>
+
+      <div class="institution-banner">
+        <div class="institution-banner-content">
+          <div class="institution-title">Una propuesta tecnológica seria para organizaciones que necesitan avanzar con respaldo</div>
+          <div class="institution-text">
+            Desarrollo, automatización, IA y consultoría bajo una lógica profesional, clara y adaptable a distintos contextos institucionales.
+          </div>
+        </div>
+        <a class="btn btn-secondary" href="#contacto">Solicitar contacto</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="como-trabajamos">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">Metodología</div>
+        <h2>Cómo trabajamos</h2>
+        <p class="muted">
+          Un proceso claro para transformar una necesidad en una solución concreta y ejecutable.
+        </p>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-title">Diagnóstico</div>
+            <div class="step-text">Levantamos el problema, el contexto, los usuarios, los objetivos y las restricciones del proyecto.</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-title">Propuesta de solución</div>
+            <div class="step-text">Definimos alcance, enfoque técnico, prioridades y una hoja de ruta clara para avanzar.</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-title">Desarrollo e implementación</div>
+            <div class="step-text">Construimos la solución, validamos avances y ajustamos en función de necesidades reales.</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">4</div>
+          <div>
+            <div class="step-title">Entrega y mejora continua</div>
+            <div class="step-text">Acompañamos la puesta en marcha y dejamos bases sólidas para evolucionar el proyecto.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-final">
+    <div class="wrap final-box">
+      <div class="final-copy">
+        <div class="section-kicker">¿Conversemos?</div>
+        <h2>Si tienes una necesidad tecnológica real, podemos ayudarte a estructurarla y convertirla en una solución concreta</h2>
+        <p class="muted">
+          Desarrollo de software, automatización, inteligencia artificial, dashboards e integración de soluciones con enfoque serio, claro y profesional.
+        </p>
+      </div>
+      <div class="final-actions">
+        <a class="btn btn-primary" href="#contacto">Solicitar diagnóstico</a>
+        <a class="btn btn-secondary" href="/">Ir al inicio</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer footer-center">
+    <div class="wrap footer-center-inner">
+      <div class="footer-center-logo">
+        <img src="{% static 'img/logo1.png' %}" alt="Inteligencia Digital y Sistemas" loading="lazy" />
+      </div>
+      <div class="footer-center-title">Inteligencia Digital y Sistemas</div>
+      <div class="footer-center-sub muted">
+        Consultora tecnológica orientada al desarrollo de software, automatización, inteligencia artificial e integración de soluciones digitales.
+      </div>
+      <div class="footer-center-legal">© 2026 Inteligencia Digital y Sistemas. Todos los derechos reservados.</div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const toggle = document.querySelector('.nav-toggle');
+      const nav = document.getElementById('public-nav');
+      if (!toggle || !nav) return;
+
+      const setOpen = (open) => {
+        document.body.classList.toggle('nav-open', open);
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      };
+
+      toggle.addEventListener('click', () => {
+        const isOpen = document.body.classList.contains('nav-open');
+        setOpen(!isOpen);
+      });
+
+      nav.addEventListener('click', (e) => {
+        const a = e.target.closest('a');
+        if (a) setOpen(false);
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') setOpen(false);
+      });
+    })();
+  </script>
+</body>
+</html>

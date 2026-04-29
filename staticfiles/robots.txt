@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin/
+Disallow: /panel/
+Disallow: /api/
+Disallow: /accounts/
+
+Sitemap: https://tudominio.com/sitemap.xml

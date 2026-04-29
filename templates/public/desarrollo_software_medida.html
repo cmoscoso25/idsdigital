@@ -1,0 +1,418 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Desarrollo de software a medida en Chile | IDS</title>
+  <meta
+    name="description"
+    content="Desarrollo de software a medida para empresas e instituciones en Chile. Creamos sistemas web, plataformas internas, paneles de gestión y soluciones adaptadas a procesos reales."
+  />
+  <meta
+    name="keywords"
+    content="desarrollo de software a medida chile, software para empresas chile, sistema de gestión a medida, desarrollo web empresarial, plataforma interna empresa, ids chile"
+  />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://ids.cl/desarrollo-software-medida/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Desarrollo de software a medida en Chile | IDS" />
+  <meta
+    property="og:description"
+    content="Creamos software a medida para empresas e instituciones que necesitan control, trazabilidad y soluciones adaptadas a su operación real."
+  />
+  <meta property="og:url" content="https://ids.cl/desarrollo-software-medida/" />
+  <meta property="og:site_name" content="Inteligencia Digital y Sistemas" />
+
+  <link rel="stylesheet" href="{% static 'css/public.css' %}">
+</head>
+
+<body class="public" id="top">
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <div class="topbar-row">
+        <a class="brand" href="/" aria-label="Ir al inicio">
+          <div class="logo-chip" aria-hidden="true">
+            <img class="brand-logo" src="{% static 'img/logo1.png' %}" alt="" loading="eager">
+          </div>
+
+          <div class="brand-text">
+            <div class="brand-name">Inteligencia Digital y Sistemas</div>
+            <div class="brand-pill">Desarrollo de software a medida · Chile</div>
+          </div>
+        </a>
+
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Abrir menú"
+          aria-controls="public-nav"
+          aria-expanded="false">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+
+        <nav class="topbar-actions topbar-actions-desktop">
+          <a class="link" href="/">Inicio</a>
+          <a class="link" href="/servicios/">Servicios</a>
+          <a class="link" href="#beneficios">Beneficios</a>
+          <a class="link" href="#proceso">Proceso</a>
+          <a class="link" href="#contacto">Contacto</a>
+          <a class="btn btn-primary" href="#contacto">Solicitar diagnóstico</a>
+        </nav>
+      </div>
+
+      <nav class="topbar-actions topbar-actions-mobile" id="public-nav">
+        <a class="link" href="/">Inicio</a>
+        <a class="link" href="/servicios/">Servicios</a>
+        <a class="link" href="#beneficios">Beneficios</a>
+        <a class="link" href="#proceso">Proceso</a>
+        <a class="link" href="#contacto">Contacto</a>
+        <a class="btn btn-primary" href="#contacto">Solicitar diagnóstico</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <div class="hero-badge">Software empresarial e institucional desarrollado según tu realidad</div>
+
+        <h1>
+          Desarrollo de software a medida en Chile
+          <span class="hero-highlight">para procesos que necesitan orden, control y evolución real</span>
+        </h1>
+
+        <p class="lead">
+          En Inteligencia Digital y Sistemas diseñamos y construimos software a medida para
+          empresas e instituciones que requieren soluciones adaptadas a sus procesos, usuarios,
+          reglas internas y objetivos de gestión.
+        </p>
+
+        <div class="hero-points">
+          <div class="hero-point">
+            <div class="hero-point-icon">✓</div>
+            <div>
+              <div class="hero-point-title">Sistemas hechos para tu operación</div>
+              <div class="hero-point-text">No trabajamos con plantillas rígidas. Diseñamos la solución según tu necesidad real.</div>
+            </div>
+          </div>
+
+          <div class="hero-point">
+            <div class="hero-point-icon">✓</div>
+            <div>
+              <div class="hero-point-title">Mayor control y trazabilidad</div>
+              <div class="hero-point-text">Creamos plataformas con estados, permisos, seguimiento y orden funcional.</div>
+            </div>
+          </div>
+
+          <div class="hero-point">
+            <div class="hero-point-icon">✓</div>
+            <div>
+              <div class="hero-point-title">Base tecnológica para crecer</div>
+              <div class="hero-point-text">El software bien construido permite escalar procesos y tomar mejores decisiones.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#contacto">Solicitar diagnóstico</a>
+          <a class="btn btn-secondary" href="#beneficios">Ver beneficios</a>
+        </div>
+
+        <div class="trust">
+          <div class="trust-item">✔ Desarrollo a medida</div>
+          <div class="trust-item">✔ Enfoque consultivo</div>
+          <div class="trust-item">✔ Implementación profesional</div>
+        </div>
+      </div>
+
+      <aside class="hero-card" id="contacto">
+        <div class="card-head">
+          <div class="card-kicker">Evaluación inicial</div>
+          <div class="card-title">Conversemos sobre tu sistema</div>
+          <div class="card-subtitle">
+            Si tu organización necesita una plataforma interna, un panel de control, un CRM o
+            un sistema específico, podemos ayudarte a definir una solución clara y ejecutable.
+          </div>
+        </div>
+
+        <div class="form-trust">
+          <div class="form-trust-item">Diagnóstico inicial</div>
+          <div class="form-trust-item">Enfoque según tus procesos</div>
+          <div class="form-trust-item">Sin compromiso inicial</div>
+        </div>
+
+        <form method="post" action="{% url 'public:submit_demo' %}" class="form" novalidate>
+          {% csrf_token %}
+
+          <div class="grid-2">
+            <div class="form-row">
+              <label>Nombre</label>
+              <input class="input" name="nombre" placeholder="Tu nombre" required />
+            </div>
+
+            <div class="form-row">
+              <label>Email</label>
+              <input class="input" type="email" name="email" placeholder="correo@empresa.cl" required />
+            </div>
+
+            <div class="form-row">
+              <label>Teléfono</label>
+              <input class="input" name="telefono" placeholder="+56 9 ..." />
+            </div>
+
+            <div class="form-row">
+              <label>Empresa / Institución</label>
+              <input class="input" name="empresa" placeholder="Nombre de la organización" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label>Asunto</label>
+            <input class="input" name="asunto" placeholder="Ej: CRM interno / plataforma de gestión / panel ejecutivo" />
+          </div>
+
+          <div class="form-row">
+            <label>Mensaje</label>
+            <textarea class="input" name="mensaje" rows="5" placeholder="Cuéntanos qué sistema necesitas o qué problema deseas resolver con software a medida."></textarea>
+          </div>
+
+          <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" />
+
+          <button class="btn btn-primary w-full" type="submit">
+            Solicitar diagnóstico
+          </button>
+
+          <div class="legal">
+            ✔ Información confidencial · ✔ Evaluación profesional · ✔ Sin compromiso inicial
+          </div>
+        </form>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">Qué significa software a medida</div>
+        <h2>Una solución construida para tus procesos, no un sistema genérico adaptado a la fuerza</h2>
+        <p class="muted">
+          El desarrollo de software a medida permite crear herramientas alineadas a la lógica
+          real de tu organización: usuarios, permisos, flujos, indicadores, integraciones y reglas
+          operativas que un sistema estándar muchas veces no cubre bien.
+        </p>
+      </div>
+
+      <div class="cards-3">
+        <article class="card">
+          <div class="icon">🧩</div>
+          <div class="card-title">Adaptación real al proceso</div>
+          <div class="card-text">La plataforma se diseña según tu operación, no al revés.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">🔐</div>
+          <div class="card-title">Permisos y control</div>
+          <div class="card-text">Cada rol puede ver y hacer lo que corresponde dentro del sistema.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">📈</div>
+          <div class="card-title">Evolución futura</div>
+          <div class="card-text">La solución puede crecer por etapas según nuevas necesidades del negocio.</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="beneficios">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">Beneficios</div>
+        <h2>Por qué desarrollar software a medida puede ser una mejor decisión</h2>
+        <p class="muted">
+          Cuando el proceso es importante para la operación, una solución bien diseñada entrega más valor que una herramienta genérica mal ajustada.
+        </p>
+      </div>
+
+      <div class="benefit-grid">
+        <div class="benefit-card">
+          <div class="benefit-title">Mayor ajuste funcional</div>
+          <div class="benefit-text">El sistema responde exactamente al proceso que necesitas gestionar.</div>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-title">Menos fricción operativa</div>
+          <div class="benefit-text">La herramienta se adapta a tus equipos y reduce pasos innecesarios.</div>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-title">Información centralizada</div>
+          <div class="benefit-text">Los datos dejan de estar dispersos en correos, planillas y documentos aislados.</div>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-title">Mejor soporte a la gestión</div>
+          <div class="benefit-text">Paneles, reportes y trazabilidad permiten administrar con mayor claridad.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">Qué tipo de software desarrollamos</div>
+        <h2>Soluciones orientadas a gestión, operación y control</h2>
+        <p class="muted">
+          Diseñamos herramientas que resuelven necesidades concretas y que pueden integrarse con otros procesos o sistemas.
+        </p>
+      </div>
+
+      <div class="cards-3">
+        <article class="card">
+          <div class="icon">🧾</div>
+          <div class="card-title">Sistemas de gestión interna</div>
+          <div class="card-text">Plataformas para administrar solicitudes, procesos, estados, aprobaciones y trazabilidad.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">📊</div>
+          <div class="card-title">Paneles ejecutivos</div>
+          <div class="card-text">Dashboards con indicadores, alertas y visualización útil para apoyar decisiones.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">👥</div>
+          <div class="card-title">CRM y seguimiento comercial</div>
+          <div class="card-text">Herramientas para gestionar oportunidades, clientes, contactos y estados comerciales.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">🏢</div>
+          <div class="card-title">Portales institucionales</div>
+          <div class="card-text">Plataformas para usuarios internos o externos con acceso controlado y funcionalidades específicas.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">🔄</div>
+          <div class="card-title">Sistemas con automatización</div>
+          <div class="card-text">Software que no solo registra información, sino que también ejecuta flujos y avisos automáticos.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">🔌</div>
+          <div class="card-title">Integración con otras herramientas</div>
+          <div class="card-text">Conexión con formularios, correos, planillas, APIs y plataformas ya existentes.</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="proceso">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">Cómo trabajamos</div>
+        <h2>Un proceso serio para construir software con sentido operativo</h2>
+        <p class="muted">
+          La calidad del sistema depende de entender bien el problema antes de desarrollar.
+        </p>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-title">Levantamiento de requerimientos</div>
+            <div class="step-text">Analizamos el proceso, los usuarios, las reglas y el problema real que se quiere resolver.</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-title">Diseño funcional y técnico</div>
+            <div class="step-text">Definimos pantallas, módulos, permisos, datos, integraciones y arquitectura de la solución.</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-title">Desarrollo e iteración</div>
+            <div class="step-text">Construimos el sistema por etapas, validando avances y ajustando según la operación real.</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">4</div>
+          <div>
+            <div class="step-title">Puesta en marcha y evolución</div>
+            <div class="step-text">Entregamos una base sólida y preparada para mejoras posteriores cuando el proyecto crece.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-final">
+    <div class="wrap final-box">
+      <div class="final-copy">
+        <div class="section-kicker">Software pensado para tu realidad</div>
+        <h2>Si necesitas una plataforma propia, podemos ayudarte a convertir tu necesidad en un sistema real y bien construido</h2>
+        <p class="muted">
+          En IDS desarrollamos software a medida para organizaciones que requieren orden, trazabilidad, control y soluciones que acompañen su crecimiento.
+        </p>
+      </div>
+      <div class="final-actions">
+        <a class="btn btn-primary" href="#contacto">Solicitar diagnóstico</a>
+        <a class="btn btn-secondary" href="/servicios/">Ver servicios</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer footer-center">
+    <div class="wrap footer-center-inner">
+      <div class="footer-center-logo">
+        <img src="{% static 'img/logo1.png' %}" alt="Inteligencia Digital y Sistemas" loading="lazy" />
+      </div>
+      <div class="footer-center-title">Inteligencia Digital y Sistemas</div>
+      <div class="footer-center-sub muted">
+        Desarrollo de software a medida, automatización, integración de plataformas e inteligencia aplicada a gestión.
+      </div>
+      <div class="footer-center-legal">© 2026 Inteligencia Digital y Sistemas. Todos los derechos reservados.</div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const toggle = document.querySelector('.nav-toggle');
+      const nav = document.getElementById('public-nav');
+      if (!toggle || !nav) return;
+
+      const setOpen = (open) => {
+        document.body.classList.toggle('nav-open', open);
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      };
+
+      toggle.addEventListener('click', () => {
+        const isOpen = document.body.classList.contains('nav-open');
+        setOpen(!isOpen);
+      });
+
+      nav.addEventListener('click', (e) => {
+        const a = e.target.closest('a');
+        if (a) setOpen(false);
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') setOpen(false);
+      });
+    })();
+  </script>
+</body>
+</html>

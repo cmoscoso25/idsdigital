@@ -1,0 +1,21 @@
+{% extends "admin/change_form.html" %}
+
+{% block object-tools-items %}
+  {{ block.super }}
+
+  {% if original and not original.converted_to_lead %}
+    <li>
+      <a class="button" href="{% url 'admin:public_demorequest_convert' original.pk %}">
+        Convertir a Lead
+      </a>
+    </li>
+  {% endif %}
+
+  {% if original and original.converted_to_lead and original.lead_id %}
+    <li>
+      <span class="button" style="opacity:.75; cursor:default;">
+        Ya convertido
+      </span>
+    </li>
+  {% endif %}
+{% endblock %}

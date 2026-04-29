@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="grid-2">
+  <div class="card">
+    <div class="card-header">
+      <h1 class="h1">Contacto</h1>
+      <p class="p">Cuéntanos tu necesidad. Te responderemos a la brevedad.</p>
+    </div>
+    <div class="card-body">
+
+      {% if messages %}
+        <div style="display:grid; gap:10px; margin-bottom:14px;">
+          {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <form method="post" class="form" novalidate>
+        {% csrf_token %}
+
+        <div>
+          <div class="label">Nombre completo *</div>
+          <input class="input" type="text" name="full_name" value="{{ form.full_name.value|default:'' }}" placeholder="Nombre completo">
+          {% if form.full_name.errors %}<div class="alert alert-danger">{{ form.full_name.errors }}</div>{% endif %}
+        </div>
+
+        <div>
+          <div class="label">Email *</div>
+          <input class="input" type="email" name="email" value="{{ form.email.value|default:'' }}" placeholder="correo@empresa.com">
+          {% if form.email.errors %}<div class="alert alert-danger">{{ form.email.errors }}</div>{% endif %}
+        </div>
+
+        <div>
+          <div class="label">Teléfono</div>
+          <input class="input" type="text" name="phone" value="{{ form.phone.value|default:'' }}" placeholder="+56 9 ...">
+          {% if form.phone.errors %}<div class="alert alert-danger">{{ form.phone.errors }}</div>{% endif %}
+        </div>
+
+        <div>
+          <div class="label">Empresa</div>
+          <input class="input" type="text" name="company" value="{{ form.company.value|default:'' }}" placeholder="Empresa (opcional)">
+          {% if form.company.errors %}<div class="alert alert-danger">{{ form.company.errors }}</div>{% endif %}
+        </div>
+
+        <div>
+          <div class="label">Asunto</div>
+          <input class="input" type="text" name="subject" value="{{ form.subject.value|default:'' }}" placeholder="Asunto (opcional)">
+          {% if form.subject.errors %}<div class="alert alert-danger">{{ form.subject.errors }}</div>{% endif %}
+        </div>
+
+        <div>
+          <div class="label">Mensaje *</div>
+          <textarea class="textarea" name="message" placeholder="Cuéntanos qué necesitas...">{{ form.message.value|default:'' }}</textarea>
+          {% if form.message.errors %}<div class="alert alert-danger">{{ form.message.errors }}</div>{% endif %}
+        </div>
+
+        <button class="btn btn-primary" type="submit">Enviar solicitud</button>
+      </form>
+
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="h2">Información</h2>
+      <p class="p">Canales y tiempos de respuesta.</p>
+    </div>
+    <div class="card-body">
+      <div class="note" style="margin-bottom:10px;">
+        <div style="font-weight:800;">Tiempo de respuesta</div>
+        <div class="p">Normalmente respondemos dentro de 24–48 horas hábiles.</div>
+      </div>
+      <div class="note" style="margin-bottom:10px;">
+        <div style="font-weight:800;">Servicios</div>
+        <div class="p">Software a medida, automatización, integración y analítica.</div>
+      </div>
+      <div class="note">
+        <div style="font-weight:800;">Panel interno</div>
+        <div class="p">Gestiona tus solicitudes en el panel CRM.</div>
+        <div style="margin-top:10px;">
+          <a class="btn btn-ghost" href="{% url 'lead_list' %}">Ir al panel</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

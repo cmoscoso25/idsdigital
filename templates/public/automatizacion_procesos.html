@@ -1,0 +1,419 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Automatización de procesos para empresas en Chile | IDS</title>
+  <meta
+    name="description"
+    content="Automatización de procesos para empresas e instituciones en Chile. Reducimos tareas manuales, mejoramos tiempos de respuesta y conectamos sistemas con soluciones a medida."
+  />
+  <meta
+    name="keywords"
+    content="automatización de procesos chile, automatización de empresas, automatización de procesos empresariales, software a medida chile, integración de sistemas, inteligencia digital y sistemas"
+  />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://ids.cl/automatizacion-procesos/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Automatización de procesos para empresas en Chile | IDS" />
+  <meta
+    property="og:description"
+    content="Automatizamos procesos operativos y administrativos para mejorar control, eficiencia y trazabilidad."
+  />
+  <meta property="og:url" content="https://ids.cl/automatizacion-procesos/" />
+  <meta property="og:site_name" content="Inteligencia Digital y Sistemas" />
+
+  <link rel="stylesheet" href="{% static 'css/public.css' %}">
+</head>
+
+<body class="public" id="top">
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <div class="topbar-row">
+        <a class="brand" href="/" aria-label="Ir al inicio">
+          <div class="logo-chip" aria-hidden="true">
+            <img class="brand-logo" src="{% static 'img/logo1.png' %}" alt="" loading="eager">
+          </div>
+
+          <div class="brand-text">
+            <div class="brand-name">Inteligencia Digital y Sistemas</div>
+            <div class="brand-pill">Automatización de procesos · Chile</div>
+          </div>
+        </a>
+
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Abrir menú"
+          aria-controls="public-nav"
+          aria-expanded="false">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+
+        <nav class="topbar-actions topbar-actions-desktop">
+          <a class="link" href="/">Inicio</a>
+          <a class="link" href="/servicios/">Servicios</a>
+          <a class="link" href="#beneficios">Beneficios</a>
+          <a class="link" href="#proceso">Proceso</a>
+          <a class="link" href="#contacto">Contacto</a>
+          <a class="btn btn-primary" href="#contacto">Solicitar diagnóstico</a>
+        </nav>
+      </div>
+
+      <nav class="topbar-actions topbar-actions-mobile" id="public-nav">
+        <a class="link" href="/">Inicio</a>
+        <a class="link" href="/servicios/">Servicios</a>
+        <a class="link" href="#beneficios">Beneficios</a>
+        <a class="link" href="#proceso">Proceso</a>
+        <a class="link" href="#contacto">Contacto</a>
+        <a class="btn btn-primary" href="#contacto">Solicitar diagnóstico</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <div class="hero-badge">Soluciones tecnológicas para empresas e instituciones en Chile</div>
+
+        <h1>
+          Automatización de procesos para empresas
+          <span class="hero-highlight">con foco en eficiencia, control y trazabilidad</span>
+        </h1>
+
+        <p class="lead">
+          En Inteligencia Digital y Sistemas ayudamos a organizaciones que necesitan reducir
+          tareas manuales, eliminar dobles digitaciones, conectar plataformas y mejorar
+          tiempos de respuesta mediante automatización de procesos a medida.
+        </p>
+
+        <div class="hero-points">
+          <div class="hero-point">
+            <div class="hero-point-icon">✓</div>
+            <div>
+              <div class="hero-point-title">Menos carga operativa</div>
+              <div class="hero-point-text">Reducimos actividades repetitivas que consumen tiempo y generan errores innecesarios.</div>
+            </div>
+          </div>
+
+          <div class="hero-point">
+            <div class="hero-point-icon">✓</div>
+            <div>
+              <div class="hero-point-title">Más control del proceso</div>
+              <div class="hero-point-text">Diseñamos flujos con estados, responsables, validaciones y seguimiento claro.</div>
+            </div>
+          </div>
+
+          <div class="hero-point">
+            <div class="hero-point-icon">✓</div>
+            <div>
+              <div class="hero-point-title">Integración de herramientas</div>
+              <div class="hero-point-text">Conectamos formularios, correos, planillas, sistemas y paneles para evitar trabajo fragmentado.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#contacto">Solicitar diagnóstico</a>
+          <a class="btn btn-secondary" href="#beneficios">Ver beneficios</a>
+        </div>
+
+        <div class="trust">
+          <div class="trust-item">✔ Soluciones a medida</div>
+          <div class="trust-item">✔ Enfoque consultivo</div>
+          <div class="trust-item">✔ Implementación profesional</div>
+        </div>
+      </div>
+
+      <aside class="hero-card" id="contacto">
+        <div class="card-head">
+          <div class="card-kicker">Diagnóstico inicial</div>
+          <div class="card-title">Conversemos sobre tu proceso</div>
+          <div class="card-subtitle">
+            Si tu organización tiene tareas repetitivas, flujos lentos o información dispersa,
+            podemos ayudarte a estructurar una solución clara.
+          </div>
+        </div>
+
+        <div class="form-trust">
+          <div class="form-trust-item">Evaluación inicial</div>
+          <div class="form-trust-item">Enfoque según tu realidad</div>
+          <div class="form-trust-item">Sin compromiso inicial</div>
+        </div>
+
+        <form method="post" action="{% url 'public:submit_demo' %}" class="form" novalidate>
+          {% csrf_token %}
+
+          <div class="grid-2">
+            <div class="form-row">
+              <label>Nombre</label>
+              <input class="input" name="nombre" placeholder="Tu nombre" required />
+            </div>
+
+            <div class="form-row">
+              <label>Email</label>
+              <input class="input" type="email" name="email" placeholder="correo@empresa.cl" required />
+            </div>
+
+            <div class="form-row">
+              <label>Teléfono</label>
+              <input class="input" name="telefono" placeholder="+56 9 ..." />
+            </div>
+
+            <div class="form-row">
+              <label>Empresa / Institución</label>
+              <input class="input" name="empresa" placeholder="Nombre de la organización" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label>Asunto</label>
+            <input class="input" name="asunto" placeholder="Ej: Automatización de aprobaciones / reportes / formularios" />
+          </div>
+
+          <div class="form-row">
+            <label>Mensaje</label>
+            <textarea class="input" name="mensaje" rows="5" placeholder="Describe el proceso que hoy te genera carga manual o problemas de gestión."></textarea>
+          </div>
+
+          <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" />
+
+          <button class="btn btn-primary w-full" type="submit">
+            Solicitar diagnóstico
+          </button>
+
+          <div class="legal">
+            ✔ Información confidencial · ✔ Respuesta profesional · ✔ Sin compromiso inicial
+          </div>
+        </form>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">Qué es la automatización de procesos</div>
+        <h2>Transformar tareas manuales en flujos más rápidos, ordenados y medibles</h2>
+        <p class="muted">
+          La automatización de procesos permite que actividades operativas y administrativas
+          se ejecuten con menos intervención manual, menos errores y más trazabilidad.
+          No se trata solo de usar tecnología: se trata de mejorar cómo funciona la organización.
+        </p>
+      </div>
+
+      <div class="cards-3">
+        <article class="card">
+          <div class="icon">📥</div>
+          <div class="card-title">Captura ordenada de información</div>
+          <div class="card-text">Formularios, validaciones y centralización de datos para evitar pérdidas o registros incompletos.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">🔄</div>
+          <div class="card-title">Flujos automáticos entre áreas</div>
+          <div class="card-text">Derivaciones, aprobaciones, alertas y estados automáticos según reglas definidas.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">📊</div>
+          <div class="card-title">Seguimiento y métricas</div>
+          <div class="card-text">Paneles e indicadores para ver tiempos, carga, atrasos y puntos críticos del proceso.</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="beneficios">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">Beneficios</div>
+        <h2>Qué gana tu empresa al automatizar procesos</h2>
+        <p class="muted">
+          La automatización bien implementada no solo ahorra tiempo: mejora la gestión completa.
+        </p>
+      </div>
+
+      <div class="benefit-grid">
+        <div class="benefit-card">
+          <div class="benefit-title">Menos errores humanos</div>
+          <div class="benefit-text">Validaciones, reglas y flujos controlados reducen omisiones, duplicidades y reprocesos.</div>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-title">Mayor velocidad de respuesta</div>
+          <div class="benefit-text">Las tareas avanzan más rápido cuando las derivaciones y alertas no dependen de gestión manual.</div>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-title">Trazabilidad real</div>
+          <div class="benefit-text">Cada etapa del proceso queda registrada, con estados, responsables y tiempos visibles.</div>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-title">Mejor toma de decisiones</div>
+          <div class="benefit-text">Los datos del proceso se convierten en información útil para evaluar desempeño y ajustar la operación.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">Casos donde aplicamos automatización</div>
+        <h2>Procesos que normalmente se pueden optimizar</h2>
+        <p class="muted">
+          Cada organización tiene su realidad, pero hay patrones muy comunes donde una solución a medida genera alto impacto.
+        </p>
+      </div>
+
+      <div class="cards-3">
+        <article class="card">
+          <div class="icon">🧾</div>
+          <div class="card-title">Solicitudes internas</div>
+          <div class="card-text">Ingreso, revisión, aprobación y seguimiento de requerimientos o gestiones internas.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">📨</div>
+          <div class="card-title">Derivación de contactos y oportunidades</div>
+          <div class="card-text">Captura de formularios, asignación automática y trazabilidad comercial o institucional.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">📁</div>
+          <div class="card-title">Control documental</div>
+          <div class="card-text">Recepción, validación, estado y organización de documentos con mayor orden y seguimiento.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">📬</div>
+          <div class="card-title">Notificaciones y recordatorios</div>
+          <div class="card-text">Correos, alertas y avisos automáticos para evitar atrasos o falta de respuesta.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">📚</div>
+          <div class="card-title">Reportes automáticos</div>
+          <div class="card-text">Consolidación de datos y generación periódica de reportes para gestión y seguimiento.</div>
+        </article>
+
+        <article class="card">
+          <div class="icon">🔗</div>
+          <div class="card-title">Integración de sistemas</div>
+          <div class="card-text">Conexión entre planillas, formularios, plataformas y paneles para una operación menos fragmentada.</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="proceso">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">Cómo trabajamos</div>
+        <h2>Un proceso claro para automatizar con sentido real</h2>
+        <p class="muted">
+          No proponemos automatizaciones genéricas. Primero entendemos el proceso, luego diseñamos la solución adecuada.
+        </p>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-title">Levantamiento del proceso</div>
+            <div class="step-text">Analizamos cómo funciona hoy, dónde se pierde tiempo y qué fricciones existen.</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-title">Diseño de la solución</div>
+            <div class="step-text">Definimos flujo, reglas, responsables, integraciones y puntos de control.</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-title">Implementación</div>
+            <div class="step-text">Construimos la solución y validamos que responda a la operación real de tu organización.</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">4</div>
+          <div>
+            <div class="step-title">Seguimiento y mejora</div>
+            <div class="step-text">Ajustamos el proceso y dejamos una base sólida para seguir evolucionando.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-final">
+    <div class="wrap final-box">
+      <div class="final-copy">
+        <div class="section-kicker">Automatización con enfoque profesional</div>
+        <h2>Si tu operación depende demasiado de tareas manuales, es momento de estructurar una solución mejor</h2>
+        <p class="muted">
+          En IDS diseñamos soluciones de automatización de procesos para empresas e instituciones
+          que necesitan eficiencia, orden, trazabilidad y una mejor base para crecer.
+        </p>
+      </div>
+      <div class="final-actions">
+        <a class="btn btn-primary" href="#contacto">Solicitar diagnóstico</a>
+        <a class="btn btn-secondary" href="/servicios/">Ver servicios</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer footer-center">
+    <div class="wrap footer-center-inner">
+      <div class="footer-center-logo">
+        <img src="{% static 'img/logo1.png' %}" alt="Inteligencia Digital y Sistemas" loading="lazy" />
+      </div>
+      <div class="footer-center-title">Inteligencia Digital y Sistemas</div>
+      <div class="footer-center-sub muted">
+        Automatización de procesos, software a medida, integración de plataformas e inteligencia aplicada a gestión.
+      </div>
+      <div class="footer-center-legal">© 2026 Inteligencia Digital y Sistemas. Todos los derechos reservados.</div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const toggle = document.querySelector('.nav-toggle');
+      const nav = document.getElementById('public-nav');
+      if (!toggle || !nav) return;
+
+      const setOpen = (open) => {
+        document.body.classList.toggle('nav-open', open);
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      };
+
+      toggle.addEventListener('click', () => {
+        const isOpen = document.body.classList.contains('nav-open');
+        setOpen(!isOpen);
+      });
+
+      nav.addEventListener('click', (e) => {
+        const a = e.target.closest('a');
+        if (a) setOpen(false);
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') setOpen(false);
+      });
+    })();
+  </script>
+</body>
+</html>

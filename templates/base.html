@@ -1,0 +1,22 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0b1220">
+  <title>{% block title %}Inteligencia Digital y Sistemas SpA{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="app">
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  {% include "includes/navbar.html" %}
+
+  <main id="main" class="container">
+    {% include "includes/messages.html" %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

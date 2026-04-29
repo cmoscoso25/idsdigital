@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block title %}Lead #{{ lead.id }} | CRM{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1 class="h1">Lead <span class="mono">#{{ lead.id }}</span></h1>
+    <p class="p">{{ lead.email }} • Creado {{ lead.fecha_creacion|date:"d-m-Y H:i" }}</p>
+  </div>
+  <div class="actions">
+    <a class="btn ghost" href="{% url 'crm:lead_list' %}">Volver</a>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="h2">Datos</h2>
+    </div>
+
+    <div class="card-body">
+      <div class="kv">
+        <div class="k">Nombre</div><div class="v">{{ lead.nombre }}</div>
+        <div class="k">Email</div><div class="v">{{ lead.email }}</div>
+        <div class="k">Teléfono</div><div class="v">{{ lead.telefono|default:"—" }}</div>
+        <div class="k">Empresa</div><div class="v">{{ lead.empresa|default:"—" }}</div>
+        <div class="k">Asunto</div><div class="v">{{ lead.asunto|default:"—" }}</div>
+        <div class="k">Mensaje</div><div class="v">{{ lead.mensaje|linebreaksbr|default:"—" }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="h2">Pipeline</h2>
+    </div>
+
+    <div class="card-body">
+      <div class="actions">
+        <span class="status {{ lead.estado }}">{{ lead.get_estado_display }}</span>
+      </div>
+
+      <form method="post" action="{% url 'crm:lead_change_stage' lead.id %}" class="form mt">
+        {% csrf_token %}
+        <label class="label">Cambiar etapa</label>
+        {{ stage_form.estado }}
+        <button class="btn primary mt" type="submit">Guardar</button>
+      </form>
+
+      {% if users %}
+      <form method="post" action="{% url 'crm:lead_assign_owner' lead.id %}" class="form mt">
+        {% csrf_token %}
+        <label class="label">Asignar ejecutivo</label>
+        <select class="input" name="owner_id">
+          <option value="">— Sin asignar —</option>
+          {% for u in users %}
+            <option value="{{ u.id }}" {% if lead.owner_id == u.id %}selected{% endif %}>
+              {{ u.get_full_name|default:u.username }}
+            </option>
+          {% endfor %}
+        </select>
+        <button class="btn ghost mt" type="submit">Reasignar</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="grid-2 mt-lg">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="h2">Notas internas</h2>
+    </div>
+
+    <div class="card-body">
+      <form method="post" action="{% url 'crm:lead_add_note' lead.id %}" class="form">
+        {% csrf_token %}
+        {{ note_form.content }}
+        <button class="btn primary mt" type="submit">Agregar nota</button>
+      </form>
+
+      <div class="list mt">
+        {% for note in lead.notes.all %}
+          <div class="note">
+            <div class="note-head">
+              <span class="strong">{{ note.author.get_full_name|default:note.author.username|default:"Sistema" }}</span>
+              <span class="muted">{{ note.created_at|date:"d-m-Y H:i" }}</span>
+            </div>
+            <div class="note-body">{{ note.content|linebreaksbr }}</div>
+          </div>
+        {% empty %}
+          <div class="muted">Aún no hay notas.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="h2">Auditoría</h2>
+      <p class="p">Trazabilidad de cambios clave.</p>
+    </div>
+
+    <div class="card-body">
+      <div class="list">
+        {% for a in lead.audit_logs.all %}
+          <div class="audit">
+            <div class="audit-head">
+              <span class="strong">{{ a.get_action_display }}</span>
+              <span class="muted">{{ a.created_at|date:"d-m-Y H:i" }}</span>
+            </div>
+            <div class="muted">
+              {% if a.actor %}{{ a.actor.get_full_name|default:a.actor.username }}{% else %}Sistema{% endif %}
+              {% if a.message %} • {{ a.message }}{% endif %}
+            </div>
+          </div>
+        {% empty %}
+          <div class="muted">Sin auditoría disponible.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

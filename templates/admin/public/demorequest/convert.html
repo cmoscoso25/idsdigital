@@ -1,0 +1,55 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block content %}
+  <div class="content">
+
+    <h1>Convertir solicitud a Lead</h1>
+
+    <div style="margin: 12px 0 20px; padding: 12px 14px; border-radius: 8px; background: #f6f7f8;">
+      <div><strong>Nombre:</strong> {{ demo.name }}</div>
+      <div><strong>Email:</strong> {{ demo.email }}</div>
+      {% if demo.company %}<div><strong>Empresa:</strong> {{ demo.company }}</div>{% endif %}
+      {% if demo.phone %}<div><strong>Teléfono:</strong> {{ demo.phone }}</div>{% endif %}
+      {% if demo.subject %}<div><strong>Asunto:</strong> {{ demo.subject }}</div>{% endif %}
+    </div>
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+
+      <fieldset class="module aligned">
+        <div class="form-row">
+          {{ form.workspace.errors }}
+          <div>
+            <label>{{ form.workspace.label }}:</label>
+            {{ form.workspace }}
+          </div>
+        </div>
+
+        <div class="form-row">
+          {{ form.assigned_to.errors }}
+          <div>
+            <label>{{ form.assigned_to.label }}:</label>
+            {{ form.assigned_to }}
+            {% if form.assigned_to.help_text %}<p class="help">{{ form.assigned_to.help_text }}</p>{% endif %}
+          </div>
+        </div>
+
+        <div class="form-row">
+          {{ form.stage.errors }}
+          <div>
+            <label>{{ form.stage.label }}:</label>
+            {{ form.stage }}
+            {% if form.stage.help_text %}<p class="help">{{ form.stage.help_text }}</p>{% endif %}
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="submit-row">
+        <input type="submit" value="Crear Lead" class="default" />
+        <a class="button cancel-link" href="../{{ demo.pk }}/change/">Cancelar</a>
+      </div>
+    </form>
+
+  </div>
+{% endblock %}

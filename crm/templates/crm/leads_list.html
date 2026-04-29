@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Leads | CRM{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Leads</h1>
+    <p class="muted">Gestión comercial por etapas, asignación y trazabilidad.</p>
+  </div>
+
+  <form class="filters" method="get">
+    <input class="input" type="text" name="q" value="{{ q }}" placeholder="Buscar nombre, email, empresa, asunto…">
+    <select class="input" name="estado">
+      <option value="">Todos</option>
+      {% for v, label in stages %}
+        <option value="{{ v }}" {% if estado == v %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+    <button class="btn primary" type="submit">Filtrar</button>
+    <a class="btn ghost" href="{% url 'crm:leads_list' %}">Limpiar</a>
+  </form>
+</div>
+
+<div class="card">
+  <div class="table-wrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Cliente</th>
+          <th>Empresa</th>
+          <th>Estado</th>
+          <th>Asignado</th>
+          <th>Creación</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for lead in leads %}
+          <tr>
+            <td class="mono">#{{ lead.id }}</td>
+            <td>
+              <div class="strong">{{ lead.nombre }}</div>
+              <div class="muted">{{ lead.email }}</div>
+            </td>
+            <td>{{ lead.empresa|default:"—" }}</td>
+            <td><span class="status {{ lead.estado }}">{{ lead.get_estado_display }}</span></td>
+            <td>{{ lead.owner.get_full_name|default:lead.owner.username|default:"—" }}</td>
+            <td class="muted">{{ lead.fecha_creacion|date:"d-m-Y H:i" }}</td>
+            <td>
+              <a class="btn small" href="{% url 'crm:lead_detail' lead.id %}">Ver</a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="7" class="muted">Sin leads para mostrar.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

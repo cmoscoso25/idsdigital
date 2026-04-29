@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Inteligencia Digital y Sistemas SpA{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1>Web corporativa</h1>
+  <p class="muted">
+    Landing operativa. Acceso CRM:
+    <a class="btn small" href="{% url 'accounts:login' %}">Ingresar al CRM</a>
+  </p>
+</div>
+{% endblock %}
