@@ -1,17 +1,20 @@
 from pathlib import Path
 import os
 
+# BASE
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# SEGURIDAD
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "dev-secret-key-change-me")
 
 DEBUG = os.environ.get("DJANGO_DEBUG", "1") == "1"
 
 ALLOWED_HOSTS = os.environ.get(
     "DJANGO_ALLOWED_HOSTS",
-    "127.0.0.1,localhost,idsdigital.onrender.com,idsdigital.cl,www.idsdigital.cl",
+    "127.0.0.1,localhost,idsdigital.cl,www.idsdigital.cl"
 ).split(",")
 
+# APPS
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -21,16 +24,16 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sitemaps",
 
+    # Local
     "core",
     "crm",
     "accounts",
     "public",
 ]
 
+# MIDDLEWARE
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
-
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -43,6 +46,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "ids_web.urls"
 
+# TEMPLATES
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -59,8 +63,10 @@ TEMPLATES = [
     },
 ]
 
+# WSGI
 WSGI_APPLICATION = "ids_web.wsgi.application"
 
+# BASE DE DATOS
 DATABASES = {
     "default": {
         "ENGINE": os.environ.get("DB_ENGINE", "django.db.backends.sqlite3"),
@@ -68,40 +74,54 @@ DATABASES = {
     }
 }
 
+# PASSWORDS
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", "OPTIONS": {"min_length": 10}},
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "OPTIONS": {"min_length": 10},
+    },
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
+# LOCALIZACIÓN
 LANGUAGE_CODE = "es-cl"
 TIME_ZONE = "America/Santiago"
 USE_I18N = True
 USE_TZ = True
 
+# EMAIL (modo desarrollo)
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+# STATIC
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+# MEDIA
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
+# DEFAULT
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# AUTH
 AUTH_USER_MODEL = "accounts.User"
 
 LOGIN_URL = "accounts:login"
+
+# 🔥 CORREGIDO (ANTES ESTABA MAL)
 LOGIN_REDIRECT_URL = "crm:lead_list"
+
 LOGOUT_REDIRECT_URL = "accounts:login"
 
+# SEGURIDAD COOKIES
 CSRF_COOKIE_SECURE = os.environ.get("CSRF_COOKIE_SECURE", "0") == "1"
 SESSION_COOKIE_SECURE = os.environ.get("SESSION_COOKIE_SECURE", "0") == "1"
 SECURE_SSL_REDIRECT = os.environ.get("SECURE_SSL_REDIRECT", "0") == "1"
 
+# AUTH BACKEND
 AUTHENTICATION_BACKENDS = [
     "accounts.backends.EmailOrUsernameBackend",
 ]
