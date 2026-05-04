@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
@@ -11,6 +11,17 @@ except Exception:
 
 def home(request):
     return render(request, "core/home.html")
+
+
+def health_check(request):
+    """
+    Endpoint liviano para UptimeRobot / Render.
+    No carga templates ni consulta datos pesados.
+    Sirve para mantener activo el servicio y verificar disponibilidad.
+    URL recomendada:
+    /health/
+    """
+    return HttpResponse("OK", content_type="text/plain", status=200)
 
 
 @csrf_exempt
