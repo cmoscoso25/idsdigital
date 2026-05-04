@@ -11,7 +11,7 @@ DEBUG = os.environ.get("DJANGO_DEBUG", "1") == "1"
 
 ALLOWED_HOSTS = os.environ.get(
     "DJANGO_ALLOWED_HOSTS",
-    "127.0.0.1,localhost,idsdigital.cl,www.idsdigital.cl"
+    "127.0.0.1,localhost,idsdigital.cl,www.idsdigital.cl,.onrender.com"
 ).split(",")
 
 # APPS
@@ -34,6 +34,8 @@ INSTALLED_APPS = [
 # MIDDLEWARE
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -41,6 +43,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
     "accounts.middleware.CurrentWorkspaceMiddleware",
 ]
 
@@ -91,13 +94,18 @@ TIME_ZONE = "America/Santiago"
 USE_I18N = True
 USE_TZ = True
 
-# EMAIL (modo desarrollo)
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL
+EMAIL_BACKEND = os.environ.get(
+    "EMAIL_BACKEND",
+    "django.core.mail.backends.console.EmailBackend"
+)
 
 # STATIC
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # MEDIA
 MEDIA_URL = "/media/"
@@ -110,13 +118,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "accounts.User"
 
 LOGIN_URL = "accounts:login"
-
-# 🔥 CORREGIDO (ANTES ESTABA MAL)
 LOGIN_REDIRECT_URL = "crm:lead_list"
-
 LOGOUT_REDIRECT_URL = "accounts:login"
 
-# SEGURIDAD COOKIES
+# SEGURIDAD COOKIES / HTTPS
 CSRF_COOKIE_SECURE = os.environ.get("CSRF_COOKIE_SECURE", "0") == "1"
 SESSION_COOKIE_SECURE = os.environ.get("SESSION_COOKIE_SECURE", "0") == "1"
 SECURE_SSL_REDIRECT = os.environ.get("SECURE_SSL_REDIRECT", "0") == "1"
