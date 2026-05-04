@@ -1,4 +1,4 @@
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
@@ -13,24 +13,15 @@ def home(request):
     return render(request, "core/home.html")
 
 
+# 🔥 FIX PARA UPTIMEROBOT (HEAD + GET)
+@require_http_methods(["GET", "HEAD"])
 def health_check(request):
-    """
-    Endpoint liviano para UptimeRobot / Render.
-    No carga templates ni consulta datos pesados.
-    Sirve para mantener activo el servicio y verificar disponibilidad.
-    URL recomendada:
-    /health/
-    """
-    return HttpResponse("OK", content_type="text/plain", status=200)
+    return HttpResponse("OK", content_type="text/plain")
 
 
 @csrf_exempt
 @require_http_methods(["POST"])
 def api_crear_solicitud(request):
-    """
-    Endpoint público para recibir solicitudes desde la landing.
-    Acepta POST tipo form-data o x-www-form-urlencoded.
-    """
 
     if DemoRequest is None:
         return JsonResponse(
@@ -44,27 +35,19 @@ def api_crear_solicitud(request):
     empresa = (request.POST.get("empresa") or "").strip()
     asunto = (request.POST.get("asunto") or "").strip()
     mensaje = (request.POST.get("mensaje") or "").strip()
-    website = (request.POST.get("website") or "").strip()  # honeypot anti-spam
+    website = (request.POST.get("website") or "").strip()
 
     if website:
         return JsonResponse({"ok": True, "spam": True}, status=200)
 
     if not nombre:
-        return JsonResponse(
-            {"ok": False, "error": "El nombre es obligatorio."},
-            status=400,
-        )
+        return JsonResponse({"ok": False, "error": "El nombre es obligatorio."}, status=400)
 
     if not email:
-        return JsonResponse(
-            {"ok": False, "error": "El email es obligatorio."},
-            status=400,
-        )
+        return JsonResponse({"ok": False, "error": "El email es obligatorio."}, status=400)
 
     try:
-        # Compatibilidad con modelos en español o inglés
         create_kwargs = {}
-
         model_fields = {field.name for field in DemoRequest._meta.fields}
 
         if "nombre" in model_fields:
@@ -95,18 +78,13 @@ def api_crear_solicitud(request):
         elif "message" in model_fields:
             create_kwargs["message"] = mensaje
 
-        # Estado inicial si existe en el modelo
         if "status" in model_fields:
             create_kwargs["status"] = "new"
 
         obj = DemoRequest.objects.create(**create_kwargs)
 
         return JsonResponse(
-            {
-                "ok": True,
-                "message": "Solicitud creada correctamente.",
-                "id": obj.id,
-            },
+            {"ok": True, "message": "Solicitud creada correctamente.", "id": obj.id},
             status=201,
         )
 
