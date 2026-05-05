@@ -26,7 +26,12 @@ def submit_demo_request(request):
     form = DemoRequestForm(request.POST)
 
     if not form.is_valid():
-        return render(request, "public/landing.html", {"form": form, "ok": False}, status=400)
+        return render(
+            request,
+            "public/landing.html",
+            {"form": form, "ok": False},
+            status=400,
+        )
 
     cd = form.cleaned_data
 
@@ -64,6 +69,7 @@ def ai_solutions(request):
     return render(request, "public/inteligencia_artificial_empresas.html")
 
 
+@require_http_methods(["GET", "HEAD"])
 def robots_txt(request):
     content = """User-agent: *
 Allow: /
@@ -73,6 +79,6 @@ Disallow: /panel/
 Disallow: /accounts/
 Disallow: /core/
 
-Sitemap: https://ids.cl/sitemap.xml
+Sitemap: https://www.idsdigital.cl/sitemap.xml
 """
     return HttpResponse(content, content_type="text/plain")
