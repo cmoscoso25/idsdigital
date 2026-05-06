@@ -69,6 +69,36 @@ def ai_solutions(request):
     return render(request, "public/inteligencia_artificial_empresas.html")
 
 
+@require_http_methods(["GET"])
+def software_empresas_chile(request):
+    return render(request, "public/software_empresas_chile.html")
+
+
+@require_http_methods(["GET"])
+def sistemas_gestion_empresarial_chile(request):
+    return render(request, "public/sistemas_gestion_empresarial_chile.html")
+
+
+@require_http_methods(["GET"])
+def automatizacion_python_empresas(request):
+    return render(request, "public/automatizacion_python_empresas.html")
+
+
+@require_http_methods(["GET"])
+def dashboards_empresariales_chile(request):
+    return render(request, "public/dashboards_empresariales_chile.html")
+
+
+@require_http_methods(["GET"])
+def inteligencia_artificial_empresas_chile(request):
+    return render(request, "public/inteligencia_artificial_empresas_chile.html")
+
+
+@require_http_methods(["GET"])
+def desarrollo_sistemas_internos(request):
+    return render(request, "public/desarrollo_sistemas_internos.html")
+
+
 @require_http_methods(["GET", "HEAD"])
 def robots_txt(request):
     content = """User-agent: *
