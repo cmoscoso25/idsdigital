@@ -6,7 +6,67 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#0b1220">
 
-  <title>{% block title %}Inteligencia Digital y Sistemas SpA{% endblock %}</title>
+  <!-- SEO básico -->
+  <title>{% block title %}Inteligencia Digital y Sistemas | Software, IA y Automatización en Chile{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}Consultora tecnológica especializada en desarrollo de software a medida, automatización de procesos e inteligencia artificial para empresas e instituciones en Chile.{% endblock %}" />
+  <meta name="keywords" content="{% block meta_keywords %}desarrollo software chile, automatización procesos chile, consultoría tecnológica chile, software a medida empresas chile, inteligencia artificial empresas chile, sistemas gestión empresarial chile{% endblock %}" />
+  <meta name="author" content="Inteligencia Digital y Sistemas SpA" />
+  <meta name="robots" content="{% block meta_robots %}index, follow{% endblock %}" />
+  <link rel="canonical" href="{% block canonical %}https://www.idsdigital.cl{% endblock %}" />
+
+  <!-- Open Graph (Facebook, LinkedIn, WhatsApp) -->
+  <meta property="og:type" content="{% block og_type %}website{% endblock %}" />
+  <meta property="og:title" content="{% block og_title %}Inteligencia Digital y Sistemas | Software, IA y Automatización en Chile{% endblock %}" />
+  <meta property="og:description" content="{% block og_description %}Consultora tecnológica especializada en desarrollo de software a medida, automatización de procesos e inteligencia artificial para empresas e instituciones en Chile.{% endblock %}" />
+  <meta property="og:url" content="{% block og_url %}https://www.idsdigital.cl{% endblock %}" />
+  <meta property="og:image" content="{% block og_image %}{% static 'img/logo1.png' %}{% endblock %}" />
+  <meta property="og:site_name" content="Inteligencia Digital y Sistemas" />
+  <meta property="og:locale" content="es_CL" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{% block twitter_title %}Inteligencia Digital y Sistemas | Software, IA y Automatización en Chile{% endblock %}" />
+  <meta name="twitter:description" content="{% block twitter_description %}Consultora tecnológica especializada en desarrollo de software a medida, automatización e inteligencia artificial para empresas en Chile.{% endblock %}" />
+  <meta name="twitter:image" content="{% block twitter_image %}{% static 'img/logo1.png' %}{% endblock %}" />
+
+  <!-- Schema.org — Organización -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Inteligencia Digital y Sistemas SpA",
+    "alternateName": "IDS Digital",
+    "url": "https://www.idsdigital.cl",
+    "logo": "https://www.idsdigital.cl{% static 'img/logo1.png' %}",
+    "description": "Consultora tecnológica especializada en desarrollo de software a medida, automatización de procesos e inteligencia artificial para empresas e instituciones en Chile.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Santiago",
+      "addressRegion": "Región Metropolitana",
+      "addressCountry": "CL"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "email": "contacto@idsdigital.cl",
+      "contactType": "customer service",
+      "areaServed": "CL",
+      "availableLanguage": "Spanish"
+    },
+    "sameAs": []
+  }
+  </script>
+
+  <!-- Schema.org — WebSite con SearchAction -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Inteligencia Digital y Sistemas",
+    "url": "https://www.idsdigital.cl"
+  }
+  </script>
+
+  {% block extra_schema %}{% endblock %}
 
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
   <link rel="stylesheet" href="{% static 'css/diagnostico_ia.css' %}">
