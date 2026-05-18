@@ -4,7 +4,7 @@ from django.urls import path, reverse
 from django.utils import timezone
 
 from .admin_forms import ConvertDemoRequestForm
-from .models import DemoRequest
+from .models import DemoRequest, BlogPost
 
 from crm.models import Lead
 
@@ -43,7 +43,6 @@ class DemoRequestAdmin(admin.ModelAdmin):
     def convert_view(self, request, object_id: int):
         demo = get_object_or_404(DemoRequest, pk=object_id)
 
-        # Bloqueo: si ya fue convertido, redirigimos a la ficha.
         if demo.converted_to_lead and demo.lead_id:
             self.message_user(request, "Esta solicitud ya fue convertida a Lead.", level=messages.INFO)
             return redirect(f"../{demo.pk}/change/")
@@ -55,10 +54,8 @@ class DemoRequestAdmin(admin.ModelAdmin):
                 assigned_to = form.cleaned_data.get("assigned_to")
                 stage = (form.cleaned_data.get("stage") or "").strip()
 
-                # Creamos Lead con mapeo robusto.
                 lead = Lead()
 
-                # Campos multi-tenant (crítico)
                 if not _safe_set(lead, "workspace", workspace):
                     self.message_user(
                         request,
@@ -67,37 +64,27 @@ class DemoRequestAdmin(admin.ModelAdmin):
                     )
                     return redirect(f"../{demo.pk}/change/")
 
-                # Datos base: intentamos múltiples nombres comunes
-                # Nombre
                 if not (_safe_set(lead, "name", demo.name) or _safe_set(lead, "full_name", demo.name) or _safe_set(lead, "contact_name", demo.name)):
-                    # si no existe campo, no pasa nada: puede ser opcional en tu Lead
                     pass
 
-                # Email
                 if not (_safe_set(lead, "email", demo.email) or _safe_set(lead, "contact_email", demo.email)):
                     pass
 
-                # Teléfono
                 if demo.phone:
                     _safe_set(lead, "phone", demo.phone) or _safe_set(lead, "contact_phone", demo.phone)
 
-                # Empresa
                 if demo.company:
                     _safe_set(lead, "company", demo.company) or _safe_set(lead, "company_name", demo.company) or _safe_set(lead, "organization", demo.company)
 
-                # Asunto / título
                 if demo.subject:
                     _safe_set(lead, "title", demo.subject) or _safe_set(lead, "subject", demo.subject)
 
-                # Mensaje: lo dejamos como nota/descr si existe
                 if demo.message:
                     _safe_set(lead, "description", demo.message) or _safe_set(lead, "details", demo.message)
 
-                # Asignación (ejecutivo)
                 if assigned_to:
                     _safe_set(lead, "assigned_to", assigned_to) or _safe_set(lead, "owner", assigned_to) or _safe_set(lead, "executive", assigned_to)
 
-                # Etapa (solo si tu Lead tiene campo string 'stage' o similar)
                 if stage:
                     _safe_set(lead, "stage", stage) or _safe_set(lead, "status", stage)
 
@@ -111,7 +98,6 @@ class DemoRequestAdmin(admin.ModelAdmin):
                     )
                     return redirect(f"../{demo.pk}/change/")
 
-                # Marcamos demo como convertido
                 demo.converted_to_lead = True
                 demo.converted_at = timezone.now()
                 demo.handled_by = request.user
@@ -121,7 +107,6 @@ class DemoRequestAdmin(admin.ModelAdmin):
 
                 self.message_user(request, "✅ Solicitud convertida a Lead correctamente.", level=messages.SUCCESS)
 
-                # Redirige al Lead en admin si está registrado ahí, si no, vuelve al demo.
                 try:
                     lead_url = reverse("admin:crm_lead_change", args=[lead.pk])
                     return redirect(lead_url)
@@ -138,3 +123,29 @@ class DemoRequestAdmin(admin.ModelAdmin):
             form=form,
         )
         return render(request, "admin/public/demorequest/convert.html", context)
+
+
+@admin.register(BlogPost)
+class BlogPostAdmin(admin.ModelAdmin):
+    list_display = ("title", "category", "published", "featured", "published_at", "created_at")
+    list_filter = ("published", "featured", "category")
+    search_fields = ("title", "excerpt", "content", "meta_keywords")
+    prepopulated_fields = {"slug": ("title",)}
+    readonly_fields = ("created_at", "updated_at")
+
+    fieldsets = (
+        ("Contenido", {
+            "fields": ("title", "slug", "excerpt", "content", "category")
+        }),
+        ("SEO", {
+            "fields": ("meta_title", "meta_description", "meta_keywords"),
+            "classes": ("collapse",),
+        }),
+        ("Publicación", {
+            "fields": ("published", "featured", "published_at")
+        }),
+        ("Auditoría", {
+            "fields": ("created_at", "updated_at"),
+            "classes": ("collapse",),
+        }),
+    )
