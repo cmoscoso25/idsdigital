@@ -33,7 +33,10 @@
           </a>
         {% endif %}
         <span class="navbar-crm-user">{{ request.user.get_full_name|default:request.user.username }}</span>
-        <a class="navbar-crm-btn" href="{% url 'accounts:logout' %}">Salir</a>
+        <form method="post" action="{% url 'accounts:logout' %}" style="margin: 0;">
+          {% csrf_token %}
+          <button type="submit" class="navbar-crm-btn">Salir</button>
+        </form>
       {% else %}
         <a class="navbar-crm-btn" href="{% url 'accounts:login' %}">Ingresar</a>
       {% endif %}

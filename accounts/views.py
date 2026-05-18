@@ -27,7 +27,7 @@ class AccountsLoginView(LoginView):
         # Si tiene 1 sola empresa, entra directo al CRM
         if memberships.count() == 1:
             self.request.session["current_workspace_id"] = memberships.first().workspace_id
-            return redirect("crm:lead_list")  # ✅ CORREGIDO
+            return redirect("crm:demorequest_list")
 
         # Si tiene varias, mandamos selector
         return redirect("accounts:workspace_select")
@@ -35,6 +35,10 @@ class AccountsLoginView(LoginView):
 
 class AccountsLogoutView(LogoutView):
     next_page = reverse_lazy("accounts:login")
+    http_method_names = ["post", "get"]
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
 
 
 @login_required
@@ -49,13 +53,13 @@ def workspace_select(request):
     if memberships.count() <= 1:
         if memberships.exists():
             request.session["current_workspace_id"] = memberships.first().workspace_id
-        return redirect("crm:lead_list")  # ✅ CORREGIDO
+        return redirect("crm:demorequest_list")
 
     if request.method == "POST":
         form = WorkspaceSelectForm(request.POST, memberships=memberships)
         if form.is_valid():
             request.session["current_workspace_id"] = int(form.cleaned_data["workspace_id"])
-            return redirect("crm:lead_list")  # ✅ CORREGIDO
+            return redirect("crm:demorequest_list")
     else:
         form = WorkspaceSelectForm(memberships=memberships)
 
