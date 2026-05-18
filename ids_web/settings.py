@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+import resend
 
 # BASE
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,6 +30,7 @@ INSTALLED_APPS = [
     "crm",
     "accounts",
     "public",
+    "agente_ia",
 ]
 
 # MIDDLEWARE
@@ -94,11 +96,15 @@ TIME_ZONE = "America/Santiago"
 USE_I18N = True
 USE_TZ = True
 
-# EMAIL
+# EMAIL (modo consola para desarrollo local, Resend se encarga en producción)
 EMAIL_BACKEND = os.environ.get(
     "EMAIL_BACKEND",
     "django.core.mail.backends.console.EmailBackend"
 )
+
+# RESEND — se configura con variable de entorno en Render
+# En local puedes crear un archivo .env o setearla manualmente
+resend.api_key = os.environ.get("RESEND_API_KEY", "")
 
 # STATIC
 STATIC_URL = "/static/"

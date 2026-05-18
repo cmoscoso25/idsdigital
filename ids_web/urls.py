@@ -22,6 +22,7 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),
     path("panel/", include("crm.urls")),
     path("public/", include("public.urls")),
+    path("agente-ia/", include("agente_ia.urls")),
 
     path("servicios/", public_views.services, name="services_public"),
     path("automatizacion-procesos/", public_views.automation_processes, name="automation_processes_public"),

@@ -5,6 +5,7 @@ from django.http import HttpResponse
 
 from .forms import DemoRequestForm
 from .models import DemoRequest
+from .services.email_service import enviar_bienvenida_solicitud, enviar_notificacion_interna
 
 
 def _get_client_ip(request) -> str | None:
@@ -35,6 +36,7 @@ def submit_demo_request(request):
 
     cd = form.cleaned_data
 
+    # Guardamos la solicitud en la base de datos
     DemoRequest.objects.create(
         name=cd["nombre"],
         email=cd["email"],
@@ -44,6 +46,22 @@ def submit_demo_request(request):
         message=cd.get("mensaje", "") or "",
         submitted_ip=_get_client_ip(request),
         user_agent=(request.META.get("HTTP_USER_AGENT") or "")[:255],
+    )
+
+    # Le avisamos al lead que recibimos su solicitud
+    enviar_bienvenida_solicitud(
+        name=cd["nombre"],
+        email=cd["email"],
+        subject=cd.get("asunto", "") or "",
+    )
+
+    # Nos avisamos internamente para gestionar el lead rápido
+    enviar_notificacion_interna(
+        name=cd["nombre"],
+        email=cd["email"],
+        company=cd.get("empresa", "") or "",
+        subject=cd.get("asunto", "") or "",
+        message=cd.get("mensaje", "") or "",
     )
 
     return redirect(f"{reverse('public:landing')}?ok=1")

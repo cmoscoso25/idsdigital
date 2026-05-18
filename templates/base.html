@@ -5,10 +5,15 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#0b1220">
+
   <title>{% block title %}Inteligencia Digital y Sistemas SpA{% endblock %}</title>
+
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'css/diagnostico_ia.css' %}">
+
   {% block extra_head %}{% endblock %}
 </head>
+
 <body class="app">
 
   {% include "includes/navbar.html" %}
@@ -17,6 +22,62 @@
     {% include "includes/messages.html" %}
     {% block content %}{% endblock %}
   </main>
+
+  <!-- Agente IA IDS Digital -->
+  <div class="ids-ia-widget" id="idsIaWidget">
+    <button class="ids-ia-boton" id="idsIaAbrir" type="button" aria-label="Abrir diagnóstico IA">
+      <span class="ids-ia-boton-icono">✦</span>
+      <span class="ids-ia-boton-texto">Diagnóstico IA</span>
+    </button>
+
+    <section class="ids-ia-panel" id="idsIaPanel" aria-hidden="true">
+      <header class="ids-ia-header">
+        <div>
+          <p class="ids-ia-etiqueta">IDS Digital</p>
+          <h2>Agente de Diagnóstico Digital</h2>
+        </div>
+        <button class="ids-ia-cerrar" id="idsIaCerrar" type="button" aria-label="Cerrar agente IA">×</button>
+      </header>
+
+      <div class="ids-ia-intro">
+        <p>
+          Cuéntame qué proceso quieres mejorar y te ayudaré a identificar una solución digital para tu organización.
+        </p>
+      </div>
+
+      <div class="ids-ia-mensajes" id="idsIaMensajes">
+        <div class="ids-ia-msg ids-ia-msg-bot">
+          Hola, soy el asistente IA de IDS Digital. ¿Qué proceso, problema o necesidad tecnológica quieres resolver?
+        </div>
+      </div>
+
+      <form class="ids-ia-form" id="idsIaForm">
+        <textarea
+          id="idsIaInput"
+          rows="2"
+          placeholder="Ej: usamos Excel para controlar solicitudes y queremos automatizar reportes..."
+          required
+        ></textarea>
+        <button type="submit">Enviar</button>
+      </form>
+
+      <div class="ids-ia-lead" id="idsIaLead">
+        <h3>Solicitar contacto</h3>
+        <p>Deja tus datos para que IDS Digital revise tu diagnóstico y te contacte.</p>
+
+        <input type="text" id="idsIaNombre" placeholder="Nombre completo">
+        <input type="text" id="idsIaEmpresa" placeholder="Empresa u organización">
+        <input type="email" id="idsIaEmail" placeholder="Correo">
+        <input type="text" id="idsIaTelefono" placeholder="Teléfono">
+
+        <button type="button" id="idsIaGuardar">Guardar diagnóstico</button>
+        <p class="ids-ia-estado" id="idsIaEstado"></p>
+      </div>
+    </section>
+  </div>
+
+  <script src="{% static 'js/diagnostico_ia.js' %}"></script>
+  {% block extra_js %}{% endblock %}
 
 </body>
 </html>
