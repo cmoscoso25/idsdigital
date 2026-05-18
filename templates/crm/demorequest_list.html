@@ -5,160 +5,162 @@
 {% block content %}
 <section class="crm-section">
 
-  <!-- HEADER -->
-  <div class="crm-header">
-    <div>
-      <div class="crm-eyebrow">CRM Comercial · IDS</div>
-      <h1 class="crm-title">Solicitudes entrantes</h1>
-      <p class="crm-subtitle">Gestiona contactos recibidos desde la landing, prioriza oportunidades y convierte solicitudes en leads comerciales.</p>
-    </div>
-    <div class="crm-header-actions">
-      <a class="crm-btn-ghost" href="{% url 'crm:demorequest_list' %}">Actualizar</a>
-      <a class="crm-btn-primary" href="{% url 'crm:lead_list' %}">Ir a Leads →</a>
-    </div>
-  </div>
-
-  <!-- KPIs -->
-  <div class="crm-kpis">
-    <div class="crm-kpi">
-      <div class="crm-kpi-label">Total solicitudes</div>
-      <div class="crm-kpi-num">{{ kpi_total }}</div>
-      <div class="crm-kpi-sub">Histórico registrado</div>
-    </div>
-    <div class="crm-kpi crm-kpi-blue">
-      <div class="crm-kpi-label">Nuevas</div>
-      <div class="crm-kpi-num">{{ kpi_nuevas }}</div>
-      <div class="crm-kpi-sub">Pendientes de revisión</div>
-    </div>
-    <div class="crm-kpi crm-kpi-green">
-      <div class="crm-kpi-label">Convertidas</div>
-      <div class="crm-kpi-num">{{ kpi_convertidas }}</div>
-      <div class="crm-kpi-sub">Pasaron a lead</div>
-    </div>
-    <div class="crm-kpi crm-kpi-red">
-      <div class="crm-kpi-label">Archivadas</div>
-      <div class="crm-kpi-num">{{ kpi_archivadas }}</div>
-      <div class="crm-kpi-sub">Sin seguimiento activo</div>
-    </div>
-  </div>
-
-  <!-- PIPELINE -->
-  <div class="crm-pipeline">
-    <div class="crm-pipeline-item crm-pipeline-active">
-      <div class="crm-pipeline-num">{{ kpi_nuevas }}</div>
+  <!-- HEADER OSCURO -->
+  <div class="crm-hero-dark">
+    <div class="crm-hero-dark-inner">
       <div>
-        <div class="crm-pipeline-name">Nuevas</div>
-        <div class="crm-pipeline-desc">Entrada inicial</div>
+        <div class="crm-eyebrow">CRM Comercial · IDS</div>
+        <h1 class="crm-title">Solicitudes entrantes</h1>
+        <p class="crm-subtitle">Gestiona contactos recibidos desde la landing, prioriza oportunidades y convierte solicitudes en leads comerciales.</p>
       </div>
-    </div>
-    <div class="crm-pipeline-line"></div>
-    <div class="crm-pipeline-item">
-      <div class="crm-pipeline-num crm-pipeline-num-green">{{ kpi_convertidas }}</div>
-      <div>
-        <div class="crm-pipeline-name">Convertidas</div>
-        <div class="crm-pipeline-desc">Seguimiento comercial</div>
-      </div>
-    </div>
-    <div class="crm-pipeline-line"></div>
-    <div class="crm-pipeline-item">
-      <div class="crm-pipeline-num crm-pipeline-num-gray">{{ kpi_archivadas }}</div>
-      <div>
-        <div class="crm-pipeline-name">Archivadas</div>
-        <div class="crm-pipeline-desc">Cerradas sin avance</div>
+      <div class="crm-header-actions">
+        <a class="crm-btn-ghost" href="{% url 'crm:demorequest_list' %}">Actualizar</a>
       </div>
     </div>
   </div>
 
-  <!-- BANDEJA -->
-  <div class="crm-card">
+  <div class="crm-body">
 
-    <div class="crm-card-header">
-      <div>
+    <!-- KPIs -->
+    <div class="crm-kpis">
+      <div class="crm-kpi">
+        <div class="crm-kpi-label">Total solicitudes</div>
+        <div class="crm-kpi-num">{{ kpi_total }}</div>
+        <div class="crm-kpi-sub">Histórico registrado</div>
+      </div>
+      <div class="crm-kpi crm-kpi-blue">
+        <div class="crm-kpi-label">Nuevas</div>
+        <div class="crm-kpi-num">{{ kpi_nuevas }}</div>
+        <div class="crm-kpi-sub">Pendientes de revisión</div>
+      </div>
+      <div class="crm-kpi crm-kpi-green">
+        <div class="crm-kpi-label">Convertidas</div>
+        <div class="crm-kpi-num">{{ kpi_convertidas }}</div>
+        <div class="crm-kpi-sub">Pasaron a lead</div>
+      </div>
+      <div class="crm-kpi crm-kpi-red">
+        <div class="crm-kpi-label">Archivadas</div>
+        <div class="crm-kpi-num">{{ kpi_archivadas }}</div>
+        <div class="crm-kpi-sub">Sin seguimiento activo</div>
+      </div>
+    </div>
+
+    <!-- PIPELINE -->
+    <div class="crm-pipeline">
+      <div class="crm-pipeline-item crm-pipeline-active">
+        <div class="crm-pipeline-num">{{ kpi_nuevas }}</div>
+        <div>
+          <div class="crm-pipeline-name">Nuevas</div>
+          <div class="crm-pipeline-desc">Entrada inicial</div>
+        </div>
+      </div>
+      <div class="crm-pipeline-line"></div>
+      <div class="crm-pipeline-item">
+        <div class="crm-pipeline-num crm-pipeline-num-green">{{ kpi_convertidas }}</div>
+        <div>
+          <div class="crm-pipeline-name">Convertidas</div>
+          <div class="crm-pipeline-desc">Seguimiento comercial</div>
+        </div>
+      </div>
+      <div class="crm-pipeline-line"></div>
+      <div class="crm-pipeline-item">
+        <div class="crm-pipeline-num crm-pipeline-num-gray">{{ kpi_archivadas }}</div>
+        <div>
+          <div class="crm-pipeline-name">Archivadas</div>
+          <div class="crm-pipeline-desc">Cerradas sin avance</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BANDEJA -->
+    <div class="crm-card">
+      <div class="crm-card-header">
         <h2 class="crm-card-title">Bandeja de solicitudes</h2>
         <p class="crm-card-sub">Filtra, revisa y convierte solicitudes en oportunidades comerciales.</p>
       </div>
-    </div>
 
-    <form method="get" class="crm-filters">
-      <input
-        class="crm-input"
-        type="text"
-        name="q"
-        placeholder="Buscar por empresa, nombre o email..."
-        value="{{ q|default:'' }}"
-      />
-      <select class="crm-select" name="status">
-        <option value="todas" {% if status == "todas" %}selected{% endif %}>Todas</option>
-        <option value="nuevas" {% if status == "nuevas" %}selected{% endif %}>Nuevas</option>
-        <option value="convertidas" {% if status == "convertidas" %}selected{% endif %}>Convertidas</option>
-        <option value="archivadas" {% if status == "archivadas" %}selected{% endif %}>Archivadas</option>
-      </select>
-      <button class="crm-btn-primary" type="submit">Filtrar</button>
-      <a class="crm-btn-ghost" href="{% url 'crm:demorequest_list' %}">Limpiar</a>
-    </form>
+      <form method="get" class="crm-filters">
+        <input
+          class="crm-input"
+          type="text"
+          name="q"
+          placeholder="Buscar por empresa, nombre o email..."
+          value="{{ q|default:'' }}"
+        />
+        <select class="crm-select" name="status">
+          <option value="todas" {% if status == "todas" %}selected{% endif %}>Todas</option>
+          <option value="nuevas" {% if status == "nuevas" %}selected{% endif %}>Nuevas</option>
+          <option value="convertidas" {% if status == "convertidas" %}selected{% endif %}>Convertidas</option>
+          <option value="archivadas" {% if status == "archivadas" %}selected{% endif %}>Archivadas</option>
+        </select>
+        <button class="crm-btn-primary" type="submit">Filtrar</button>
+        <a class="crm-btn-ghost" href="{% url 'crm:demorequest_list' %}">Limpiar</a>
+      </form>
 
-    <div class="crm-list">
-      {% for row in requests %}
-        <article class="crm-row">
+      <div class="crm-list">
+        {% for row in requests %}
+          <article class="crm-row">
 
-          <div class="crm-row-status">
-            {% if "Convert" in row.label %}
-              <span class="crm-badge crm-badge-green">Convertida</span>
-            {% elif "Archiv" in row.label or "Descart" in row.label %}
-              <span class="crm-badge crm-badge-red">Archivada</span>
-            {% else %}
-              <span class="crm-badge crm-badge-blue">Nueva</span>
-            {% endif %}
-          </div>
-
-          <div class="crm-row-content">
-            <div class="crm-row-top">
-              <h3 class="crm-row-company">{{ row.empresa|default:"Empresa no indicada" }}</h3>
-              <span class="crm-row-date">
-                {% if row.fecha %}{{ row.fecha|date:"d-m-Y H:i" }}{% else %}#{{ row.obj.id }}{% endif %}
-              </span>
-            </div>
-            <div class="crm-row-meta">
-              <div class="crm-row-field">
-                <span class="crm-row-field-label">Contacto</span>
-                <span class="crm-row-field-value">{{ row.nombre|default:"—" }}</span>
-              </div>
-              <div class="crm-row-field">
-                <span class="crm-row-field-label">Email</span>
-                <span class="crm-row-field-value">{{ row.email|default:"—" }}</span>
-              </div>
-              {% if row.asunto %}
-              <div class="crm-row-field">
-                <span class="crm-row-field-label">Asunto</span>
-                <span class="crm-row-field-value">{{ row.asunto }}</span>
-              </div>
+            <div class="crm-row-status">
+              {% if "Convert" in row.label %}
+                <span class="crm-badge crm-badge-green">Convertida</span>
+              {% elif "Archiv" in row.label or "Descart" in row.label %}
+                <span class="crm-badge crm-badge-red">Archivada</span>
+              {% else %}
+                <span class="crm-badge crm-badge-blue">Nueva</span>
               {% endif %}
             </div>
-          </div>
 
-          <div class="crm-row-actions">
-            <a class="crm-btn-ghost crm-btn-sm" href="{% url 'crm:demorequest_detail' row.obj.id %}">
-              Ver detalle
-            </a>
-            {% if not row.is_converted and not row.is_archived %}
-              <form method="post" action="{% url 'crm:demorequest_convert' row.obj.id %}">
-                {% csrf_token %}
-                <button class="crm-btn-primary crm-btn-sm" type="submit">Convertir</button>
-              </form>
-              <form method="post" action="{% url 'crm:demorequest_archive' row.obj.id %}">
-                {% csrf_token %}
-                <button class="crm-btn-danger crm-btn-sm" type="submit">Archivar</button>
-              </form>
-            {% endif %}
-          </div>
+            <div class="crm-row-content">
+              <div class="crm-row-top">
+                <h3 class="crm-row-company">{{ row.empresa|default:"Empresa no indicada" }}</h3>
+                <span class="crm-row-date">
+                  {% if row.fecha %}{{ row.fecha|date:"d-m-Y H:i" }}{% else %}#{{ row.obj.id }}{% endif %}
+                </span>
+              </div>
+              <div class="crm-row-meta">
+                <div class="crm-row-field">
+                  <span class="crm-row-field-label">Contacto</span>
+                  <span class="crm-row-field-value">{{ row.nombre|default:"—" }}</span>
+                </div>
+                <div class="crm-row-field">
+                  <span class="crm-row-field-label">Email</span>
+                  <span class="crm-row-field-value">{{ row.email|default:"—" }}</span>
+                </div>
+                {% if row.asunto %}
+                <div class="crm-row-field">
+                  <span class="crm-row-field-label">Asunto</span>
+                  <span class="crm-row-field-value">{{ row.asunto }}</span>
+                </div>
+                {% endif %}
+              </div>
+            </div>
 
-        </article>
-      {% empty %}
-        <div class="crm-empty">
-          <h3>No hay solicitudes con los filtros actuales</h3>
-          <p>Prueba limpiar los filtros o revisar nuevas solicitudes desde la landing.</p>
-        </div>
-      {% endfor %}
+            <div class="crm-row-actions">
+              <a class="crm-btn-ghost crm-btn-sm" href="{% url 'crm:demorequest_detail' row.obj.id %}">
+                Ver detalle
+              </a>
+              {% if not row.is_converted and not row.is_archived %}
+                <form method="post" action="{% url 'crm:demorequest_convert' row.obj.id %}">
+                  {% csrf_token %}
+                  <button class="crm-btn-primary crm-btn-sm" type="submit">Convertir</button>
+                </form>
+                <form method="post" action="{% url 'crm:demorequest_archive' row.obj.id %}">
+                  {% csrf_token %}
+                  <button class="crm-btn-danger crm-btn-sm" type="submit">Archivar</button>
+                </form>
+              {% endif %}
+            </div>
+
+          </article>
+        {% empty %}
+          <div class="crm-empty">
+            <h3>No hay solicitudes con los filtros actuales</h3>
+            <p>Prueba limpiar los filtros o revisar nuevas solicitudes desde la landing.</p>
+          </div>
+        {% endfor %}
+      </div>
+
     </div>
 
   </div>
