@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0f172a" />
+
+  <title>Blog | Tecnología, automatización y software para empresas en Chile | IDS Digital</title>
+  <meta name="description" content="Artículos prácticos sobre desarrollo de software, automatización de procesos e inteligencia artificial para empresas e instituciones en Chile." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.idsdigital.cl/blog/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Blog IDS Digital | Tecnología para empresas en Chile" />
+  <meta property="og:description" content="Artículos prácticos sobre desarrollo de software, automatización de procesos e inteligencia artificial para empresas en Chile." />
+  <meta property="og:url" content="https://www.idsdigital.cl/blog/" />
+  <meta property="og:image" content="https://www.idsdigital.cl/static/img/logo1.png" />
+
+  <link rel="stylesheet" href="{% static 'css/public.css' %}" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="{% url 'public:landing' %}" class="navbar-logo">
+        <div class="navbar-logo-box">IDS</div>
+        <div>
+          <div class="navbar-name">Inteligencia Digital y Sistemas</div>
+          <div class="navbar-sub">Consultora tecnológica · Software · IA · Automatización</div>
+        </div>
+      </a>
+      <div class="navbar-links">
+        <a href="{% url 'public:landing' %}#servicios">Servicios</a>
+        <a href="{% url 'public:blog_list' %}">Blog</a>
+        <a href="{% url 'public:landing' %}#contacto">Contacto</a>
+      </div>
+      <a href="{% url 'public:landing' %}#contacto" class="btn-nav">Solicitar diagnóstico</a>
+    </div>
+  </nav>
+
+  <!-- HEADER BLOG -->
+  <section class="blog-header">
+    <div class="section-inner">
+      <div class="section-label">Blog</div>
+      <h1 class="section-title">Tecnología práctica para empresas en Chile</h1>
+      <p class="section-sub">Artículos sobre automatización, software a medida e inteligencia artificial aplicada a la gestión empresarial.</p>
+    </div>
+  </section>
+
+  <!-- LISTADO DE ARTÍCULOS -->
+  <section class="blog-list-section">
+    <div class="section-inner">
+
+      {% if posts %}
+      <div class="blog-grid">
+        {% for post in posts %}
+        <article class="blog-card">
+          {% if post.category %}
+          <div class="blog-card-category">{{ post.category }}</div>
+          {% endif %}
+          <h2 class="blog-card-title">
+            <a href="{% url 'public:blog_detail' post.slug %}">{{ post.title }}</a>
+          </h2>
+          <p class="blog-card-excerpt">{{ post.excerpt }}</p>
+          <div class="blog-card-footer">
+            <span class="blog-card-date">{{ post.published_at|date:"d M Y" }}</span>
+            <a href="{% url 'public:blog_detail' post.slug %}" class="blog-card-link">
+              Leer artículo →
+            </a>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="blog-empty">
+        <p>Próximamente publicaremos artículos sobre tecnología para empresas en Chile.</p>
+        <a href="{% url 'public:landing' %}#contacto" class="btn-primary">Solicitar diagnóstico gratuito</a>
+      </div>
+      {% endif %}
+
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="cta-final">
+    <div class="cta-final-inner">
+      <h2>¿Necesitas software, automatización o IA para tu empresa en Chile?</h2>
+      <p>Cuéntanos tu caso y te proponemos una solución concreta, sin compromiso inicial.</p>
+      <div class="cta-btns">
+        <a href="{% url 'public:landing' %}#contacto" class="btn-primary">Solicitar diagnóstico gratuito</a>
+        <a href="{% url 'public:landing' %}#servicios" class="btn-cta-sec">Ver servicios →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <div class="navbar-logo-box">IDS</div>
+        <div>
+          <div class="footer-name">Inteligencia Digital y Sistemas SpA</div>
+          <div class="footer-sub">Consultora tecnológica · Santiago, Chile · contacto@idsdigital.cl</div>
+        </div>
+      </div>
+      <div class="footer-copy">© 2026 Inteligencia Digital y Sistemas SpA. Todos los derechos reservados.</div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,10 +1,10 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 from django.http import HttpResponse
 
 from .forms import DemoRequestForm
-from .models import DemoRequest
+from .models import DemoRequest, BlogPost
 from .services.email_service import enviar_bienvenida_solicitud, enviar_notificacion_interna
 
 
@@ -19,7 +19,13 @@ def _get_client_ip(request) -> str | None:
 def landing(request):
     ok = request.GET.get("ok") == "1"
     form = DemoRequestForm()
-    return render(request, "public/landing.html", {"form": form, "ok": ok})
+    # Traemos los artículos destacados para mostrar en la landing
+    posts_destacados = BlogPost.objects.filter(published=True, featured=True)[:3]
+    return render(request, "public/landing.html", {
+        "form": form,
+        "ok": ok,
+        "posts_destacados": posts_destacados,
+    })
 
 
 @require_http_methods(["POST"])
@@ -36,7 +42,7 @@ def submit_demo_request(request):
 
     cd = form.cleaned_data
 
-    # El campo asunto viene del selector de necesidad (lo maneja el clean del form)
+    # Guardamos la solicitud en la base de datos
     DemoRequest.objects.create(
         name=cd["nombre"],
         email=cd["email"],
@@ -65,6 +71,25 @@ def submit_demo_request(request):
     )
 
     return redirect(f"{reverse('public:landing')}?ok=1")
+
+
+@require_http_methods(["GET"])
+def blog_list(request):
+    posts = BlogPost.objects.filter(published=True)
+    return render(request, "public/blog.html", {"posts": posts})
+
+
+@require_http_methods(["GET"])
+def blog_detail(request, slug):
+    post = get_object_or_404(BlogPost, slug=slug, published=True)
+    # Traemos otros artículos relacionados excluyendo el actual
+    posts_relacionados = BlogPost.objects.filter(
+        published=True
+    ).exclude(slug=slug)[:3]
+    return render(request, "public/blog_detail.html", {
+        "post": post,
+        "posts_relacionados": posts_relacionados,
+    })
 
 
 @require_http_methods(["GET"])

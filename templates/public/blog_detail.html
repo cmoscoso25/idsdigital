@@ -1,0 +1,181 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0f172a" />
+
+  <title>{{ post.meta_title }} | IDS Digital</title>
+  <meta name="description" content="{{ post.meta_description }}" />
+  {% if post.meta_keywords %}<meta name="keywords" content="{{ post.meta_keywords }}" />{% endif %}
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.idsdigital.cl/blog/{{ post.slug }}/" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="{{ post.meta_title }}" />
+  <meta property="og:description" content="{{ post.meta_description }}" />
+  <meta property="og:url" content="https://www.idsdigital.cl/blog/{{ post.slug }}/" />
+  <meta property="og:image" content="https://www.idsdigital.cl/static/img/logo1.png" />
+  <meta property="og:site_name" content="Inteligencia Digital y Sistemas" />
+  <meta property="og:locale" content="es_CL" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{ post.meta_title }}" />
+  <meta name="twitter:description" content="{{ post.meta_description }}" />
+
+  <!-- Schema.org Article -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "{{ post.title }}",
+    "description": "{{ post.meta_description }}",
+    "url": "https://www.idsdigital.cl/blog/{{ post.slug }}/",
+    "datePublished": "{{ post.published_at|date:'Y-m-d' }}",
+    "dateModified": "{{ post.updated_at|date:'Y-m-d' }}",
+    "author": {
+      "@type": "Organization",
+      "name": "Inteligencia Digital y Sistemas SpA",
+      "url": "https://www.idsdigital.cl"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Inteligencia Digital y Sistemas SpA",
+      "url": "https://www.idsdigital.cl",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.idsdigital.cl/static/img/logo1.png"
+      }
+    },
+    "inLanguage": "es-CL"
+  }
+  </script>
+
+  <link rel="stylesheet" href="{% static 'css/public.css' %}" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="{% url 'public:landing' %}" class="navbar-logo">
+        <div class="navbar-logo-box">IDS</div>
+        <div>
+          <div class="navbar-name">Inteligencia Digital y Sistemas</div>
+          <div class="navbar-sub">Consultora tecnológica · Software · IA · Automatización</div>
+        </div>
+      </a>
+      <div class="navbar-links">
+        <a href="{% url 'public:landing' %}#servicios">Servicios</a>
+        <a href="{% url 'public:blog_list' %}">Blog</a>
+        <a href="{% url 'public:landing' %}#contacto">Contacto</a>
+      </div>
+      <a href="{% url 'public:landing' %}#contacto" class="btn-nav">Solicitar diagnóstico</a>
+    </div>
+  </nav>
+
+  <!-- ARTÍCULO -->
+  <main class="article-main">
+    <div class="article-inner">
+
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="{% url 'public:landing' %}">Inicio</a>
+        <span>›</span>
+        <a href="{% url 'public:blog_list' %}">Blog</a>
+        <span>›</span>
+        <span>{{ post.title }}</span>
+      </nav>
+
+      <!-- Header del artículo -->
+      <header class="article-header">
+        {% if post.category %}
+        <div class="blog-card-category">{{ post.category }}</div>
+        {% endif %}
+        <h1 class="article-title">{{ post.title }}</h1>
+        <p class="article-excerpt">{{ post.excerpt }}</p>
+        <div class="article-meta">
+          <span>IDS Digital</span>
+          <span>·</span>
+          <span>{{ post.published_at|date:"d \d\e F \d\e Y" }}</span>
+        </div>
+      </header>
+
+      <!-- Contenido -->
+      <div class="article-content">
+        {{ post.content|safe }}
+      </div>
+
+      <!-- CTA dentro del artículo -->
+      <div class="article-cta">
+        <div class="article-cta-inner">
+          <h3>¿Necesitas implementar esto en tu empresa?</h3>
+          <p>En IDS Digital te ayudamos a convertir este conocimiento en una solución concreta para tu organización.</p>
+          <a href="{% url 'public:landing' %}#contacto" class="btn-primary">Solicitar diagnóstico gratuito →</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="article-sidebar">
+
+      <!-- Artículos relacionados -->
+      {% if posts_relacionados %}
+      <div class="sidebar-card">
+        <div class="sidebar-title">Otros artículos</div>
+        <div class="sidebar-posts">
+          {% for related in posts_relacionados %}
+          <a href="{% url 'public:blog_detail' related.slug %}" class="sidebar-post">
+            {% if related.category %}
+            <div class="sidebar-post-category">{{ related.category }}</div>
+            {% endif %}
+            <div class="sidebar-post-title">{{ related.title }}</div>
+            <div class="sidebar-post-date">{{ related.published_at|date:"d M Y" }}</div>
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- CTA sidebar -->
+      <div class="sidebar-card sidebar-cta">
+        <div class="sidebar-title">¿Te interesa esto para tu empresa?</div>
+        <p class="sidebar-cta-text">Cuéntanos tu necesidad y te proponemos una solución a medida, sin compromiso.</p>
+        <a href="{% url 'public:landing' %}#contacto" class="btn-primary" style="display:block; text-align:center;">
+          Diagnóstico gratuito →
+        </a>
+      </div>
+
+    </aside>
+  </main>
+
+  <!-- CTA FINAL -->
+  <section class="cta-final">
+    <div class="cta-final-inner">
+      <h2>¿Necesitas software, automatización o IA para tu empresa en Chile?</h2>
+      <p>Cuéntanos tu caso y te proponemos una solución concreta, sin compromiso inicial.</p>
+      <div class="cta-btns">
+        <a href="{% url 'public:landing' %}#contacto" class="btn-primary">Solicitar diagnóstico gratuito</a>
+        <a href="{% url 'public:blog_list' %}" class="btn-cta-sec">Ver más artículos →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <div class="navbar-logo-box">IDS</div>
+        <div>
+          <div class="footer-name">Inteligencia Digital y Sistemas SpA</div>
+          <div class="footer-sub">Consultora tecnológica · Santiago, Chile · contacto@idsdigital.cl</div>
+        </div>
+      </div>
+      <div class="footer-copy">© 2026 Inteligencia Digital y Sistemas SpA. Todos los derechos reservados.</div>
+    </div>
+  </footer>
+
+</body>
+</html>
