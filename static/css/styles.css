@@ -1316,3 +1316,527 @@ label{
     transition:none !important;
   }
 }
+/* =========================================
+   NAVBAR CRM
+   ========================================= */
+.navbar-crm {
+  background: #0f172a;
+  border-bottom: 0.5px solid #1e293b;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-crm-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.navbar-crm-logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.navbar-crm-pill {
+  background: #1e3a5f;
+  color: #60a5fa;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 0.5px solid #2563eb;
+}
+
+.navbar-crm-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.navbar-crm-link {
+  color: #94a3b8;
+  font-size: 13px;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.navbar-crm-link:hover {
+  color: #fff;
+}
+
+.navbar-crm-user {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.navbar-crm-btn {
+  background: transparent;
+  color: #94a3b8;
+  font-size: 13px;
+  padding: 7px 14px;
+  border-radius: 6px;
+  border: 0.5px solid #334155;
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s;
+  cursor: pointer;
+}
+
+.navbar-crm-btn:hover {
+  border-color: #64748b;
+  color: #fff;
+}
+
+/* =========================================
+   CRM SECCIÓN BASE
+   ========================================= */
+.crm-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 36px 24px 60px;
+}
+
+/* =========================================
+   CRM HEADER
+   ========================================= */
+.crm-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.crm-eyebrow {
+  display: inline-block;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 0.5px solid #bfdbfe;
+  margin-bottom: 10px;
+}
+
+.crm-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0 0 8px;
+  line-height: 1.2;
+}
+
+.crm-subtitle {
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 600px;
+}
+
+.crm-header-actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* =========================================
+   CRM BOTONES
+   ========================================= */
+.crm-btn-primary {
+  background: #2563eb;
+  color: #fff;
+  font-size: 13px;
+  padding: 9px 18px;
+  border-radius: 7px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.2s;
+}
+
+.crm-btn-primary:hover {
+  background: #1d4ed8;
+}
+
+.crm-btn-ghost {
+  background: #fff;
+  color: #475569;
+  font-size: 13px;
+  padding: 9px 18px;
+  border-radius: 7px;
+  border: 0.5px solid #cbd5e1;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: border-color 0.2s;
+}
+
+.crm-btn-ghost:hover {
+  border-color: #94a3b8;
+}
+
+.crm-btn-danger {
+  background: #fff;
+  color: #dc2626;
+  font-size: 13px;
+  padding: 9px 18px;
+  border-radius: 7px;
+  border: 0.5px solid #fca5a5;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.2s, color 0.2s;
+}
+
+.crm-btn-danger:hover {
+  background: #fef2f2;
+}
+
+.crm-btn-sm {
+  padding: 7px 14px;
+  font-size: 12px;
+}
+
+/* =========================================
+   CRM KPIs
+   ========================================= */
+.crm-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.crm-kpi {
+  background: #fff;
+  border: 0.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.crm-kpi-blue { border-top: 3px solid #2563eb; }
+.crm-kpi-green { border-top: 3px solid #16a34a; }
+.crm-kpi-red { border-top: 3px solid #dc2626; }
+
+.crm-kpi-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.crm-kpi-num {
+  font-size: 32px;
+  font-weight: 600;
+  color: #0f172a;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.crm-kpi-sub {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+/* =========================================
+   CRM PIPELINE
+   ========================================= */
+.crm-pipeline {
+  display: grid;
+  grid-template-columns: 1fr 48px 1fr 48px 1fr;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.crm-pipeline-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border: 0.5px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 14px 18px;
+}
+
+.crm-pipeline-active {
+  border-color: #bfdbfe;
+  background: #f0f7ff;
+}
+
+.crm-pipeline-num {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #2563eb;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.crm-pipeline-num-green { background: #16a34a; }
+.crm-pipeline-num-gray { background: #94a3b8; }
+
+.crm-pipeline-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.crm-pipeline-desc {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.crm-pipeline-line {
+  height: 2px;
+  background: #e2e8f0;
+  border-radius: 2px;
+}
+
+/* =========================================
+   CRM CARD
+   ========================================= */
+.crm-card {
+  background: #fff;
+  border: 0.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.crm-card-header {
+  margin-bottom: 18px;
+}
+
+.crm-card-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0 0 4px;
+}
+
+.crm-card-sub {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0;
+}
+
+/* =========================================
+   CRM FILTROS
+   ========================================= */
+.crm-filters {
+  display: grid;
+  grid-template-columns: 1fr 200px auto auto;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.crm-input {
+  background: #f8fafc;
+  border: 0.5px solid #cbd5e1;
+  border-radius: 7px;
+  padding: 9px 13px;
+  font-size: 13px;
+  color: #0f172a;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+
+.crm-input:focus {
+  border-color: #2563eb;
+}
+
+.crm-select {
+  background: #f8fafc;
+  border: 0.5px solid #cbd5e1;
+  border-radius: 7px;
+  padding: 9px 13px;
+  font-size: 13px;
+  color: #0f172a;
+  outline: none;
+  width: 100%;
+}
+
+/* =========================================
+   CRM LISTA DE SOLICITUDES
+   ========================================= */
+.crm-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.crm-row {
+  display: grid;
+  grid-template-columns: 110px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 16px;
+  background: #f8fafc;
+  border: 0.5px solid #e2e8f0;
+  border-radius: 10px;
+  transition: border-color 0.2s;
+}
+
+.crm-row:hover {
+  border-color: #bfdbfe;
+}
+
+.crm-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.crm-badge-blue {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 0.5px solid #bfdbfe;
+}
+
+.crm-badge-green {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 0.5px solid #bbf7d0;
+}
+
+.crm-badge-red {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 0.5px solid #fca5a5;
+}
+
+.crm-row-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.crm-row-company {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0;
+}
+
+.crm-row-date {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.crm-row-meta {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.crm-row-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.crm-row-field-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.crm-row-field-value {
+  font-size: 13px;
+  color: #475569;
+}
+
+.crm-row-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.crm-row-actions form {
+  margin: 0;
+}
+
+.crm-empty {
+  text-align: center;
+  padding: 40px 20px;
+  border: 0.5px dashed #cbd5e1;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.crm-empty h3 {
+  font-size: 15px;
+  color: #0f172a;
+  margin: 0 0 6px;
+}
+
+.crm-empty p {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0;
+}
+
+/* =========================================
+   RESPONSIVE CRM
+   ========================================= */
+@media (max-width: 900px) {
+  .crm-header {
+    flex-direction: column;
+  }
+
+  .crm-kpis {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .crm-pipeline {
+    grid-template-columns: 1fr;
+  }
+
+  .crm-pipeline-line {
+    display: none;
+  }
+
+  .crm-filters {
+    grid-template-columns: 1fr;
+  }
+
+  .crm-row {
+    grid-template-columns: 1fr;
+  }
+
+  .crm-row-actions {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .crm-kpis {
+    grid-template-columns: 1fr;
+  }
+
+  .crm-row-meta {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

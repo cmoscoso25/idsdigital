@@ -1,510 +1,167 @@
 {% extends "base.html" %}
 {% load static %}
+{% block title %}Solicitudes | CRM IDS Digital{% endblock %}
+
 {% block content %}
+<section class="crm-section">
 
-<section class="crm-dashboard-pro">
-
-  <div class="crm-hero">
+  <!-- HEADER -->
+  <div class="crm-header">
     <div>
-      <span class="crm-eyebrow">CRM Comercial · IDS</span>
-      <h1>Solicitudes entrantes</h1>
-      <p>
-        Gestiona contactos recibidos desde la landing, prioriza oportunidades y convierte solicitudes en leads comerciales.
-      </p>
+      <div class="crm-eyebrow">CRM Comercial · IDS</div>
+      <h1 class="crm-title">Solicitudes entrantes</h1>
+      <p class="crm-subtitle">Gestiona contactos recibidos desde la landing, prioriza oportunidades y convierte solicitudes en leads comerciales.</p>
     </div>
-
-    <div class="crm-hero-actions">
-      <a class="btn btn-ghost" href="{% url 'crm:demorequest_list' %}">Actualizar</a>
-      <a class="btn btn-primary" href="{% url 'crm:lead_list' %}">Ir a Leads →</a>
+    <div class="crm-header-actions">
+      <a class="crm-btn-ghost" href="{% url 'crm:demorequest_list' %}">Actualizar</a>
+      <a class="crm-btn-primary" href="{% url 'crm:lead_list' %}">Ir a Leads →</a>
     </div>
   </div>
 
+  <!-- KPIs -->
   <div class="crm-kpis">
-    <div class="crm-kpi-card">
-      <span>Total solicitudes</span>
-      <strong>{{ kpi_total }}</strong>
-      <small>Histórico registrado</small>
+    <div class="crm-kpi">
+      <div class="crm-kpi-label">Total solicitudes</div>
+      <div class="crm-kpi-num">{{ kpi_total }}</div>
+      <div class="crm-kpi-sub">Histórico registrado</div>
     </div>
-
-    <div class="crm-kpi-card kpi-blue">
-      <span>Nuevas</span>
-      <strong>{{ kpi_nuevas }}</strong>
-      <small>Pendientes de revisión</small>
+    <div class="crm-kpi crm-kpi-blue">
+      <div class="crm-kpi-label">Nuevas</div>
+      <div class="crm-kpi-num">{{ kpi_nuevas }}</div>
+      <div class="crm-kpi-sub">Pendientes de revisión</div>
     </div>
-
-    <div class="crm-kpi-card kpi-green">
-      <span>Convertidas</span>
-      <strong>{{ kpi_convertidas }}</strong>
-      <small>Pasaron a lead</small>
+    <div class="crm-kpi crm-kpi-green">
+      <div class="crm-kpi-label">Convertidas</div>
+      <div class="crm-kpi-num">{{ kpi_convertidas }}</div>
+      <div class="crm-kpi-sub">Pasaron a lead</div>
     </div>
-
-    <div class="crm-kpi-card kpi-red">
-      <span>Archivadas</span>
-      <strong>{{ kpi_archivadas }}</strong>
-      <small>Sin seguimiento activo</small>
+    <div class="crm-kpi crm-kpi-red">
+      <div class="crm-kpi-label">Archivadas</div>
+      <div class="crm-kpi-num">{{ kpi_archivadas }}</div>
+      <div class="crm-kpi-sub">Sin seguimiento activo</div>
     </div>
   </div>
 
-  <div class="pipeline-pro">
-    <div class="pipeline-item active">
-      <div class="pipeline-number">{{ kpi_nuevas }}</div>
+  <!-- PIPELINE -->
+  <div class="crm-pipeline">
+    <div class="crm-pipeline-item crm-pipeline-active">
+      <div class="crm-pipeline-num">{{ kpi_nuevas }}</div>
       <div>
-        <strong>Nuevas</strong>
-        <span>Entrada inicial</span>
+        <div class="crm-pipeline-name">Nuevas</div>
+        <div class="crm-pipeline-desc">Entrada inicial</div>
       </div>
     </div>
-
-    <div class="pipeline-line"></div>
-
-    <div class="pipeline-item">
-      <div class="pipeline-number">{{ kpi_convertidas }}</div>
+    <div class="crm-pipeline-line"></div>
+    <div class="crm-pipeline-item">
+      <div class="crm-pipeline-num crm-pipeline-num-green">{{ kpi_convertidas }}</div>
       <div>
-        <strong>Convertidas</strong>
-        <span>Seguimiento comercial</span>
+        <div class="crm-pipeline-name">Convertidas</div>
+        <div class="crm-pipeline-desc">Seguimiento comercial</div>
       </div>
     </div>
-
-    <div class="pipeline-line"></div>
-
-    <div class="pipeline-item muted-pipeline">
-      <div class="pipeline-number">{{ kpi_archivadas }}</div>
+    <div class="crm-pipeline-line"></div>
+    <div class="crm-pipeline-item">
+      <div class="crm-pipeline-num crm-pipeline-num-gray">{{ kpi_archivadas }}</div>
       <div>
-        <strong>Archivadas</strong>
-        <span>Cerradas sin avance</span>
+        <div class="crm-pipeline-name">Archivadas</div>
+        <div class="crm-pipeline-desc">Cerradas sin avance</div>
       </div>
     </div>
   </div>
 
-  <div class="crm-main-card">
+  <!-- BANDEJA -->
+  <div class="crm-card">
 
     <div class="crm-card-header">
       <div>
-        <h2>Bandeja de solicitudes</h2>
-        <p>Filtra, revisa y convierte solicitudes en oportunidades comerciales.</p>
+        <h2 class="crm-card-title">Bandeja de solicitudes</h2>
+        <p class="crm-card-sub">Filtra, revisa y convierte solicitudes en oportunidades comerciales.</p>
       </div>
     </div>
 
     <form method="get" class="crm-filters">
       <input
-        class="input"
+        class="crm-input"
         type="text"
         name="q"
         placeholder="Buscar por empresa, nombre o email..."
         value="{{ q|default:'' }}"
-      >
-
-      <select class="select" name="status">
+      />
+      <select class="crm-select" name="status">
         <option value="todas" {% if status == "todas" %}selected{% endif %}>Todas</option>
         <option value="nuevas" {% if status == "nuevas" %}selected{% endif %}>Nuevas</option>
         <option value="convertidas" {% if status == "convertidas" %}selected{% endif %}>Convertidas</option>
         <option value="archivadas" {% if status == "archivadas" %}selected{% endif %}>Archivadas</option>
       </select>
-
-      <button class="btn btn-primary" type="submit">Filtrar</button>
-      <a class="btn btn-ghost" href="{% url 'crm:demorequest_list' %}">Limpiar</a>
+      <button class="crm-btn-primary" type="submit">Filtrar</button>
+      <a class="crm-btn-ghost" href="{% url 'crm:demorequest_list' %}">Limpiar</a>
     </form>
 
-    <div class="request-list">
-
+    <div class="crm-list">
       {% for row in requests %}
-        <article class="request-card">
+        <article class="crm-row">
 
-          <div class="request-status">
+          <div class="crm-row-status">
             {% if "Convert" in row.label %}
-              <span class="status cerrado">Convertida</span>
+              <span class="crm-badge crm-badge-green">Convertida</span>
             {% elif "Archiv" in row.label or "Descart" in row.label %}
-              <span class="status perdido">Archivada</span>
+              <span class="crm-badge crm-badge-red">Archivada</span>
             {% else %}
-              <span class="status nuevo">Nueva</span>
+              <span class="crm-badge crm-badge-blue">Nueva</span>
             {% endif %}
           </div>
 
-          <div class="request-content">
-            <div class="request-title">
-              <h3>{{ row.empresa|default:"Empresa no indicada" }}</h3>
-              <span>
-                {% if row.fecha %}
-                  {{ row.fecha|date:"d-m-Y H:i" }}
-                {% else %}
-                  #{{ row.obj.id }}
-                {% endif %}
+          <div class="crm-row-content">
+            <div class="crm-row-top">
+              <h3 class="crm-row-company">{{ row.empresa|default:"Empresa no indicada" }}</h3>
+              <span class="crm-row-date">
+                {% if row.fecha %}{{ row.fecha|date:"d-m-Y H:i" }}{% else %}#{{ row.obj.id }}{% endif %}
               </span>
             </div>
-
-            <div class="request-meta">
-              <div>
-                <small>Contacto</small>
-                <strong>{{ row.nombre|default:"—" }}</strong>
+            <div class="crm-row-meta">
+              <div class="crm-row-field">
+                <span class="crm-row-field-label">Contacto</span>
+                <span class="crm-row-field-value">{{ row.nombre|default:"—" }}</span>
               </div>
-
-              <div>
-                <small>Email</small>
-                <strong>{{ row.email|default:"—" }}</strong>
+              <div class="crm-row-field">
+                <span class="crm-row-field-label">Email</span>
+                <span class="crm-row-field-value">{{ row.email|default:"—" }}</span>
               </div>
+              {% if row.asunto %}
+              <div class="crm-row-field">
+                <span class="crm-row-field-label">Asunto</span>
+                <span class="crm-row-field-value">{{ row.asunto }}</span>
+              </div>
+              {% endif %}
             </div>
           </div>
 
-          <div class="request-actions">
-            <a class="btn btn-small btn-ghost" href="{% url 'crm:demorequest_detail' row.obj.id %}">
+          <div class="crm-row-actions">
+            <a class="crm-btn-ghost crm-btn-sm" href="{% url 'crm:demorequest_detail' row.obj.id %}">
               Ver detalle
             </a>
-
             {% if not row.is_converted and not row.is_archived %}
               <form method="post" action="{% url 'crm:demorequest_convert' row.obj.id %}">
                 {% csrf_token %}
-                <button class="btn btn-small btn-primary" type="submit">Convertir</button>
+                <button class="crm-btn-primary crm-btn-sm" type="submit">Convertir</button>
               </form>
-
               <form method="post" action="{% url 'crm:demorequest_archive' row.obj.id %}">
                 {% csrf_token %}
-                <button class="btn btn-small btn-danger" type="submit">Archivar</button>
+                <button class="crm-btn-danger crm-btn-sm" type="submit">Archivar</button>
               </form>
             {% endif %}
           </div>
 
         </article>
       {% empty %}
-        <div class="empty-state">
+        <div class="crm-empty">
           <h3>No hay solicitudes con los filtros actuales</h3>
           <p>Prueba limpiar los filtros o revisar nuevas solicitudes desde la landing.</p>
         </div>
       {% endfor %}
-
     </div>
+
   </div>
 
 </section>
-
-<style>
-  .crm-dashboard-pro {
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 34px 22px 60px;
-  }
-
-  .crm-hero {
-    display: flex;
-    justify-content: space-between;
-    gap: 24px;
-    align-items: flex-start;
-    margin-bottom: 24px;
-  }
-
-  .crm-eyebrow {
-    display: inline-flex;
-    padding: 7px 12px;
-    border-radius: 999px;
-    background: #eaf2ff;
-    color: #2357d8;
-    font-size: 12px;
-    font-weight: 800;
-    margin-bottom: 12px;
-  }
-
-  .crm-hero h1 {
-    font-size: clamp(32px, 5vw, 54px);
-    line-height: 0.95;
-    letter-spacing: -2px;
-    margin: 0;
-    color: #0f2344;
-  }
-
-  .crm-hero p {
-    max-width: 660px;
-    margin-top: 14px;
-    font-size: 17px;
-    line-height: 1.6;
-    color: #486080;
-  }
-
-  .crm-hero-actions {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .crm-kpis {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 16px;
-    margin-bottom: 18px;
-  }
-
-  .crm-kpi-card {
-    background: rgba(255, 255, 255, 0.92);
-    border: 1px solid #dbe7f6;
-    border-radius: 22px;
-    padding: 20px;
-    box-shadow: 0 14px 40px rgba(15, 35, 68, 0.07);
-  }
-
-  .crm-kpi-card span {
-    display: block;
-    color: #607391;
-    font-size: 13px;
-    font-weight: 800;
-    margin-bottom: 8px;
-  }
-
-  .crm-kpi-card strong {
-    display: block;
-    color: #0f2344;
-    font-size: 36px;
-    line-height: 1;
-  }
-
-  .crm-kpi-card small {
-    display: block;
-    margin-top: 8px;
-    color: #7a8ba3;
-    font-weight: 700;
-  }
-
-  .kpi-blue {
-    border-top: 5px solid #3264e8;
-  }
-
-  .kpi-green {
-    border-top: 5px solid #10a66a;
-  }
-
-  .kpi-red {
-    border-top: 5px solid #e15252;
-  }
-
-  .pipeline-pro {
-    display: grid;
-    grid-template-columns: 1fr 70px 1fr 70px 1fr;
-    gap: 12px;
-    align-items: center;
-    margin-bottom: 18px;
-  }
-
-  .pipeline-item {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 16px;
-    border-radius: 18px;
-    background: #ffffff;
-    border: 1px solid #dbe7f6;
-  }
-
-  .pipeline-item.active {
-    background: linear-gradient(135deg, #eff6ff, #ffffff);
-    border-color: #bad2ff;
-  }
-
-  .pipeline-number {
-    width: 42px;
-    height: 42px;
-    border-radius: 14px;
-    display: grid;
-    place-items: center;
-    background: #2357d8;
-    color: #fff;
-    font-weight: 900;
-    font-size: 18px;
-  }
-
-  .pipeline-item strong {
-    display: block;
-    color: #102748;
-    font-size: 15px;
-  }
-
-  .pipeline-item span {
-    display: block;
-    color: #667890;
-    font-size: 13px;
-    margin-top: 2px;
-  }
-
-  .pipeline-line {
-    height: 3px;
-    background: linear-gradient(90deg, #cfe0ff, #9fbdf8);
-    border-radius: 999px;
-  }
-
-  .muted-pipeline .pipeline-number {
-    background: #94a3b8;
-  }
-
-  .crm-main-card {
-    background: rgba(255, 255, 255, 0.95);
-    border: 1px solid #dbe7f6;
-    border-radius: 26px;
-    padding: 22px;
-    box-shadow: 0 18px 55px rgba(15, 35, 68, 0.08);
-  }
-
-  .crm-card-header {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    margin-bottom: 18px;
-  }
-
-  .crm-card-header h2 {
-    margin: 0;
-    color: #0f2344;
-    font-size: 25px;
-    letter-spacing: -0.6px;
-  }
-
-  .crm-card-header p {
-    margin: 6px 0 0;
-    color: #607391;
-  }
-
-  .crm-filters {
-    display: grid;
-    grid-template-columns: 1fr 210px auto auto;
-    gap: 10px;
-    margin-bottom: 18px;
-  }
-
-  .request-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .request-card {
-    display: grid;
-    grid-template-columns: 110px 1fr auto;
-    gap: 16px;
-    align-items: center;
-    padding: 16px;
-    border: 1px solid #dbe7f6;
-    border-radius: 20px;
-    background: linear-gradient(135deg, #ffffff, #f8fbff);
-    transition: 0.18s ease;
-  }
-
-  .request-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 14px 34px rgba(15, 35, 68, 0.09);
-  }
-
-  .request-title {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
-
-  .request-title h3 {
-    margin: 0;
-    font-size: 18px;
-    color: #102748;
-  }
-
-  .request-title span {
-    color: #708299;
-    font-size: 13px;
-    font-weight: 700;
-  }
-
-  .request-meta {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-  }
-
-  .request-meta small {
-    display: block;
-    color: #7587a0;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    font-weight: 900;
-    margin-bottom: 3px;
-  }
-
-  .request-meta strong {
-    color: #253b5b;
-    font-size: 14px;
-    word-break: break-word;
-  }
-
-  .request-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .request-actions form {
-    margin: 0;
-  }
-
-  .empty-state {
-    text-align: center;
-    padding: 38px 20px;
-    border-radius: 20px;
-    border: 1px dashed #c9d7ea;
-    background: #f8fbff;
-  }
-
-  .empty-state h3 {
-    margin: 0;
-    color: #102748;
-  }
-
-  .empty-state p {
-    color: #607391;
-    margin-bottom: 0;
-  }
-
-  @media (max-width: 960px) {
-    .crm-hero {
-      flex-direction: column;
-    }
-
-    .crm-kpis {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .pipeline-pro {
-      grid-template-columns: 1fr;
-    }
-
-    .pipeline-line {
-      display: none;
-    }
-
-    .crm-filters {
-      grid-template-columns: 1fr;
-    }
-
-    .request-card {
-      grid-template-columns: 1fr;
-    }
-
-    .request-actions {
-      justify-content: flex-start;
-    }
-
-    .request-status {
-      order: -1;
-    }
-  }
-
-  @media (max-width: 560px) {
-    .crm-dashboard-pro {
-      padding: 24px 14px 44px;
-    }
-
-    .crm-kpis {
-      grid-template-columns: 1fr;
-    }
-
-    .request-meta {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
-
 {% endblock %}

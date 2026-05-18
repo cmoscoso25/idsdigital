@@ -1,24 +1,44 @@
-<nav class="navbar">
-  <div class="nav-left">
-    <a class="brand" href="/">Inteligencia Digital y Sistemas</a>
-    <span class="pill">CRM</span>
-  </div>
+<nav class="navbar-crm">
+  <div class="navbar-crm-inner">
 
-  <div class="nav-right">
-    {% if request.user.is_authenticated %}
-      <a class="nav-link" href="{% url 'crm:lead_list' %}">Leads</a>
-      <a class="nav-link" href="{% url 'crm:demorequest_list' %}">Solicitudes</a>
+    <div class="navbar-crm-logo">
+      <a href="/" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+        <svg width="32" height="32" viewBox="0 0 60 60" fill="none">
+          <circle cx="30" cy="28" r="7" fill="#3b82f6"/>
+          <circle cx="14" cy="14" r="4.5" fill="#60a5fa"/>
+          <circle cx="46" cy="14" r="4.5" fill="#60a5fa"/>
+          <circle cx="11" cy="38" r="3.5" fill="#60a5fa"/>
+          <circle cx="50" cy="40" r="3.5" fill="#60a5fa"/>
+          <circle cx="28" cy="48" r="3.5" fill="#60a5fa"/>
+          <line x1="30" y1="21" x2="16" y2="16" stroke="#3b82f6" stroke-width="1.5"/>
+          <line x1="30" y1="21" x2="44" y2="16" stroke="#3b82f6" stroke-width="1.5"/>
+          <line x1="24" y1="33" x2="13" y2="36" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
+          <line x1="36" y1="34" x2="48" y2="38" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
+          <line x1="29" y1="35" x2="28" y2="45" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
+        </svg>
+        <div>
+          <div style="font-size: 14px; font-weight: 600; color: #ffffff;">IDS Digital</div>
+          <div style="font-size: 10px; color: #475569; margin-top: 1px;">Inteligencia Digital y Sistemas</div>
+        </div>
+      </a>
+      <span class="navbar-crm-pill">CRM</span>
+    </div>
 
-      {% if request.workspace %}
-        <a class="nav-link subtle" href="{% url 'accounts:workspace_select' %}">
-          {{ request.workspace.name }}
-        </a>
+    <div class="navbar-crm-links">
+      {% if request.user.is_authenticated %}
+        <a class="navbar-crm-link" href="{% url 'crm:lead_list' %}">Leads</a>
+        <a class="navbar-crm-link" href="{% url 'crm:demorequest_list' %}">Solicitudes</a>
+        {% if request.workspace %}
+          <a class="navbar-crm-link" href="{% url 'accounts:workspace_select' %}">
+            {{ request.workspace.name }}
+          </a>
+        {% endif %}
+        <span class="navbar-crm-user">{{ request.user.get_full_name|default:request.user.username }}</span>
+        <a class="navbar-crm-btn" href="{% url 'accounts:logout' %}">Salir</a>
+      {% else %}
+        <a class="navbar-crm-btn" href="{% url 'accounts:login' %}">Ingresar</a>
       {% endif %}
+    </div>
 
-      <span class="nav-user">{{ request.user.get_full_name|default:request.user.username }}</span>
-      <a class="btn ghost" href="{% url 'accounts:logout' %}">Salir</a>
-    {% else %}
-      <a class="btn primary" href="{% url 'accounts:login' %}">Ingresar</a>
-    {% endif %}
   </div>
 </nav>
