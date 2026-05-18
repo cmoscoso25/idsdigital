@@ -34,6 +34,11 @@ class DemoRequest(models.Model):
     converted_to_lead = models.BooleanField(default=False)
     converted_at = models.DateTimeField(null=True, blank=True)
 
+    # Nurturing — seguimiento automático por email
+    nurturing_dia3_enviado = models.BooleanField(default=False)
+    nurturing_dia7_enviado = models.BooleanField(default=False)
+    nurturing_dia14_enviado = models.BooleanField(default=False)
+
     # Quien gestionó la solicitud (usuario interno)
     handled_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -95,13 +100,10 @@ class BlogPost(models.Model):
         ]
 
     def save(self, *args, **kwargs):
-        # Genera el slug automáticamente desde el título si no existe
         if not self.slug:
             self.slug = slugify(self.title)
-        # Usa el título como meta_title si no se especificó
         if not self.meta_title:
             self.meta_title = self.title[:70]
-        # Usa el excerpt como meta_description si no se especificó
         if not self.meta_description:
             self.meta_description = self.excerpt[:160]
         super().save(*args, **kwargs)
