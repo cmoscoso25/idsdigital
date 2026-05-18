@@ -26,7 +26,6 @@
 
     <div class="navbar-crm-links">
       {% if request.user.is_authenticated %}
-        <a class="navbar-crm-link" href="{% url 'crm:lead_list' %}">Leads</a>
         <a class="navbar-crm-link" href="{% url 'crm:demorequest_list' %}">Solicitudes</a>
         {% if request.workspace %}
           <a class="navbar-crm-link" href="{% url 'accounts:workspace_select' %}">

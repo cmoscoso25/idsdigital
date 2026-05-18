@@ -125,8 +125,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "accounts.User"
 
 LOGIN_URL = "accounts:login"
-LOGIN_REDIRECT_URL = "crm:lead_list"
-LOGOUT_REDIRECT_URL = "accounts:login"
+LOGIN_REDIRECT_URL = "crm:demorequest_list"
+LOGOUT_REDIRECT_URL = "/accounts/login/"
 
 # SEGURIDAD COOKIES / HTTPS
 CSRF_COOKIE_SECURE = os.environ.get("CSRF_COOKIE_SECURE", "0") == "1"
