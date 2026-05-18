@@ -24,7 +24,7 @@
   <!-- NAVBAR -->
   <nav class="navbar">
     <div class="navbar-inner">
-      <a href="{% url 'public:landing' %}" class="navbar-logo">
+      <a href="{% url 'home' %}" class="navbar-logo">
         <div class="navbar-logo-box">IDS</div>
         <div>
           <div class="navbar-name">Inteligencia Digital y Sistemas</div>
@@ -32,11 +32,11 @@
         </div>
       </a>
       <div class="navbar-links">
-        <a href="{% url 'public:landing' %}#servicios">Servicios</a>
-        <a href="{% url 'public:blog_list' %}">Blog</a>
-        <a href="{% url 'public:landing' %}#contacto">Contacto</a>
+        <a href="{% url 'home' %}#servicios">Servicios</a>
+        <a href="{% url 'blog_list_public' %}">Blog</a>
+        <a href="{% url 'home' %}#contacto">Contacto</a>
       </div>
-      <a href="{% url 'public:landing' %}#contacto" class="btn-nav">Solicitar diagnóstico</a>
+      <a href="{% url 'home' %}#contacto" class="btn-nav">Solicitar diagnóstico</a>
     </div>
   </nav>
 
@@ -61,12 +61,12 @@
           <div class="blog-card-category">{{ post.category }}</div>
           {% endif %}
           <h2 class="blog-card-title">
-            <a href="{% url 'public:blog_detail' post.slug %}">{{ post.title }}</a>
+            <a href="{% url 'blog_detail_public' post.slug %}">{{ post.title }}</a>
           </h2>
           <p class="blog-card-excerpt">{{ post.excerpt }}</p>
           <div class="blog-card-footer">
             <span class="blog-card-date">{{ post.published_at|date:"d M Y" }}</span>
-            <a href="{% url 'public:blog_detail' post.slug %}" class="blog-card-link">
+            <a href="{% url 'blog_detail_public' post.slug %}" class="blog-card-link">
               Leer artículo →
             </a>
           </div>
@@ -76,7 +76,7 @@
       {% else %}
       <div class="blog-empty">
         <p>Próximamente publicaremos artículos sobre tecnología para empresas en Chile.</p>
-        <a href="{% url 'public:landing' %}#contacto" class="btn-primary">Solicitar diagnóstico gratuito</a>
+        <a href="{% url 'home' %}#contacto" class="btn-primary">Solicitar diagnóstico gratuito</a>
       </div>
       {% endif %}
 
@@ -89,8 +89,8 @@
       <h2>¿Necesitas software, automatización o IA para tu empresa en Chile?</h2>
       <p>Cuéntanos tu caso y te proponemos una solución concreta, sin compromiso inicial.</p>
       <div class="cta-btns">
-        <a href="{% url 'public:landing' %}#contacto" class="btn-primary">Solicitar diagnóstico gratuito</a>
-        <a href="{% url 'public:landing' %}#servicios" class="btn-cta-sec">Ver servicios →</a>
+        <a href="{% url 'home' %}#contacto" class="btn-primary">Solicitar diagnóstico gratuito</a>
+        <a href="{% url 'home' %}#servicios" class="btn-cta-sec">Ver servicios →</a>
       </div>
     </div>
   </section>

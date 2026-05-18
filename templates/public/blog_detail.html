@@ -59,7 +59,7 @@
   <!-- NAVBAR -->
   <nav class="navbar">
     <div class="navbar-inner">
-      <a href="{% url 'public:landing' %}" class="navbar-logo">
+      <a href="{% url 'home' %}" class="navbar-logo">
         <div class="navbar-logo-box">IDS</div>
         <div>
           <div class="navbar-name">Inteligencia Digital y Sistemas</div>
@@ -67,11 +67,11 @@
         </div>
       </a>
       <div class="navbar-links">
-        <a href="{% url 'public:landing' %}#servicios">Servicios</a>
-        <a href="{% url 'public:blog_list' %}">Blog</a>
-        <a href="{% url 'public:landing' %}#contacto">Contacto</a>
+        <a href="{% url 'home' %}#servicios">Servicios</a>
+        <a href="{% url 'blog_list_public' %}">Blog</a>
+        <a href="{% url 'home' %}#contacto">Contacto</a>
       </div>
-      <a href="{% url 'public:landing' %}#contacto" class="btn-nav">Solicitar diagnóstico</a>
+      <a href="{% url 'home' %}#contacto" class="btn-nav">Solicitar diagnóstico</a>
     </div>
   </nav>
 
@@ -81,9 +81,9 @@
 
       <!-- Breadcrumb -->
       <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="{% url 'public:landing' %}">Inicio</a>
+        <a href="{% url 'home' %}">Inicio</a>
         <span>›</span>
-        <a href="{% url 'public:blog_list' %}">Blog</a>
+        <a href="{% url 'blog_list_public' %}">Blog</a>
         <span>›</span>
         <span>{{ post.title }}</span>
       </nav>
@@ -112,7 +112,7 @@
         <div class="article-cta-inner">
           <h3>¿Necesitas implementar esto en tu empresa?</h3>
           <p>En IDS Digital te ayudamos a convertir este conocimiento en una solución concreta para tu organización.</p>
-          <a href="{% url 'public:landing' %}#contacto" class="btn-primary">Solicitar diagnóstico gratuito →</a>
+          <a href="{% url 'home' %}#contacto" class="btn-primary">Solicitar diagnóstico gratuito →</a>
         </div>
       </div>
 
@@ -121,13 +121,12 @@
     <!-- Sidebar -->
     <aside class="article-sidebar">
 
-      <!-- Artículos relacionados -->
       {% if posts_relacionados %}
       <div class="sidebar-card">
         <div class="sidebar-title">Otros artículos</div>
         <div class="sidebar-posts">
           {% for related in posts_relacionados %}
-          <a href="{% url 'public:blog_detail' related.slug %}" class="sidebar-post">
+          <a href="{% url 'blog_detail_public' related.slug %}" class="sidebar-post">
             {% if related.category %}
             <div class="sidebar-post-category">{{ related.category }}</div>
             {% endif %}
@@ -143,7 +142,7 @@
       <div class="sidebar-card sidebar-cta">
         <div class="sidebar-title">¿Te interesa esto para tu empresa?</div>
         <p class="sidebar-cta-text">Cuéntanos tu necesidad y te proponemos una solución a medida, sin compromiso.</p>
-        <a href="{% url 'public:landing' %}#contacto" class="btn-primary" style="display:block; text-align:center;">
+        <a href="{% url 'home' %}#contacto" class="btn-primary" style="display:block; text-align:center;">
           Diagnóstico gratuito →
         </a>
       </div>
@@ -157,8 +156,8 @@
       <h2>¿Necesitas software, automatización o IA para tu empresa en Chile?</h2>
       <p>Cuéntanos tu caso y te proponemos una solución concreta, sin compromiso inicial.</p>
       <div class="cta-btns">
-        <a href="{% url 'public:landing' %}#contacto" class="btn-primary">Solicitar diagnóstico gratuito</a>
-        <a href="{% url 'public:blog_list' %}" class="btn-cta-sec">Ver más artículos →</a>
+        <a href="{% url 'home' %}#contacto" class="btn-primary">Solicitar diagnóstico gratuito</a>
+        <a href="{% url 'blog_list_public' %}" class="btn-cta-sec">Ver más artículos →</a>
       </div>
     </div>
   </section>

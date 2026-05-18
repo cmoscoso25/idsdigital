@@ -24,6 +24,10 @@ urlpatterns = [
     path("public/", include("public.urls")),
     path("agente-ia/", include("agente_ia.urls")),
 
+    # Blog
+    path("blog/", public_views.blog_list, name="blog_list_public"),
+    path("blog/<slug:slug>/", public_views.blog_detail, name="blog_detail_public"),
+
     path("servicios/", public_views.services, name="services_public"),
     path("automatizacion-procesos/", public_views.automation_processes, name="automation_processes_public"),
     path("desarrollo-software-medida/", public_views.custom_software_development, name="custom_software_development_public"),
