@@ -83,7 +83,7 @@
             ¡Listo! Recibimos tu solicitud. Te contactaremos pronto.
           </div>
           {% else %}
-          <form method="post" action="{% url 'public:submit_demo_request' %}">
+          <form method="post" action="{% url 'public:submit_demo' %}">
             {% csrf_token %}
 
             <!-- Honeypot anti-bots -->
