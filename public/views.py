@@ -36,7 +36,7 @@ def submit_demo_request(request):
 
     cd = form.cleaned_data
 
-    # Guardamos la solicitud en la base de datos
+    # El campo asunto viene del selector de necesidad (lo maneja el clean del form)
     DemoRequest.objects.create(
         name=cd["nombre"],
         email=cd["email"],
