@@ -6,6 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0f172a" />
 
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}" />
+  <link rel="apple-touch-icon" href="{% static 'img/favicon.svg' %}" />
+
   <!-- SEO básico -->
   <title>Desarrollo de Software, Automatización e IA para Empresas en Chile | IDS Digital</title>
   <meta name="description" content="Consultora tecnológica en Chile especializada en desarrollo de software a medida, automatización de procesos e inteligencia artificial para empresas e instituciones. Diagnóstico gratuito sin compromiso." />
@@ -19,7 +23,7 @@
   <meta property="og:title" content="Desarrollo de Software, Automatización e IA para Empresas en Chile | IDS Digital" />
   <meta property="og:description" content="Consultora tecnológica en Chile especializada en desarrollo de software a medida, automatización de procesos e inteligencia artificial para empresas e instituciones." />
   <meta property="og:url" content="https://www.idsdigital.cl/" />
-  <meta property="og:image" content="https://www.idsdigital.cl/static/img/logo1.png" />
+  <meta property="og:image" content="https://www.idsdigital.cl/static/img/logo.svg" />
   <meta property="og:site_name" content="Inteligencia Digital y Sistemas" />
   <meta property="og:locale" content="es_CL" />
 
@@ -27,7 +31,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Desarrollo de Software, Automatización e IA para Empresas en Chile | IDS Digital" />
   <meta name="twitter:description" content="Consultora tecnológica en Chile especializada en desarrollo de software a medida, automatización de procesos e inteligencia artificial para empresas." />
-  <meta name="twitter:image" content="https://www.idsdigital.cl/static/img/logo1.png" />
+  <meta name="twitter:image" content="https://www.idsdigital.cl/static/img/logo.svg" />
 
   <!-- Schema.org — Organización -->
   <script type="application/ld+json">
@@ -37,7 +41,7 @@
     "name": "Inteligencia Digital y Sistemas SpA",
     "alternateName": "IDS Digital",
     "url": "https://www.idsdigital.cl",
-    "logo": "https://www.idsdigital.cl/static/img/logo1.png",
+    "logo": "https://www.idsdigital.cl/static/img/logo.svg",
     "description": "Consultora tecnológica especializada en desarrollo de software a medida, automatización de procesos e inteligencia artificial para empresas e instituciones en Chile.",
     "address": {
       "@type": "PostalAddress",
@@ -198,13 +202,9 @@
   <!-- NAVBAR -->
   <nav class="navbar">
     <div class="navbar-inner">
-      <div class="navbar-logo">
-        <div class="navbar-logo-box">IDS</div>
-        <div>
-          <div class="navbar-name">Inteligencia Digital y Sistemas</div>
-          <div class="navbar-sub">Consultora tecnológica · Software · IA · Automatización</div>
-        </div>
-      </div>
+      <a href="#inicio" class="navbar-logo">
+        <img src="{% static 'img/logo.svg' %}" alt="IDS Digital — Inteligencia Digital y Sistemas" height="44" style="display:block;" />
+      </a>
       <div class="navbar-links">
         <a href="#servicios">Soluciones</a>
         <a href="#servicios">Servicios</a>
@@ -477,7 +477,7 @@
     </div>
   </section>
 
-  <!-- FAQ — Posiciona en Google con respuestas directas -->
+  <!-- FAQ -->
   <section class="faq" id="faq" aria-label="Preguntas frecuentes IDS Digital">
     <div class="section-inner">
       <div class="section-label">Preguntas frecuentes</div>
@@ -552,11 +552,7 @@
   <footer class="footer" aria-label="Pie de página IDS Digital">
     <div class="footer-inner">
       <div class="footer-logo">
-        <div class="navbar-logo-box">IDS</div>
-        <div>
-          <div class="footer-name">Inteligencia Digital y Sistemas SpA</div>
-          <div class="footer-sub">Consultora tecnológica · Santiago, Chile · contacto@idsdigital.cl</div>
-        </div>
+        <img src="{% static 'img/logo.svg' %}" alt="IDS Digital" height="36" style="display:block;" />
       </div>
       <div class="footer-copy">© 2026 Inteligencia Digital y Sistemas SpA. Todos los derechos reservados.</div>
     </div>

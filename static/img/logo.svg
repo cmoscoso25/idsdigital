@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 100" role="img">
+  <title>IDS Digital — Inteligencia Digital y Sistemas</title>
+  <desc>Logo de Inteligencia Digital y Sistemas SpA</desc>
+
+  <!-- ICONO — red de nodos -->
+  <circle cx="28" cy="42" r="7" fill="#3b82f6"/>
+  <circle cx="10" cy="24" r="4" fill="#60a5fa"/>
+  <circle cx="46" cy="24" r="4" fill="#60a5fa"/>
+  <circle cx="7" cy="52" r="3.5" fill="#60a5fa"/>
+  <circle cx="50" cy="58" r="3.5" fill="#60a5fa"/>
+  <circle cx="24" cy="62" r="3.5" fill="#60a5fa"/>
+
+  <line x1="28" y1="35" x2="12" y2="26" stroke="#3b82f6" stroke-width="1.5" fill="none"/>
+  <line x1="28" y1="35" x2="44" y2="26" stroke="#3b82f6" stroke-width="1.5" fill="none"/>
+  <line x1="22" y1="47" x2="9" y2="50" stroke="#93c5fd" stroke-width="1" fill="none" opacity="0.7"/>
+  <line x1="34" y1="48" x2="48" y2="55" stroke="#93c5fd" stroke-width="1" fill="none" opacity="0.7"/>
+  <line x1="26" y1="49" x2="24" y2="59" stroke="#93c5fd" stroke-width="1" fill="none" opacity="0.7"/>
+  <line x1="10" y1="28" x2="8" y2="49" stroke="#93c5fd" stroke-width="1" fill="none" opacity="0.7"/>
+  <line x1="46" y1="28" x2="50" y2="55" stroke="#93c5fd" stroke-width="1" fill="none" opacity="0.7"/>
+
+  <!-- Texto IDS -->
+  <text font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-weight="700" font-size="42" letter-spacing="-1">
+    <tspan x="72" y="58" fill="#3b82f6">I</tspan><tspan fill="#ffffff">DS</tspan>
+  </text>
+
+  <!-- Subtítulo -->
+  <text x="72" y="76" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="10" font-weight="500" fill="#94a3b8" letter-spacing="1.5">INTELIGENCIA DIGITAL Y SISTEMAS</text>
+
+</svg>
