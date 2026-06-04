@@ -2052,6 +2052,18 @@
   .nxar-escenas-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
+/* ── Badge estilo creativo ── */
+.nxar-badge--estilo {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: rgba(139,92,246,0.08);
+  border: 1px solid rgba(139,92,246,0.25);
+  color: #a78bfa;
+  white-space: nowrap;
+}
+
 /* ── KPI cards (post render) ── */
 .nxar-kpi-row {
   display: flex;

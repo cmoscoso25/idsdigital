@@ -65,6 +65,22 @@
             <span class="nxa-badge nxa-badge--tipo">{{ creatividad.get_tipo_display }}</span>
           </span>
         </div>
+        {% if creatividad.estilo_nombre %}
+        <div class="nxa-detail-row">
+          <span class="nxa-detail-label">Estilo</span>
+          <span class="nxa-detail-value">
+            <span class="nxa-badge nxar-badge--estilo">🎨 {{ creatividad.estilo_nombre }}</span>
+          </span>
+        </div>
+        {% endif %}
+        {% if creatividad.estructura_visual_json.estilo_creativo.id %}
+        <div class="nxa-detail-row">
+          <span class="nxa-detail-label">Motivo</span>
+          <span class="nxa-detail-value nxa-text-muted" style="font-size:11px;line-height:1.4">
+            {{ creatividad.estructura_visual_json.estilo_creativo.nombre }}
+          </span>
+        </div>
+        {% endif %}
         <div class="nxa-detail-row">
           <span class="nxa-detail-label">Dimensiones</span>
           <span class="nxa-detail-value">{{ creatividad.estructura_visual_json.dimensiones }}</span>

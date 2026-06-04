@@ -179,6 +179,14 @@ class CreatividadInstagram(models.Model):
         default=0,
         help_text="Número de veces que fue regenerada desde su creación inicial",
     )
+    estilo = models.CharField(
+        max_length=50, blank=True, default="",
+        help_text="ID del estilo creativo aplicado (corporate_kpi, minimalista_premium, etc.)",
+    )
+    estilo_nombre = models.CharField(
+        max_length=100, blank=True, default="",
+        help_text="Nombre legible del estilo creativo",
+    )
     fecha_creacion = models.DateTimeField(auto_now_add=True)
 
     class Meta:

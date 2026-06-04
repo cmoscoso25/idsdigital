@@ -132,6 +132,14 @@ no están instalados en el entorno MCP. Usar siempre el CLI como fallback.
   - `_escena_visual(tipo, vis, c1, c2, num)` → frames numerados estilo CapCut para reel.
   - Post: accent bar + KPI cards + CTA premium (fondo blanco con color de marca).
   - Historia: hero SVG de categoría en pantalla 0, progress bar + chip en pantalla 1, CTA button en pantalla 2.
+- **Motor de Estilos Creativos** (2026-06-04 v4): `nexa/services/agentes/director_creativo.py` — Director Creativo con catálogo de 20 estilos (5 por formato) y selección inteligente anti-repetición.
+  - POST: Corporate KPI / Minimalista Premium / Problema-Solución / Estadística / Testimonio
+  - Historia: Encuesta / Quiz / Antes-Después / CTA Urgente / Detrás de Cámaras
+  - Carrusel: Problema-Solución / Lista Numerada / Caso de Éxito / Tutorial Pasos / Mitos vs Realidad
+  - Reel: Hook+Solución / Caso de Éxito / Tutorial Rápido / Error Común / Tendencia Educativa
+  - `seleccionar_estilo(tipo, empresa, contenido)` — scoring por afinidad + anti-repetición
+  - Campos `estilo` + `estilo_nombre` en `CreatividadInstagram` (migración 0007)
+  - Badge `🎨 Estilo` visible en biblioteca y detalle
 - Próximo paso crítico: conectar agentes con Claude API (Anthropic SDK en requirements).
 
 ## Gestión de contexto — archivos de referencia

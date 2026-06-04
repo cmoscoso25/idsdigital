@@ -317,6 +317,8 @@ def generar_creatividad_view(request, contenido_pk):
         render_html=resultado.get("render_html", ""),
         render_css=resultado.get("render_css", ""),
         estado="generada",
+        estilo=resultado.get("estilo", ""),
+        estilo_nombre=resultado.get("estilo_nombre", ""),
     )
     messages.success(request, f"Creatividad {creatividad.get_tipo_display()} generada correctamente.")
     return redirect("nexa:creatividad_detalle", pk=creatividad.pk)
@@ -339,10 +341,13 @@ def regenerar_creatividad_view(request, creatividad_pk):
     creatividad.render_html            = resultado.get("render_html", "")
     creatividad.render_css             = resultado.get("render_css", "")
     creatividad.estado                 = "generada"
+    creatividad.estilo                 = resultado.get("estilo", "")
+    creatividad.estilo_nombre          = resultado.get("estilo_nombre", "")
     creatividad.veces_regenerada      += 1
     creatividad.save(update_fields=[
         "prompt_visual", "estructura_visual_json",
-        "render_html", "render_css", "estado", "veces_regenerada",
+        "render_html", "render_css", "estado",
+        "estilo", "estilo_nombre", "veces_regenerada",
     ])
     messages.success(request, f"Creatividad {creatividad.get_tipo_display()} regenerada correctamente.")
     return redirect("nexa:creatividad_detalle", pk=creatividad_pk)

@@ -1,6 +1,7 @@
 """
 Agente Diseño Instagram — Nexa AI
 Genera creatividades visuales profesionales para Instagram.
+Motor de Estilos Creativos: cada pieza usa un estilo diferente según el Director Creativo.
 
 # === PUNTOS DE CONEXIÓN API ===
 # Al activar generación real de imágenes, reemplazar `_generar_imagen_simulada`
@@ -26,6 +27,9 @@ Genera creatividades visuales profesionales para Instagram.
 #
 # === FIN PUNTOS DE CONEXIÓN ===
 """
+
+
+from nexa.services.agentes.director_creativo import seleccionar_estilo  # noqa: E402
 
 
 def generar_creatividad(empresa, memoria_marca, contenido) -> dict:
@@ -99,11 +103,17 @@ def _creatividad_post(empresa, memoria_marca, contenido) -> dict:
         "logo_empresa": bool(empresa.logo),
     }
 
+    estilo = seleccionar_estilo("post", empresa, contenido)
+    estructura["estilo_creativo"] = {"id": estilo["id"], "nombre": estilo["nombre"]}
+
     return {
         "prompt_visual": prompt_visual,
         "estructura_visual_json": estructura,
-        "render_html": _render_post(empresa, contenido, estructura),
+        "render_html": _render_post(empresa, contenido, estructura, estilo),
         "render_css": "",
+        "estilo": estilo["id"],
+        "estilo_nombre": estilo["nombre"],
+        "motivo_seleccion": estilo.get("motivo_seleccion", ""),
     }
 
 
@@ -159,11 +169,17 @@ def _creatividad_historia(empresa, memoria_marca, contenido) -> dict:
         "tipografia": "Inter",
     }
 
+    estilo = seleccionar_estilo("historia", empresa, contenido)
+    estructura["estilo_creativo"] = {"id": estilo["id"], "nombre": estilo["nombre"]}
+
     return {
         "prompt_visual": prompt_visual,
         "estructura_visual_json": estructura,
-        "render_html": _render_historia(empresa, contenido, estructura),
+        "render_html": _render_historia(empresa, contenido, estructura, estilo),
         "render_css": "",
+        "estilo": estilo["id"],
+        "estilo_nombre": estilo["nombre"],
+        "motivo_seleccion": estilo.get("motivo_seleccion", ""),
     }
 
 
@@ -230,11 +246,17 @@ def _creatividad_carrusel(empresa, memoria_marca, contenido) -> dict:
         "tipografia": "Inter",
     }
 
+    estilo = seleccionar_estilo("carrusel", empresa, contenido)
+    estructura["estilo_creativo"] = {"id": estilo["id"], "nombre": estilo["nombre"]}
+
     return {
         "prompt_visual": prompt_visual,
         "estructura_visual_json": estructura,
-        "render_html": _render_carrusel(empresa, contenido, estructura),
+        "render_html": _render_carrusel(empresa, contenido, estructura, estilo),
         "render_css": "",
+        "estilo": estilo["id"],
+        "estilo_nombre": estilo["nombre"],
+        "motivo_seleccion": estilo.get("motivo_seleccion", ""),
     }
 
 
@@ -300,11 +322,17 @@ def _creatividad_reel(empresa, memoria_marca, contenido) -> dict:
         "tipografia": "Inter",
     }
 
+    estilo = seleccionar_estilo("reel", empresa, contenido)
+    estructura["estilo_creativo"] = {"id": estilo["id"], "nombre": estilo["nombre"]}
+
     return {
         "prompt_visual": prompt_visual,
         "estructura_visual_json": estructura,
-        "render_html": _render_reel(empresa, contenido, estructura),
+        "render_html": _render_reel(empresa, contenido, estructura, estilo),
         "render_css": "",
+        "estilo": estilo["id"],
+        "estilo_nombre": estilo["nombre"],
+        "motivo_seleccion": estilo.get("motivo_seleccion", ""),
     }
 
 
@@ -926,7 +954,20 @@ def _escena_visual(tipo: str, vis: dict, c1: str, c2: str, num: int) -> str:
     return f'<div {badge}background:#334155">{n}</div>'
 
 
-def _render_post(empresa, contenido, estructura) -> str:
+def _render_post(empresa, contenido, estructura, estilo=None) -> str:
+    """Dispatcher — delega al renderer del estilo seleccionado."""
+    estilo_id = (estilo or {}).get("id", "corporate_kpi")
+    _dispatch = {
+        "corporate_kpi":       _render_post_corporate_kpi,
+        "minimalista_premium": _render_post_minimalista,
+        "problema_solucion":   _render_post_problema_solucion,
+        "estadistica":         _render_post_estadistica,
+        "testimonio":          _render_post_testimonio,
+    }
+    return _dispatch.get(estilo_id, _render_post_corporate_kpi)(empresa, contenido, estructura)
+
+
+def _render_post_corporate_kpi(empresa, contenido, estructura) -> str:
     c1 = empresa.color_principal
     c2 = empresa.color_secundario
     nombre = empresa.nombre_empresa
@@ -993,7 +1034,232 @@ def _render_post(empresa, contenido, estructura) -> str:
 </div>"""
 
 
-def _render_historia(empresa, contenido, estructura) -> str:
+# ── POST: 4 estilos adicionales ───────────────────────────────────────────────
+
+def _render_post_minimalista(empresa, contenido, estructura) -> str:
+    c1 = empresa.color_principal
+    c2 = empresa.color_secundario
+    nombre = empresa.nombre_empresa
+    initial = nombre[0].upper()
+    ig_user = "@" + nombre.lower().replace(" ", "_")
+    titulo = _s(contenido.titulo, 80)
+    copy1 = _s(contenido.copy.split("\n")[0], 100)
+    cta = _s(contenido.cta or "Más información →", 50)
+    categoria = _detectar_categoria(contenido, empresa)
+    vis = _bloque_visual(categoria, c1, c2)
+
+    return f"""
+<div class="nxar-stage nxar-post-stage">
+  <div class="nxar-chrome-wrap">
+    <div class="nxar-ig-header">
+      <div class="nxar-ig-avatar" style="background:linear-gradient(135deg,{c1},{c2})">{initial}</div>
+      <div class="nxar-ig-account">
+        <span class="nxar-ig-username">{ig_user}</span>
+        <span class="nxar-ig-badge">Publicidad</span>
+      </div>
+      <span class="nxar-ig-dots">⋯</span>
+    </div>
+    <div class="nxar-post-frame" style="background:#0a0a0f;position:relative;overflow:hidden;aspect-ratio:1/1">
+      {vis['pattern']}
+      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(180deg,{c1},{c2})"></div>
+      <div style="position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:24px 24px 24px 32px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <span style="font-size:9px;font-weight:700;color:{c1};letter-spacing:0.15em;text-transform:uppercase">{vis['icon']} {vis['label']}</span>
+          <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.2);letter-spacing:0.1em">{_s(nombre,12)}</span>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:12px;padding:20px 0">
+          <div style="width:32px;height:2px;background:{c1};border-radius:1px"></div>
+          <h2 style="font-size:clamp(22px,4.5vw,36px);font-weight:900;color:#ffffff;line-height:1.1;letter-spacing:-0.04em;margin:0">{titulo}</h2>
+          <p style="font-size:11px;color:rgba(255,255,255,0.45);line-height:1.5;margin:0;max-width:85%">{copy1}</p>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:11px;color:rgba(255,255,255,0.35);font-style:italic">{cta}</span>
+          <span style="font-size:10px;color:{c1};font-weight:700;letter-spacing:0.08em">→</span>
+        </div>
+      </div>
+    </div>
+    <div class="nxar-ig-footer">
+      <div class="nxar-ig-actions">
+        <span class="nxar-ig-action">♡</span><span class="nxar-ig-action">💬</span>
+        <span class="nxar-ig-action">↗</span><span class="nxar-ig-action nxar-ig-action--right">🔖</span>
+      </div>
+      <div class="nxar-ig-likes">2,817 Me gusta</div>
+      <div class="nxar-ig-caption"><b>{ig_user}</b> {copy1[:60]}...</div>
+    </div>
+  </div>
+</div>"""
+
+
+def _render_post_problema_solucion(empresa, contenido, estructura) -> str:
+    c1 = empresa.color_principal
+    c2 = empresa.color_secundario
+    nombre = empresa.nombre_empresa
+    initial = nombre[0].upper()
+    ig_user = "@" + nombre.lower().replace(" ", "_")
+    titulo = _s(contenido.titulo, 70)
+    copy1 = _s(contenido.copy.split("\n")[0], 90)
+    cta = _s(contenido.cta or "Contáctanos →", 50)
+    secciones = estructura.get("secciones", [])
+    problema_txt = next((s["texto"] for s in secciones if s.get("tipo") == "hook"), titulo)
+    solucion_txt = next((s["texto"] for s in secciones if s.get("tipo") == "beneficio"), copy1)
+
+    return f"""
+<div class="nxar-stage nxar-post-stage">
+  <div class="nxar-chrome-wrap">
+    <div class="nxar-ig-header">
+      <div class="nxar-ig-avatar" style="background:linear-gradient(135deg,{c1},{c2})">{initial}</div>
+      <div class="nxar-ig-account">
+        <span class="nxar-ig-username">{ig_user}</span>
+        <span class="nxar-ig-badge">Publicidad</span>
+      </div>
+      <span class="nxar-ig-dots">⋯</span>
+    </div>
+    <div class="nxar-post-frame" style="background:#0d0d14;position:relative;overflow:hidden;aspect-ratio:1/1">
+      <div style="position:relative;z-index:2;height:100%;display:flex;flex-direction:column">
+        <!-- Mitad superior: PROBLEMA -->
+        <div style="flex:1;background:#130d1a;display:flex;flex-direction:column;justify-content:center;padding:20px 22px;position:relative;overflow:hidden">
+          <div style="position:absolute;top:10px;left:14px;font-size:9px;font-weight:800;letter-spacing:0.15em;color:#ef4444;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:4px;padding:3px 8px">⚡ PROBLEMA</div>
+          <p style="font-size:clamp(14px,2.5vw,18px);font-weight:700;color:rgba(255,255,255,0.88);line-height:1.3;margin:22px 0 0">{_s(problema_txt,85)}</p>
+        </div>
+        <!-- Divisor -->
+        <div style="height:3px;background:linear-gradient(90deg,{c1},{c2});position:relative">
+          <div style="position:absolute;left:50%;transform:translateX(-50%) translateY(-50%);background:linear-gradient(135deg,{c1},{c2});border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff">↓</div>
+        </div>
+        <!-- Mitad inferior: SOLUCIÓN -->
+        <div style="flex:1;background:linear-gradient(160deg,{c1}33,{c2}22);display:flex;flex-direction:column;justify-content:center;padding:20px 22px;position:relative">
+          <div style="position:absolute;top:10px;left:14px;font-size:9px;font-weight:800;letter-spacing:0.15em;color:{c1};background:{c1}18;border:1px solid {c1}44;border-radius:4px;padding:3px 8px">✓ SOLUCIÓN</div>
+          <p style="font-size:clamp(13px,2.2vw,16px);font-weight:600;color:rgba(255,255,255,0.9);line-height:1.4;margin:22px 0 8px">{_s(solucion_txt,90)}</p>
+          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.9);color:{c1};border-radius:20px;padding:5px 14px;font-size:10px;font-weight:800;align-self:flex-start">{cta}</div>
+          <span style="position:absolute;bottom:8px;right:12px;font-size:9px;color:rgba(255,255,255,0.25);font-weight:600">{_s(nombre,14)}</span>
+        </div>
+      </div>
+    </div>
+    <div class="nxar-ig-footer">
+      <div class="nxar-ig-actions">
+        <span class="nxar-ig-action">♡</span><span class="nxar-ig-action">💬</span>
+        <span class="nxar-ig-action">↗</span><span class="nxar-ig-action nxar-ig-action--right">🔖</span>
+      </div>
+      <div class="nxar-ig-likes">4,102 Me gusta</div>
+      <div class="nxar-ig-caption"><b>{ig_user}</b> {_s(problema_txt,55)}...</div>
+    </div>
+  </div>
+</div>"""
+
+
+def _render_post_estadistica(empresa, contenido, estructura) -> str:
+    c1 = empresa.color_principal
+    c2 = empresa.color_secundario
+    nombre = empresa.nombre_empresa
+    initial = nombre[0].upper()
+    ig_user = "@" + nombre.lower().replace(" ", "_")
+    titulo = _s(contenido.titulo, 70)
+    copy1 = _s(contenido.copy.split("\n")[0], 100)
+    cta = _s(contenido.cta or "Saber más →", 50)
+    categoria = _detectar_categoria(contenido, empresa)
+    vis = _bloque_visual(categoria, c1, c2)
+
+    # Extraer el número/stat del título si existe
+    import re as _re
+    stat_match = _re.search(r'(\d+[\d.,]*\s*[%xX×]?)', titulo)
+    stat_num = stat_match.group(1) if stat_match else "10x"
+    stat_ctx = titulo[:60] if not stat_match else titulo.replace(stat_match.group(0), "").strip()[:55]
+
+    return f"""
+<div class="nxar-stage nxar-post-stage">
+  <div class="nxar-chrome-wrap">
+    <div class="nxar-ig-header">
+      <div class="nxar-ig-avatar" style="background:linear-gradient(135deg,{c1},{c2})">{initial}</div>
+      <div class="nxar-ig-account">
+        <span class="nxar-ig-username">{ig_user}</span>
+        <span class="nxar-ig-badge">Publicidad</span>
+      </div>
+      <span class="nxar-ig-dots">⋯</span>
+    </div>
+    <div class="nxar-post-frame" style="background:linear-gradient(160deg,#06020e,#0f0a1a);position:relative;overflow:hidden;aspect-ratio:1/1">
+      {vis['pattern']}
+      <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,{c1}18,transparent 65%)"></div>
+      <div style="position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:22px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:9px;font-weight:700;color:{c1};letter-spacing:0.12em;text-transform:uppercase">{vis['icon']} {vis['label']}</span>
+          <span style="font-size:9px;color:rgba(255,255,255,0.2)">{_s(nombre,12)}</span>
+        </div>
+        <div style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px">
+          <div style="font-size:clamp(56px,12vw,88px);font-weight:900;color:{c1};line-height:1;letter-spacing:-0.05em;text-shadow:0 0 40px {c1}88">{stat_num}</div>
+          <div style="width:48px;height:2px;background:linear-gradient(90deg,{c1},{c2});border-radius:1px"></div>
+          <p style="font-size:13px;color:rgba(255,255,255,0.8);text-align:center;line-height:1.4;margin:0;max-width:80%">{stat_ctx or copy1[:55]}</p>
+          <p style="font-size:10px;color:rgba(255,255,255,0.3);margin:0">Fuente: {_s(nombre,20)}</p>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="background:{c1}22;border:1px solid {c1}44;border-radius:20px;padding:5px 14px;font-size:10px;font-weight:700;color:{c1}">{cta}</div>
+          <div style="opacity:0.6">{vis['chip']}</div>
+        </div>
+      </div>
+    </div>
+    <div class="nxar-ig-footer">
+      <div class="nxar-ig-actions">
+        <span class="nxar-ig-action">♡</span><span class="nxar-ig-action">💬</span>
+        <span class="nxar-ig-action">↗</span><span class="nxar-ig-action nxar-ig-action--right">🔖</span>
+      </div>
+      <div class="nxar-ig-likes">5,448 Me gusta</div>
+      <div class="nxar-ig-caption"><b>{ig_user}</b> {copy1[:60]}...</div>
+    </div>
+  </div>
+</div>"""
+
+
+def _render_post_testimonio(empresa, contenido, estructura) -> str:
+    c1 = empresa.color_principal
+    c2 = empresa.color_secundario
+    nombre = empresa.nombre_empresa
+    initial = nombre[0].upper()
+    ig_user = "@" + nombre.lower().replace(" ", "_")
+    titulo = _s(contenido.titulo, 80)
+    copy1 = _s(contenido.copy.split("\n")[0], 110)
+    cta = _s(contenido.cta or "Ver más →", 50)
+
+    return f"""
+<div class="nxar-stage nxar-post-stage">
+  <div class="nxar-chrome-wrap">
+    <div class="nxar-ig-header">
+      <div class="nxar-ig-avatar" style="background:linear-gradient(135deg,{c1},{c2})">{initial}</div>
+      <div class="nxar-ig-account">
+        <span class="nxar-ig-username">{ig_user}</span>
+        <span class="nxar-ig-badge">Publicidad</span>
+      </div>
+      <span class="nxar-ig-dots">⋯</span>
+    </div>
+    <div class="nxar-post-frame" style="background:linear-gradient(160deg,#07030f,#100b18);position:relative;overflow:hidden;aspect-ratio:1/1">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,{c1},{c2})"></div>
+      <div style="position:absolute;top:16px;left:18px;font-size:72px;font-weight:900;color:{c1};opacity:0.15;line-height:1;font-family:Georgia,serif">"</div>
+      <div style="position:absolute;bottom:60px;right:18px;font-size:72px;font-weight:900;color:{c2};opacity:0.15;line-height:1;font-family:Georgia,serif">"</div>
+      <div style="position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:center;padding:28px 24px;gap:16px">
+        <p style="font-size:clamp(14px,2.6vw,18px);font-style:italic;color:rgba(255,255,255,0.92);line-height:1.5;margin:0;text-align:center">"{titulo}"</p>
+        <div style="display:flex;align-items:center;gap:12px;justify-content:center">
+          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,{c1},{c2});display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:14px;flex-shrink:0">C</div>
+          <div>
+            <p style="margin:0;font-size:12px;font-weight:700;color:#fff">Cliente satisfecho</p>
+            <p style="margin:0;font-size:10px;color:rgba(255,255,255,0.45)">Usuario de {_s(nombre,18)}</p>
+          </div>
+        </div>
+        <div style="height:1px;background:linear-gradient(90deg,transparent,{c1}55,transparent)"></div>
+        <div style="display:flex;justify-content:center">
+          <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:5px 16px;font-size:10px;color:rgba(255,255,255,0.6)">{cta}</div>
+        </div>
+      </div>
+    </div>
+    <div class="nxar-ig-footer">
+      <div class="nxar-ig-actions">
+        <span class="nxar-ig-action">♡</span><span class="nxar-ig-action">💬</span>
+        <span class="nxar-ig-action">↗</span><span class="nxar-ig-action nxar-ig-action--right">🔖</span>
+      </div>
+      <div class="nxar-ig-likes">3,760 Me gusta</div>
+      <div class="nxar-ig-caption"><b>{ig_user}</b> {copy1[:60]}...</div>
+    </div>
+  </div>
+</div>"""
+
+
+def _render_historia(empresa, contenido, estructura, estilo=None) -> str:
     c1 = empresa.color_principal
     c2 = empresa.color_secundario
     nombre = empresa.nombre_empresa
@@ -1009,12 +1275,66 @@ def _render_historia(empresa, contenido, estructura) -> str:
         "link": lambda color: f'<div class="nxar-sticker nxar-sticker--link" style="border-color:{color};color:{color}">🔗 Ver más</div>',
     }
 
-    # Fondos por pantalla: gradiente marca → oscuro con acento → muy oscuro
-    bg_pantallas = [
+    estilo_id = (estilo or {}).get("id", "encuesta")
+
+    # Fondos y extras por estilo de historia
+    _bg_por_estilo = {
+        "antes_despues": [
+            "linear-gradient(145deg,#2d0a0a,#1a0a0a)",
+            f"linear-gradient(160deg,#1a1a2e,#0f172a)",
+            f"linear-gradient(145deg,{c1},{c2})",
+        ],
+        "cta_urgente": [
+            f"linear-gradient(145deg,{c1},{c2})",
+            "linear-gradient(160deg,#0a0a1a,#0f172a)",
+            f"linear-gradient(145deg,{c2},{c1})",
+        ],
+        "quiz": [
+            f"linear-gradient(145deg,#1a0a2e,#0a0a2e)",
+            f"linear-gradient(160deg,#0d0d1e,{c1}22)",
+            f"linear-gradient(145deg,{c1},{c2})",
+        ],
+        "detras_camaras": [
+            "linear-gradient(145deg,#3d1f00,#2a1500)",
+            "linear-gradient(160deg,#1f1000,#2a1a00)",
+            f"linear-gradient(145deg,{c1}cc,#2a1500)",
+        ],
+    }
+    bg_pantallas = _bg_por_estilo.get(estilo_id, [
         f"linear-gradient(145deg,{c1},{c2})",
         f"linear-gradient(160deg,{c2}cc,#0f172a)",
         "#0f172a",
-    ]
+    ])
+
+    def _style_badge(screen_idx: int) -> str:
+        """Retorna badge de estilo específico por pantalla."""
+        if estilo_id == "antes_despues":
+            if screen_idx == 0:
+                return '<div style="font-size:9px;font-weight:800;letter-spacing:0.15em;color:#ef4444;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.4);border-radius:4px;padding:3px 8px;display:inline-block;margin-bottom:6px">📌 ANTES</div>'
+            if screen_idx == 2:
+                return f'<div style="font-size:9px;font-weight:800;letter-spacing:0.15em;color:{c1};background:{c1}18;border:1px solid {c1}44;border-radius:4px;padding:3px 8px;display:inline-block;margin-bottom:6px">✨ DESPUÉS</div>'
+        if estilo_id == "quiz":
+            if screen_idx == 0:
+                return '<div style="font-size:36px;opacity:0.2;margin-bottom:4px">❓</div><div style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.1em;margin-bottom:4px">QUIZ · RESPONDE</div>'
+            if screen_idx == 1:
+                return (
+                    f'<div style="display:flex;flex-direction:column;gap:4px;width:100%;margin-bottom:6px">'
+                    f'<div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:6px 10px;font-size:10px;color:rgba(255,255,255,0.7)">A · Opción uno</div>'
+                    f'<div style="background:{c1}18;border:1px solid {c1}44;border-radius:8px;padding:6px 10px;font-size:10px;color:{c1}">B · Opción dos ✓</div>'
+                    f'<div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:6px 10px;font-size:10px;color:rgba(255,255,255,0.7)">C · Opción tres</div>'
+                    f'</div>'
+                )
+        if estilo_id == "cta_urgente":
+            if screen_idx == 0:
+                return '<div style="font-size:9px;font-weight:800;letter-spacing:0.12em;color:#fbbf24;background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.3);border-radius:4px;padding:3px 8px;display:inline-block;margin-bottom:6px">⚡ NO TE LO PIERDAS</div>'
+            if screen_idx == 1:
+                return '<div style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.45);letter-spacing:0.08em;margin-bottom:4px">🔒 ACCESO LIMITADO</div>'
+        if estilo_id == "detras_camaras":
+            if screen_idx == 0:
+                return '<div style="font-size:9px;font-weight:700;color:#f59e0b;letter-spacing:0.1em;margin-bottom:4px">📸 DETRÁS DE CÁMARAS</div>'
+            if screen_idx == 1:
+                return '<div style="font-size:9px;font-weight:700;color:rgba(255,200,100,0.6);margin-bottom:4px">🛠 EN PROCESO</div>'
+        return ""
 
     screens_html = ""
     total = len(pantallas) or 3
@@ -1025,20 +1345,22 @@ def _render_historia(empresa, contenido, estructura) -> str:
         dur = p.get("duracion", "7s")
 
         hero_el = vis["hero"] if i == 0 else ""
-        extra_vis = ""
-        if i == 1:
-            extra_vis = (
-                f'<div style="width:80%;background:rgba(255,255,255,0.12);border-radius:4px;height:3px;margin:0 auto 6px">'
-                f'<div style="width:60%;height:100%;background:{c1};border-radius:4px"></div>'
-                f'</div>'
-                f'<div style="display:flex;justify-content:center;margin-bottom:4px;opacity:0.65;transform:scale(0.8);transform-origin:center">{vis["chip"]}</div>'
-            )
-        elif i == 2:
-            extra_vis = (
-                f'<div style="background:linear-gradient(90deg,{c1},{c2});border-radius:20px;'
-                f'padding:7px 16px;font-size:11px;font-weight:700;color:#fff;'
-                f'display:inline-block;margin-bottom:8px;box-shadow:0 4px 14px {c1}44">Ver más →</div>'
-            )
+        style_badge_html = _style_badge(i)
+        extra_vis = style_badge_html
+        if not extra_vis:
+            if i == 1:
+                extra_vis = (
+                    f'<div style="width:80%;background:rgba(255,255,255,0.12);border-radius:4px;height:3px;margin:0 auto 6px">'
+                    f'<div style="width:60%;height:100%;background:{c1};border-radius:4px"></div>'
+                    f'</div>'
+                    f'<div style="display:flex;justify-content:center;margin-bottom:4px;opacity:0.65;transform:scale(0.8);transform-origin:center">{vis["chip"]}</div>'
+                )
+            elif i == 2:
+                extra_vis = (
+                    f'<div style="background:linear-gradient(90deg,{c1},{c2});border-radius:20px;'
+                    f'padding:7px 16px;font-size:11px;font-weight:700;color:#fff;'
+                    f'display:inline-block;margin-bottom:8px;box-shadow:0 4px 14px {c1}44">Ver más →</div>'
+                )
 
         screens_html += f"""
     <div class="nxar-story-screen" style="background:{bg}">
@@ -1072,7 +1394,7 @@ def _render_historia(empresa, contenido, estructura) -> str:
 </div>"""
 
 
-def _render_carrusel(empresa, contenido, estructura) -> str:
+def _render_carrusel(empresa, contenido, estructura, estilo=None) -> str:
     c1 = empresa.color_principal
     c2 = empresa.color_secundario
     nombre = empresa.nombre_empresa
@@ -1100,13 +1422,56 @@ def _render_carrusel(empresa, contenido, estructura) -> str:
         "contenido": "◈", "solucion": "✓", "beneficio": "✓", "cierre": "→", "cta": "★",
     }
 
+    estilo_id = (estilo or {}).get("id", "problema_solucion")
+
+    # Etiquetas y decoraciones por estilo de carrusel
+    _caso_labels = ["PORTADA", "CLIENTE", "DESAFÍO", "PROCESO", "RESULTADO", "CTA"]
+    _tutorial_labels = ["PORTADA", "PASO 01", "PASO 02", "PASO 03", "PASO 04", "CTA"]
+
+    def _estilo_slide_extra(slide_idx: int, slide_tipo: str) -> str:
+        if estilo_id == "lista_numerada" and slide_idx > 0 and slide_tipo not in ("cta", "portada"):
+            num_str = str(slide_idx).zfill(2)
+            return (
+                f'<div style="position:absolute;top:12px;right:14px;font-size:48px;font-weight:900;'
+                f'color:{c1};opacity:0.12;line-height:1;letter-spacing:-0.04em">{num_str}</div>'
+                f'<div style="font-size:9px;font-weight:700;color:{c1};letter-spacing:0.15em;margin-bottom:4px"># {num_str}</div>'
+            )
+        if estilo_id == "tutorial_pasos" and slide_idx > 0 and slide_tipo not in ("cta",):
+            label = _tutorial_labels[slide_idx] if slide_idx < len(_tutorial_labels) else f"PASO {slide_idx:02d}"
+            return (
+                f'<div style="font-size:9px;font-weight:800;letter-spacing:0.15em;color:{c1};'
+                f'background:{c1}18;border:1px solid {c1}44;border-radius:4px;padding:3px 9px;'
+                f'display:inline-block;margin-bottom:6px">{label}</div>'
+            )
+        if estilo_id == "caso_exito" and slide_idx < len(_caso_labels):
+            label = _caso_labels[slide_idx]
+            return (
+                f'<div style="font-size:9px;font-weight:700;letter-spacing:0.12em;'
+                f'color:rgba(255,255,255,0.4);margin-bottom:4px">{label}</div>'
+            )
+        if estilo_id == "mitos_realidad" and slide_idx > 0 and slide_tipo not in ("cta",):
+            is_mito = slide_idx % 2 != 0
+            if is_mito:
+                return '<div style="font-size:9px;font-weight:800;letter-spacing:0.12em;color:#ef4444;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:4px;padding:3px 8px;display:inline-block;margin-bottom:5px">❌ MITO</div>'
+            else:
+                return f'<div style="font-size:9px;font-weight:800;letter-spacing:0.12em;color:#22c55e;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:4px;padding:3px 8px;display:inline-block;margin-bottom:5px">✓ REALIDAD</div>'
+        return ""
+
+    def _estilo_slide_bg(slide_idx: int, slide_tipo: str, default_bg: str) -> str:
+        if estilo_id == "mitos_realidad" and slide_idx > 0 and slide_tipo not in ("cta",):
+            is_mito = slide_idx % 2 != 0
+            return "linear-gradient(145deg,#2d0a0a,#1a0505)" if is_mito else "linear-gradient(145deg,#0a2d0a,#051a05)"
+        return default_bg
+
     slides_html = ""
     for i, s in enumerate(slides):
         tipo = s.get("tipo", "contenido")
-        bg = tipo_bg.get(tipo, "linear-gradient(145deg,#1a1a2e,#0f172a)")
+        bg_default = tipo_bg.get(tipo, "linear-gradient(145deg,#1a1a2e,#0f172a)")
+        bg = _estilo_slide_bg(i, tipo, bg_default)
         icon = tipo_icon.get(tipo, vis["icon"])
         active = "nxar-slide--active" if i == 0 else ""
         accent_html = accents.get(tipo, "")
+        estilo_extra = _estilo_slide_extra(i, tipo)
 
         # Slide portada recibe el hero SVG de la categoría
         hero_html = vis["hero"] if tipo == "portada" else ""
@@ -1123,6 +1488,7 @@ def _render_carrusel(empresa, contenido, estructura) -> str:
           <div class="nxar-slide-tipo-badge">{tipo.upper()}</div>
           <div class="nxar-slide-counter">{i+1}/{total}</div>
         </div>
+        {estilo_extra}
         <div class="nxar-slide-icon" style="color:{c1};font-size:{'40px' if tipo=='portada' else '28px'}">{icon}</div>
         <h2 class="nxar-slide-titulo" style="font-size:{'clamp(18px,3.5vw,26px)' if tipo=='portada' else 'clamp(15px,3vw,22px)'}">{_s(s.get('titulo', ''), 80)}</h2>
         {f'<p class="nxar-slide-sub">{_s(s.get("subtitulo",""),70)}</p>' if s.get("subtitulo") else ''}
@@ -1189,7 +1555,7 @@ def _render_carrusel(empresa, contenido, estructura) -> str:
 </script>"""
 
 
-def _render_reel(empresa, contenido, estructura) -> str:
+def _render_reel(empresa, contenido, estructura, estilo=None) -> str:
     c1 = empresa.color_principal
     c2 = empresa.color_secundario
     nombre = empresa.nombre_empresa
@@ -1215,30 +1581,54 @@ def _render_reel(empresa, contenido, estructura) -> str:
         "solucion": "SOLUCIÓN", "ejemplo": "EJEMPLO", "beneficio": "BENEFICIO", "cta": "CTA",
     }
     transicion_sym = {"corte": "✦", "fundido": "◌"}
+    estilo_id = (estilo or {}).get("id", "hook_solucion")
+    estilo_nombre_reel = (estilo or {}).get("nombre", "")
+
+    # Etiquetas de escena por estilo
+    _labels_estilo = {
+        "error_comun":       {1: "HOOK", 2: "❌ ERROR", 3: "✓ CORRECCIÓN", 4: "RESULTADO", 5: "CTA"},
+        "tutorial_rapido":   {1: "HOOK", 2: "PASO 01", 3: "PASO 02", 4: "PASO 03", 5: "CTA"},
+        "caso_exito":        {1: "HOOK", 2: "CLIENTE", 3: "DESAFÍO", 4: "SOLUCIÓN", 5: "CTA"},
+        "tendencia_educativa":{1: "CONTEXTO", 2: "TENDENCIA", 3: "DATOS", 4: "IMPACTO", 5: "CTA"},
+    }
+    _bgs_estilo = {
+        "error_comun":     {2: "linear-gradient(145deg,#2d0808,#1a0505)", 3: "linear-gradient(145deg,#082d08,#051505)"},
+        "caso_exito":      {2: f"linear-gradient(145deg,#1a0a2e,#0f0a2e)"},
+    }
+
+    def _escena_label(num: int, tipo: str) -> str:
+        custom = _labels_estilo.get(estilo_id, {}).get(num)
+        return custom if custom else tipo_label.get(tipo, tipo.upper())
+
+    def _escena_bg(num: int, tipo: str, default_bg: str) -> str:
+        return _bgs_estilo.get(estilo_id, {}).get(num, default_bg)
 
     escenas_html = ""
     for e in escenas:
         tipo = e.get("tipo", "desarrollo")
-        bg = tipo_bg.get(tipo, "linear-gradient(145deg,#1a1a2e,#16213e)")
-        label = tipo_label.get(tipo, tipo.upper())
+        num = e.get("numero", escenas.index(e) + 1)
+        bg_default = tipo_bg.get(tipo, "linear-gradient(145deg,#1a1a2e,#16213e)")
+        bg = _escena_bg(num, tipo, bg_default)
+        label = _escena_label(num, tipo)
         rango = _s(e.get("rango", ""), 10)
         trans = e.get("transicion", "corte")
         trans_sym = transicion_sym.get(trans, "•")
 
-        num = e.get("numero", escenas.index(e) + 1)
         escenas_html += f"""
     <div class="nxar-escena">
       <div class="nxar-escena-frame" style="background:{bg}">
         {vis["pattern"] if tipo in ("hook", "cta") else ""}
         <span class="nxar-escena-label">{label}</span>
         {_escena_visual(tipo, vis, c1, c2, num)}
-        <p class="nxar-escena-texto">{_s(e.get('texto', ''), 60)}</p>
+        <p class="nxar-escena-texto">{_s(e.get('texto_pantalla', e.get('texto', '')), 60)}</p>
       </div>
       <div class="nxar-escena-meta">
         <span class="nxar-escena-rango">⏱ {rango}</span>
         <span class="nxar-escena-trans" title="{trans}">{trans_sym}</span>
       </div>
     </div>"""
+
+    estilo_tag = f' · <span style="color:{c1};font-weight:700">{estilo_nombre_reel}</span>' if estilo_nombre_reel else ""
 
     return f"""
 <div class="nxar-stage nxar-reel-stage">
@@ -1251,7 +1641,7 @@ def _render_reel(empresa, contenido, estructura) -> str:
     </div>
     <div class="nxar-reel-hook-txt">"{hook_txt}"</div>
   </div>
-  <div class="nxar-reel-timeline-label">STORYBOARD · {len(escenas)} escenas</div>
+  <div class="nxar-reel-timeline-label">STORYBOARD · {len(escenas)} escenas{estilo_tag}</div>
   <!-- Escenas grid -->
   <div class="nxar-escenas-grid">{escenas_html}</div>
   <!-- Footer acciones -->

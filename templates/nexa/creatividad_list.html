@@ -61,6 +61,7 @@
           <div class="nxa-creatividad-card-header">
             <span class="nxa-badge nxa-badge--tipo">{{ cr.get_tipo_display }}</span>
             <span class="nxa-badge nxa-badge--estado nxa-estado--{{ cr.estado }}">{{ cr.get_estado_display }}</span>
+            {% if cr.estilo_nombre %}<span class="nxa-badge nxar-badge--estilo" title="{{ cr.estilo }}">🎨 {{ cr.estilo_nombre }}</span>{% endif %}
           </div>
           <p class="nxa-creatividad-empresa">{{ cr.contenido.empresa.nombre_empresa }}</p>
           <p class="nxa-creatividad-fecha nxa-text-muted">{{ cr.fecha_creacion|date:"d/m/Y" }}</p>
