@@ -370,16 +370,20 @@ Antes de diseñar o implementar una nueva página o sección, responder:
 
 ## 15. Animaciones — reglas y patrones establecidos
 
-### Sistema de animación del hero (patrón canónico)
+### Sistema de animación del hero (patrón canónico v3)
 
-El hero de la landing usa **dos capas de animación independientes**:
+El hero usa **6 capas de animación independientes** en orden de profundidad (z-index ascendente):
 
-| Capa | Técnica | Propósito |
-|---|---|---|
-| Canvas (JS) | `requestAnimationFrame` + partículas en red | Movimiento continuo, profundidad tecnológica |
-| Aurora orbs (CSS) | `@keyframes` + `filter:blur` | Gradientes de color que se desplazan suavemente |
-| Grid overlay (CSS) | `background-position` animado | Sensación de espacio infinito |
-| Scan line (CSS) | `@keyframes scan` con `top` | Efecto terminal/tech sutil |
+| Capa | Elemento | Técnica | Propósito |
+|---|---|---|---|
+| 1 | Grid overlay | CSS `background-position` | Sensación de espacio infinito |
+| 2 | Canvas (JS) | `requestAnimationFrame` | Red de partículas tecnológicas |
+| 3 | Aurora orbs | CSS `@keyframes` + `filter:blur` | Gradientes de color desplazándose |
+| 4 | Light beams | CSS divs con gradiente + blur | Ondas luminosas horizontales fluidas |
+| 5 | Dynamic glow | CSS radial-gradient animado | Foco de luz que se mueve detrás del formulario |
+| 6 | Núcleo tecnológico | SVG inline con CSS animations | Esfera central con órbitas rotantes |
+| — | Form card | `z-index: 1` sobre capas 1–6 | Siempre visible y clickeable |
+| — | Scan line | CSS `::before` | Efecto terminal/tech sutil |
 
 ### Reglas de animación
 

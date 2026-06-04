@@ -201,6 +201,45 @@ body {
   100% { top: 100%; opacity:0; }
 }
 
+/* Light beams */
+@keyframes beam-drift-1 {
+  0%,100% { transform: rotate(-2deg) translateY(0) scaleX(1); opacity: 0.55; }
+  28%  { transform: rotate(0.8deg) translateY(-32px) scaleX(1.06); opacity: 0.90; }
+  60%  { transform: rotate(-2.5deg) translateY(18px) scaleX(0.96); opacity: 0.45; }
+}
+@keyframes beam-drift-2 {
+  0%,100% { transform: rotate(1.2deg) translateY(0); opacity: 0.45; }
+  35%  { transform: rotate(-0.8deg) translateY(28px); opacity: 0.78; }
+  70%  { transform: rotate(2.2deg) translateY(-18px); opacity: 0.38; }
+}
+@keyframes beam-drift-3 {
+  0%,100% { transform: rotate(-0.5deg) translateY(0); opacity: 0.35; }
+  45%  { transform: rotate(1.8deg) translateY(-24px); opacity: 0.65; }
+}
+
+/* Dynamic glow */
+@keyframes dyn-glow {
+  0%,100% { transform: translate(0,0) scale(1); opacity: 0.80; }
+  30%  { transform: translate(-45px,35px) scale(1.18); opacity: 1; }
+  65%  { transform: translate(32px,-22px) scale(0.88); opacity: 0.68; }
+}
+
+/* Core rings */
+@keyframes ring-rotate-cw  { from { transform: rotate(0deg); }   to { transform: rotate(360deg); } }
+@keyframes ring-rotate-ccw { from { transform: rotate(0deg); }   to { transform: rotate(-360deg); } }
+
+/* Core sphere pulse */
+@keyframes core-sph-pulse {
+  0%,100% { transform: scale(1); opacity: 0.92; }
+  50%      { transform: scale(1.14); opacity: 1; }
+}
+
+/* Core ring pulse */
+@keyframes core-ring-expand {
+  0%,100% { transform: scale(1); opacity: 0.65; }
+  50%      { transform: scale(1.22); opacity: 0.30; }
+}
+
 /* ─────────────────────────────────────────
    REVEAL — fade-in on scroll
    ───────────────────────────────────────── */
@@ -397,6 +436,107 @@ body {
   z-index: 1;
 }
 
+/* ── Capa 3: Light beams ── */
+.landing-page .hero-beam {
+  position: absolute;
+  width: 130%;
+  left: -15%;
+  pointer-events: none;
+  border-radius: 4px;
+}
+
+.landing-page .hero-beam-1 {
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(59,130,246,0.30) 30%, rgba(99,102,241,0.24) 65%, transparent 100%);
+  top: 28%;
+  filter: blur(2px);
+  z-index: 2;
+  animation: beam-drift-1 22s ease-in-out infinite;
+}
+
+.landing-page .hero-beam-2 {
+  height: 3px;
+  background: linear-gradient(90deg, transparent 5%, rgba(139,92,246,0.22) 35%, rgba(59,130,246,0.18) 68%, transparent 95%);
+  top: 52%;
+  filter: blur(3px);
+  z-index: 2;
+  animation: beam-drift-2 30s ease-in-out infinite;
+}
+
+.landing-page .hero-beam-3 {
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent 10%, rgba(6,182,212,0.16) 40%, rgba(59,130,246,0.14) 62%, transparent 90%);
+  top: 72%;
+  filter: blur(2px);
+  z-index: 2;
+  animation: beam-drift-3 19s ease-in-out infinite;
+}
+
+/* ── Capa 4: Glow dinámico ── */
+.landing-page .hero-dynamic-glow {
+  position: absolute;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(59,130,246,0.24) 0%, rgba(139,92,246,0.12) 45%, transparent 70%);
+  filter: blur(50px);
+  right: 8%;
+  top: 15%;
+  z-index: 3;
+  pointer-events: none;
+  animation: dyn-glow 17s ease-in-out infinite;
+}
+
+/* ── Capa 5: Núcleo tecnológico ── */
+.landing-page .hero-core-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 520px;
+  height: 520px;
+  z-index: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.landing-page .hero-core-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Ring animations — transform-box: fill-box para SVG */
+.landing-page .hero-core-svg .ring-r1 {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: ring-rotate-cw 52s linear infinite;
+}
+
+.landing-page .hero-core-svg .ring-r2 {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: ring-rotate-ccw 30s linear infinite;
+}
+
+.landing-page .hero-core-svg .ring-r3 {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: ring-rotate-cw 15s linear infinite;
+}
+
+.landing-page .hero-core-svg .core-sphere {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: core-sph-pulse 4.5s ease-in-out infinite;
+}
+
+.landing-page .hero-core-svg .core-ring-pulse {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: core-ring-expand 4.5s ease-in-out infinite;
+}
+
 /* Contenido hero */
 .landing-page .hero-inner {
   max-width: 1200px;
@@ -543,9 +683,15 @@ body {
 .landing-page .trust-item svg { color: var(--lp-green); flex-shrink: 0; }
 
 /* Formulario hero */
-.landing-page .hero-right { position: sticky; top: 84px; }
+.landing-page .hero-right {
+  position: sticky;
+  top: 84px;
+  overflow: visible;
+}
 
 .landing-page .hero-form-card {
+  position: relative;
+  z-index: 1;
   background: rgba(255,255,255,0.04);
   border-radius: 18px;
   padding: 34px;

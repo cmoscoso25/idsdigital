@@ -264,6 +264,14 @@
     <!-- Grid overlay sutil -->
     <div class="hero-grid-bg" aria-hidden="true"></div>
 
+    <!-- Capa 3: Ondas luminosas / light beams -->
+    <div class="hero-beam hero-beam-1" aria-hidden="true"></div>
+    <div class="hero-beam hero-beam-2" aria-hidden="true"></div>
+    <div class="hero-beam hero-beam-3" aria-hidden="true"></div>
+
+    <!-- Capa 4: Glow dinámico -->
+    <div class="hero-dynamic-glow" aria-hidden="true"></div>
+
     <div class="hero-inner">
       <div class="hero-left">
         <div class="hero-badge">
@@ -301,6 +309,82 @@
 
       <!-- Formulario de conversión -->
       <div class="hero-right" id="contacto">
+
+        <!-- Capa 5: Núcleo tecnológico animado -->
+        <div class="hero-core-wrapper" aria-hidden="true">
+          <svg class="hero-core-svg" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="bg-halo" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.24"/>
+                <stop offset="45%" stop-color="#8b5cf6" stop-opacity="0.10"/>
+                <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="core-grad" cx="38%" cy="33%" r="62%">
+                <stop offset="0%" stop-color="#bfdbfe"/>
+                <stop offset="50%" stop-color="#3b82f6"/>
+                <stop offset="100%" stop-color="#1e40af"/>
+              </radialGradient>
+              <radialGradient id="core-glow-r" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#60a5fa" stop-opacity="0.60"/>
+                <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+              </radialGradient>
+              <filter id="glow-f" x="-40%" y="-40%" width="180%" height="180%">
+                <feGaussianBlur stdDeviation="8" result="b"/>
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <filter id="node-glow" x="-120%" y="-120%" width="340%" height="340%">
+                <feGaussianBlur stdDeviation="5"/>
+              </filter>
+            </defs>
+
+            <!-- Halo exterior de fondo -->
+            <circle cx="250" cy="250" r="235" fill="url(#bg-halo)"/>
+
+            <!-- Órbita exterior — CW 52s -->
+            <g class="ring-r1">
+              <circle cx="250" cy="250" r="185" stroke="rgba(59,130,246,0.14)" stroke-width="1" stroke-dasharray="5 20" fill="none"/>
+              <circle cx="250" cy="65"  r="4.5" fill="#60a5fa" opacity="0.72" filter="url(#node-glow)"/>
+              <circle cx="435" cy="250" r="3.5" fill="#a78bfa" opacity="0.62"/>
+              <circle cx="250" cy="435" r="4"   fill="#60a5fa" opacity="0.58"/>
+              <line x1="250" y1="65"  x2="250" y2="178" stroke="rgba(96,165,250,0.16)" stroke-width="0.8"/>
+            </g>
+
+            <!-- Órbita media — CCW 30s -->
+            <g class="ring-r2">
+              <circle cx="250" cy="250" r="130" stroke="rgba(139,92,246,0.20)" stroke-width="1" stroke-dasharray="3 12" fill="none"/>
+              <circle cx="250" cy="120" r="5"   fill="#8b5cf6" opacity="0.82" filter="url(#node-glow)"/>
+              <circle cx="380" cy="250" r="4"   fill="#60a5fa" opacity="0.74"/>
+              <circle cx="120" cy="250" r="4"   fill="#a78bfa" opacity="0.70"/>
+              <circle cx="250" cy="380" r="4.5" fill="#8b5cf6" opacity="0.66"/>
+              <line x1="250" y1="120" x2="250" y2="194" stroke="rgba(139,92,246,0.20)" stroke-width="0.8"/>
+              <line x1="380" y1="250" x2="312" y2="250" stroke="rgba(96,165,250,0.15)" stroke-width="0.8"/>
+            </g>
+
+            <!-- Órbita interna — CW 15s -->
+            <g class="ring-r3">
+              <circle cx="250" cy="250" r="78" stroke="rgba(59,130,246,0.30)" stroke-width="1.5" stroke-dasharray="2 8" fill="none"/>
+              <circle cx="250" cy="172" r="5"   fill="#60a5fa" opacity="0.94" filter="url(#node-glow)"/>
+              <circle cx="328" cy="250" r="3.5" fill="#a78bfa" opacity="0.84"/>
+              <circle cx="172" cy="250" r="3.5" fill="#60a5fa" opacity="0.80"/>
+            </g>
+
+            <!-- Rayos de conexión desde el núcleo -->
+            <line x1="250" y1="218" x2="250" y2="122" stroke="rgba(59,130,246,0.16)" stroke-width="0.8"/>
+            <line x1="282" y1="250" x2="378" y2="250" stroke="rgba(139,92,246,0.13)" stroke-width="0.8"/>
+            <line x1="218" y1="250" x2="122" y2="250" stroke="rgba(139,92,246,0.11)" stroke-width="0.8"/>
+
+            <!-- Halo del núcleo pulsante -->
+            <circle cx="250" cy="250" r="54" fill="url(#core-glow-r)" class="core-ring-pulse"/>
+
+            <!-- Esfera central con glow -->
+            <circle cx="250" cy="250" r="34" fill="url(#core-grad)" filter="url(#glow-f)" class="core-sphere"/>
+            <circle cx="250" cy="250" r="22" fill="#93c5fd" opacity="0.52" class="core-sphere"/>
+            <!-- Reflejo especular -->
+            <circle cx="244" cy="242" r="9" fill="#ffffff" opacity="0.90"/>
+            <circle cx="256" cy="254" r="4" fill="#ffffff" opacity="0.40"/>
+          </svg>
+        </div>
+
         <div class="hero-form-card">
           <div class="form-card-header">
             <div class="form-card-title">Solicita un diagnóstico gratuito</div>
@@ -826,8 +910,8 @@
   /* Respeta prefers-reduced-motion */
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  var COLORS = ['#3b82f6', '#6366f1', '#8b5cf6', '#06b6d4'];
-  var CONNECT = 155;
+  var COLORS = ['#3b82f6', '#6366f1', '#8b5cf6', '#06b6d4', '#60a5fa'];
+  var CONNECT = 180;
   var particles = [];
   var raf = null;
   var active = true;
@@ -843,7 +927,7 @@
   }
 
   function init() {
-    var n = Math.min(55, Math.floor(canvas.width * canvas.height / 16000));
+    var n = Math.min(72, Math.floor(canvas.width * canvas.height / 12000));
     particles = [];
     for (var i = 0; i < n; i++) {
       particles.push({
@@ -869,7 +953,7 @@
         var dy = particles[i].y - particles[j].y;
         var d2 = dx*dx + dy*dy;
         if (d2 < CONNECT * CONNECT) {
-          var a = (1 - Math.sqrt(d2) / CONNECT) * 0.18;
+          var a = (1 - Math.sqrt(d2) / CONNECT) * 0.27;
           ctx.beginPath();
           ctx.strokeStyle = 'rgba(96,165,250,' + a.toFixed(3) + ')';
           ctx.lineWidth = 0.6;

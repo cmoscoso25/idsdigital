@@ -703,6 +703,12 @@ font-weight: 500
 |---|---|---|
 | `aurora-1/2/3` | 18–26s ease-in-out | Orbs de fondo en hero |
 | `grid-drift` | 40s linear | Grid overlay hero |
+| `beam-drift-1/2/3` | 19–30s ease-in-out | Light beams horizontales (Capa 3) |
+| `dyn-glow` | 17s ease-in-out | Glow dinámico detrás del formulario (Capa 4) |
+| `ring-rotate-cw` | variable linear | Órbitas del núcleo tecnológico (Capa 5) |
+| `ring-rotate-ccw` | variable linear | Órbita media en sentido inverso |
+| `core-sph-pulse` | 4.5s ease-in-out | Pulsación de la esfera central |
+| `core-ring-expand` | 4.5s ease-in-out | Expansión del halo del núcleo |
 | `dot-pulse` | 2.5s ease-in-out | Badge live indicator |
 | `btn-glow` | 4s ease-in-out | CTA button pulse |
 | `border-shimmer` | 8s ease | Form card border gradient |
@@ -714,11 +720,29 @@ font-weight: 500
 
 ```javascript
 // Parámetros que NO deben cambiarse sin justificación:
-var CONNECT = 155;                    // distancia máxima de conexión (px)
-var MAX_PARTICLES = 55;               // cap de partículas (performance)
-var PARTICLE_SPEED = 0.32;            // velocidad máxima por frame
-var COLORS = ['#3b82f6','#6366f1','#8b5cf6','#06b6d4'];  // paleta oficial
+var CONNECT = 180;                                              // distancia máxima de conexión (px)
+var MAX_PARTICLES = 72;                                         // cap de partículas (performance)
+var PARTICLE_SPEED = 0.35;                                      // velocidad máxima por frame
+var CONNECTION_ALPHA = 0.27;                                    // opacidad máxima de líneas de conexión
+var COLORS = ['#3b82f6','#6366f1','#8b5cf6','#06b6d4','#60a5fa'];  // paleta oficial
 ```
+
+### Núcleo Tecnológico — patrón canónico
+
+SVG inline de 500×500 viewBox con estructura de 3 órbitas:
+
+| Órbita | Radio | Velocidad | Dirección |
+|---|---|---|---|
+| Exterior (ring-r1) | 185px | 52s | CW |
+| Media (ring-r2) | 130px | 30s | CCW |
+| Interior (ring-r3) | 78px | 15s | CW |
+
+CSS crítico para rotación de grupos SVG:
+```css
+.ring-r1 { transform-box: fill-box; transform-origin: 50% 50%; animation: ring-rotate-cw 52s linear infinite; }
+```
+
+`transform-box: fill-box` es OBLIGATORIO para que `transform-origin: 50% 50%` resuelva al centro del viewport SVG, no al elemento.
 
 - El canvas se pausa con `IntersectionObserver` cuando el hero sale del viewport.
 - Las partículas hacen wrap (no bounce) para movimiento más fluido.
