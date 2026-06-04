@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#0f172a" />
+  <meta name="theme-color" content="#060b18" />
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}" />
@@ -197,13 +197,15 @@
 
   <link rel="stylesheet" href="{% static 'css/public.css' %}" />
 </head>
-<body>
+<body class="landing-page">
 
-  <!-- NAVBAR -->
+  <!-- ═══════════════════════════════════════
+       NAVBAR
+  ═══════════════════════════════════════ -->
   <nav class="navbar">
     <div class="navbar-inner">
       <a href="#inicio" class="navbar-logo">
-        <svg width="34" height="34" viewBox="0 0 60 60" fill="none">
+        <svg width="32" height="32" viewBox="0 0 60 60" fill="none" aria-hidden="true">
           <circle cx="30" cy="28" r="7" fill="#3b82f6"/>
           <circle cx="14" cy="14" r="4.5" fill="#60a5fa"/>
           <circle cx="46" cy="14" r="4.5" fill="#60a5fa"/>
@@ -229,100 +231,92 @@
         <a href="#contacto">Contacto</a>
       </div>
       <a href="#contacto" class="btn-nav">Solicitar diagnóstico</a>
+      <button class="navbar-mobile-toggle" aria-label="Menú" onclick="this.closest('nav').classList.toggle('mobile-open')">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="navbar-mobile-menu">
+      <a href="#servicios" onclick="this.closest('nav').classList.remove('mobile-open')">Soluciones</a>
+      <a href="#metodologia" onclick="this.closest('nav').classList.remove('mobile-open')">Metodología</a>
+      <a href="{% url 'blog_list_public' %}">Blog</a>
+      <a href="#contacto" onclick="this.closest('nav').classList.remove('mobile-open')">Contacto</a>
+      <a href="#contacto" class="btn-nav" onclick="this.closest('nav').classList.remove('mobile-open')">Solicitar diagnóstico</a>
     </div>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero" id="inicio">
+  <!-- ═══════════════════════════════════════
+       HERO
+  ═══════════════════════════════════════ -->
+  <section class="hero" id="inicio" aria-label="IDS Digital — Software, IA y Automatización">
+    <div class="hero-glow hero-glow-1" aria-hidden="true"></div>
+    <div class="hero-glow hero-glow-2" aria-hidden="true"></div>
+    <div class="hero-grid-bg" aria-hidden="true"></div>
+
     <div class="hero-inner">
-
       <div class="hero-left">
-
-        <!-- Logo completo como presentación de marca -->
-        <div style="margin-bottom: 28px;">
-          <div style="display: inline-block; background: #0f172a; border-radius: 12px; padding: 18px 28px;">
-            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
-              <svg width="48" height="48" viewBox="0 0 60 60" fill="none">
-                <circle cx="30" cy="28" r="7" fill="#3b82f6"/>
-                <circle cx="14" cy="14" r="4.5" fill="#60a5fa"/>
-                <circle cx="46" cy="14" r="4.5" fill="#60a5fa"/>
-                <circle cx="11" cy="38" r="3.5" fill="#60a5fa"/>
-                <circle cx="50" cy="40" r="3.5" fill="#60a5fa"/>
-                <circle cx="28" cy="48" r="3.5" fill="#60a5fa"/>
-                <line x1="30" y1="21" x2="16" y2="16" stroke="#3b82f6" stroke-width="1.5"/>
-                <line x1="30" y1="21" x2="44" y2="16" stroke="#3b82f6" stroke-width="1.5"/>
-                <line x1="24" y1="33" x2="13" y2="36" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
-                <line x1="36" y1="34" x2="48" y2="38" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
-                <line x1="29" y1="35" x2="28" y2="45" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
-              </svg>
-              <div style="font-size: 36px; font-weight: 700; letter-spacing: -1px; line-height: 1; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
-                <span style="color: #3b82f6;">I</span><span style="color: #ffffff;">DS</span>
-              </div>
-            </div>
-            <div style="border-top: 0.5px solid #334155; padding-top: 8px;">
-              <div style="font-size: 11px; font-weight: 500; color: #cbd5e1; letter-spacing: 2px; text-align: center; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">INTELIGENCIA DIGITAL Y SISTEMAS</div>
-              <div style="font-size: 10px; color: #60a5fa; letter-spacing: 1.5px; text-align: center; margin-top: 3px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">SOFTWARE · IA · AUTOMATIZACIÓN</div>
-            </div>
-          </div>
-        </div>
-
         <div class="hero-badge">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-          Consultora tecnológica para empresas e instituciones en Chile
+          <span class="hero-badge-dot" aria-hidden="true"></span>
+          Consultora tecnológica · Empresas e instituciones en Chile
         </div>
-        <h1>Convertimos procesos complejos en <span>software, automatización</span> e inteligencia aplicada</h1>
-        <p class="hero-sub">Diseñamos soluciones tecnológicas para organizaciones en Chile que necesitan más control, trazabilidad y eficiencia para crecer con orden.</p>
+
+        <h1>Transformamos procesos complejos en <span class="hero-accent">soluciones inteligentes</span> que impulsan el crecimiento</h1>
+
+        <p class="hero-sub">Desarrollamos software a medida, automatizamos operaciones y aplicamos inteligencia artificial para que tu empresa opere mejor, decida más rápido y crezca con orden.</p>
+
         <div class="hero-btns">
-          <a href="#contacto" class="btn-primary">Solicitar diagnóstico gratuito</a>
-          <a href="#servicios" class="btn-secondary">Ver servicios →</a>
+          <a href="#contacto" class="btn-primary">
+            Solicitar diagnóstico gratuito
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#servicios" class="btn-outline">Ver soluciones →</a>
         </div>
+
         <div class="hero-trust">
           <div class="trust-item">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
             Enfoque consultivo
           </div>
           <div class="trust-item">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
             Soluciones a medida
           </div>
           <div class="trust-item">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
             Sin compromiso inicial
           </div>
         </div>
       </div>
 
+      <!-- Formulario de conversión -->
       <div class="hero-right" id="contacto">
         <div class="hero-form-card">
-          <div class="form-card-title">Solicita un diagnóstico gratuito</div>
-          <div class="form-card-sub">Cuéntanos tu necesidad y te proponemos un enfoque claro.</div>
+          <div class="form-card-header">
+            <div class="form-card-title">Solicita un diagnóstico gratuito</div>
+            <div class="form-card-sub">Cuéntanos tu necesidad y te proponemos un enfoque claro.</div>
+          </div>
 
           <div class="form-pills">
             <div class="form-pill">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               Respuesta en 24hrs
             </div>
             <div class="form-pill">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
               Confidencial
             </div>
           </div>
 
           {% if ok %}
           <div class="form-success">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
             ¡Listo! Recibimos tu solicitud. Te contactaremos pronto.
           </div>
           {% else %}
           <form method="post" action="{% url 'public:submit_demo' %}">
             {% csrf_token %}
-
-            <!-- Honeypot anti-bots -->
             <div style="display:none;">
               <input type="text" name="website" tabindex="-1" autocomplete="off" />
             </div>
-
-            <!-- Campos ocultos para mantener compatibilidad con el CRM -->
             <input type="hidden" name="telefono" value="" />
             <input type="hidden" name="empresa" value="" />
             <input type="hidden" name="mensaje" value="" />
@@ -330,28 +324,16 @@
             <div class="form-row">
               <div class="form-field">
                 <label for="id_nombre">Nombre</label>
-                <input
-                  type="text"
-                  id="id_nombre"
-                  name="nombre"
-                  placeholder="Tu nombre"
-                  value="{{ form.nombre.value|default:'' }}"
-                  required
-                />
+                <input type="text" id="id_nombre" name="nombre" placeholder="Tu nombre"
+                  value="{{ form.nombre.value|default:'' }}" required />
                 {% if form.nombre.errors %}
                   <div class="form-error">{{ form.nombre.errors.0 }}</div>
                 {% endif %}
               </div>
               <div class="form-field">
                 <label for="id_email">Email</label>
-                <input
-                  type="email"
-                  id="id_email"
-                  name="email"
-                  placeholder="correo@empresa.cl"
-                  value="{{ form.email.value|default:'' }}"
-                  required
-                />
+                <input type="email" id="id_email" name="email" placeholder="correo@empresa.cl"
+                  value="{{ form.email.value|default:'' }}" required />
                 {% if form.email.errors %}
                   <div class="form-error">{{ form.email.errors.0 }}</div>
                 {% endif %}
@@ -376,44 +358,213 @@
             </button>
 
             <div class="form-note">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
               Sin compromiso · Tu información es confidencial
             </div>
           </form>
           {% endif %}
-
         </div>
       </div>
-
     </div>
   </section>
 
-  <!-- PRUEBA SOCIAL -->
+  <!-- ═══════════════════════════════════════
+       TECH TRUST BAR
+  ═══════════════════════════════════════ -->
+  <div class="trust-logos-bar" aria-label="Tecnologías utilizadas por IDS Digital">
+    <div class="trust-logos-inner">
+      <span class="trust-logos-label">Tecnologías que utilizamos</span>
+      <div class="trust-logos-list">
+        <!-- Python -->
+        <div class="tech-logo">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 2C8.5 2 6 4 6 7v2h6v1H5C3 10 2 11.5 2 13.5S3 17 5 17h1v-2.5C6 12 8 10.5 12 10.5s6 1.5 6 4V17h1c2 0 3-1.5 3-3.5S21 10 19 10h-1V9h1V7c0-3-2.5-5-6-5z" fill="#3b82f6" opacity="0.8"/>
+          </svg>
+          <span>Python</span>
+        </div>
+        <!-- Django -->
+        <div class="tech-logo">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="3" fill="#3b82f6" opacity="0.15"/>
+            <text x="12" y="16" text-anchor="middle" font-size="9" font-weight="700" fill="#3b82f6" font-family="monospace">Dj</text>
+          </svg>
+          <span>Django</span>
+        </div>
+        <!-- PostgreSQL -->
+        <div class="tech-logo">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <ellipse cx="12" cy="8" rx="8" ry="4" fill="#3b82f6" opacity="0.2" stroke="#3b82f6" stroke-width="1.5"/>
+            <path d="M4 8v8c0 2.2 3.6 4 8 4s8-1.8 8-4V8" stroke="#3b82f6" stroke-width="1.5" fill="none"/>
+          </svg>
+          <span>PostgreSQL</span>
+        </div>
+        <!-- Docker -->
+        <div class="tech-logo">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="2" y="10" width="4" height="3" rx="0.5" fill="#3b82f6" opacity="0.8"/>
+            <rect x="7" y="10" width="4" height="3" rx="0.5" fill="#3b82f6" opacity="0.8"/>
+            <rect x="12" y="10" width="4" height="3" rx="0.5" fill="#3b82f6" opacity="0.8"/>
+            <rect x="7" y="6" width="4" height="3" rx="0.5" fill="#3b82f6" opacity="0.6"/>
+            <rect x="12" y="6" width="4" height="3" rx="0.5" fill="#3b82f6" opacity="0.6"/>
+            <path d="M20 12.5c-.5-1.5-2-2-3.5-1.5H16v1.5c0 2.5-2 4.5-4.5 4.5H4c.5 2 2.5 3 5 3h3c4 0 7-3 8-7.5z" fill="#3b82f6" opacity="0.4"/>
+          </svg>
+          <span>Docker</span>
+        </div>
+        <!-- AWS -->
+        <div class="tech-logo">
+          <svg width="22" height="14" viewBox="0 0 80 50" fill="none" aria-hidden="true">
+            <path d="M23 30 Q12 24 14 14 Q16 4 28 4 Q34 4 38 10 Q42 4 50 4 Q62 4 64 14 Q66 24 55 30 Z" fill="#3b82f6" opacity="0.25" stroke="#3b82f6" stroke-width="2"/>
+            <text x="40" y="22" text-anchor="middle" font-size="10" font-weight="700" fill="#3b82f6" font-family="monospace">AWS</text>
+          </svg>
+          <span>AWS</span>
+        </div>
+        <!-- Render -->
+        <div class="tech-logo">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" stroke="#3b82f6" stroke-width="1.5" opacity="0.5"/>
+            <circle cx="12" cy="12" r="4" fill="#3b82f6" opacity="0.6"/>
+          </svg>
+          <span>Render</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       STATS / PRUEBA SOCIAL
+  ═══════════════════════════════════════ -->
   <section class="social-proof" aria-label="Estadísticas IDS Digital">
     <div class="social-proof-inner">
       <div class="proof-stat">
+        <div class="proof-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
         <div class="proof-num">+20</div>
         <div class="proof-label">Proyectos entregados</div>
       </div>
-      <div class="proof-divider"></div>
+      <div class="proof-divider" aria-hidden="true"></div>
       <div class="proof-stat">
+        <div class="proof-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        </div>
         <div class="proof-num">3 años</div>
         <div class="proof-label">De experiencia</div>
       </div>
-      <div class="proof-divider"></div>
+      <div class="proof-divider" aria-hidden="true"></div>
       <div class="proof-stat">
+        <div class="proof-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
         <div class="proof-num">100%</div>
         <div class="proof-label">Soluciones a medida</div>
       </div>
-      <div class="proof-divider"></div>
+      <div class="proof-divider" aria-hidden="true"></div>
       <div class="proof-stat">
+        <div class="proof-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
         <div class="proof-num">24hrs</div>
         <div class="proof-label">Tiempo de respuesta</div>
       </div>
     </div>
   </section>
 
-  <!-- SERVICIOS -->
+  <!-- ═══════════════════════════════════════
+       PROBLEMA / SOLUCIÓN
+  ═══════════════════════════════════════ -->
+  <section class="problem-solution" aria-label="Problemas que resuelve IDS Digital">
+    <div class="problem-solution-inner">
+
+      <div class="problem-col">
+        <div class="section-label">Problemas que resolvemos</div>
+        <h2 class="section-title">El caos operativo te cuesta tiempo, dinero y oportunidades</h2>
+        <p class="section-sub">Muchas empresas siguen operando con procesos manuales, datos dispersos y sistemas que no se hablan entre sí. Eso frena su crecimiento.</p>
+
+        <div class="problem-cards">
+          <div class="problem-card">
+            <div class="problem-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div>
+              <div class="problem-name">Procesos manuales</div>
+              <div class="problem-desc">Tareas repetitivas, errores humanos y pérdida de tiempo en lo operativo.</div>
+            </div>
+          </div>
+          <div class="problem-card">
+            <div class="problem-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            </div>
+            <div>
+              <div class="problem-name">Información desordenada</div>
+              <div class="problem-desc">Datos dispersos, reportes tardíos y decisiones sin claridad.</div>
+            </div>
+          </div>
+          <div class="problem-card">
+            <div class="problem-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <div>
+              <div class="problem-name">Sistemas que no se integran</div>
+              <div class="problem-desc">Herramientas aisladas que se hablan mal y generan más trabajo.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="solution-col">
+        <div class="section-label">Nuestras soluciones</div>
+        <h2 class="section-title">Tecnología que transforma la forma en que operas</h2>
+        <p class="section-sub">Diseñamos e implementamos soluciones a medida que se adaptan a tu negocio y te llevan al siguiente nivel.</p>
+
+        <div class="solution-list">
+          <div class="solution-item">
+            <div class="solution-icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            </div>
+            <div>
+              <div class="solution-name">Desarrollo de Software a medida</div>
+              <div class="solution-desc">Sistemas sólidos, escalables y alineados a tu operación.</div>
+            </div>
+          </div>
+          <div class="solution-item">
+            <div class="solution-icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            </div>
+            <div>
+              <div class="solution-name">Automatización de procesos</div>
+              <div class="solution-desc">Eliminamos tareas repetitivas y optimizamos flujos.</div>
+            </div>
+          </div>
+          <div class="solution-item">
+            <div class="solution-icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div>
+              <div class="solution-name">Inteligencia y analítica</div>
+              <div class="solution-desc">Convertimos datos en información útil para decidir mejor.</div>
+            </div>
+          </div>
+          <div class="solution-item">
+            <div class="solution-icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            </div>
+            <div>
+              <div class="solution-name">Dashboards e indicadores</div>
+              <div class="solution-desc">Visibilidad en tiempo real para una gestión accionable.</div>
+            </div>
+          </div>
+          <div class="solution-cta">
+            <a href="#contacto" class="btn-primary">Solicitar diagnóstico gratuito →</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SERVICIOS
+  ═══════════════════════════════════════ -->
   <section class="services" id="servicios" aria-label="Servicios tecnológicos IDS Digital">
     <div class="section-inner">
       <div class="section-label">Servicios</div>
@@ -422,42 +573,42 @@
 
       <div class="services-grid">
         <article class="service-card">
-          <div class="service-icon">
+          <div class="service-icon" aria-hidden="true">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
           </div>
           <h3 class="service-name">Desarrollo de software a medida</h3>
           <p class="service-desc">Sistemas internos, plataformas web y herramientas construidas según la realidad operativa de cada organización en Chile.</p>
         </article>
         <article class="service-card">
-          <div class="service-icon">
+          <div class="service-icon" aria-hidden="true">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
           </div>
           <h3 class="service-name">Automatización de procesos</h3>
           <p class="service-desc">Flujos más ágiles, menos trabajo manual y mejor coordinación entre áreas para empresas y pymes en Chile.</p>
         </article>
         <article class="service-card">
-          <div class="service-icon">
+          <div class="service-icon" aria-hidden="true">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           </div>
           <h3 class="service-name">Inteligencia artificial para empresas</h3>
           <p class="service-desc">Asistentes, clasificación inteligente y análisis de información orientado a casos reales de gestión empresarial.</p>
         </article>
         <article class="service-card">
-          <div class="service-icon">
+          <div class="service-icon" aria-hidden="true">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
           </div>
           <h3 class="service-name">Dashboards e indicadores</h3>
           <p class="service-desc">Visualización clara de datos y métricas para una gestión más accionable y toma de decisiones más informada.</p>
         </article>
         <article class="service-card">
-          <div class="service-icon">
+          <div class="service-icon" aria-hidden="true">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
           </div>
           <h3 class="service-name">Integración de plataformas</h3>
           <p class="service-desc">Conectamos herramientas y bases de datos para una operación más fluida y menos fragmentada.</p>
         </article>
         <article class="service-card">
-          <div class="service-icon">
+          <div class="service-icon" aria-hidden="true">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
           </div>
           <h3 class="service-name">Consultoría tecnológica</h3>
@@ -467,7 +618,46 @@
     </div>
   </section>
 
-  <!-- TESTIMONIOS -->
+  <!-- ═══════════════════════════════════════
+       METODOLOGÍA
+  ═══════════════════════════════════════ -->
+  <section class="metodologia" id="metodologia" aria-label="Metodología de trabajo IDS Digital">
+    <div class="section-inner">
+      <div class="section-label">Metodología</div>
+      <h2 class="section-title">Cómo trabajamos contigo</h2>
+      <p class="section-sub">Un proceso claro para transformar una necesidad en una solución concreta y ejecutable.</p>
+
+      <div class="metodologia-grid">
+        <div class="metodo-card">
+          <div class="metodo-num">01</div>
+          <h3 class="metodo-name">Diagnóstico</h3>
+          <p class="metodo-desc">Levantamos el problema, el contexto, los usuarios y los objetivos del proyecto.</p>
+        </div>
+        <div class="metodo-connector" aria-hidden="true"></div>
+        <div class="metodo-card">
+          <div class="metodo-num">02</div>
+          <h3 class="metodo-name">Propuesta</h3>
+          <p class="metodo-desc">Definimos alcance, enfoque técnico y una hoja de ruta clara para avanzar.</p>
+        </div>
+        <div class="metodo-connector" aria-hidden="true"></div>
+        <div class="metodo-card">
+          <div class="metodo-num">03</div>
+          <h3 class="metodo-name">Desarrollo</h3>
+          <p class="metodo-desc">Construimos la solución, validamos avances y ajustamos según necesidades reales.</p>
+        </div>
+        <div class="metodo-connector" aria-hidden="true"></div>
+        <div class="metodo-card">
+          <div class="metodo-num">04</div>
+          <h3 class="metodo-name">Entrega</h3>
+          <p class="metodo-desc">Acompañamos la puesta en marcha y dejamos bases sólidas para evolucionar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       TESTIMONIOS
+  ═══════════════════════════════════════ -->
   <section class="testimonials" id="testimonios" aria-label="Testimonios de clientes IDS Digital">
     <div class="section-inner">
       <div class="section-label">Testimonios</div>
@@ -475,6 +665,7 @@
 
       <div class="testimonials-grid">
         <article class="testimonial-card">
+          <div class="testimonial-quote" aria-hidden="true">"</div>
           <div class="stars" aria-label="5 estrellas">★★★★★</div>
           <p class="testimonial-text">Teníamos un proceso de reportes que se hacía a mano en Excel y nos tomaba medio día cada semana. IDS lo automatizó en menos de un mes y ahora corre solo. No lo puedo creer todavía.</p>
           <div class="testimonial-author">
@@ -486,6 +677,7 @@
           </div>
         </article>
         <article class="testimonial-card">
+          <div class="testimonial-quote" aria-hidden="true">"</div>
           <div class="stars" aria-label="5 estrellas">★★★★★</div>
           <p class="testimonial-text">Lo que más me gustó fue que antes de proponer algo, se tomaron el tiempo de entender cómo trabajamos. La solución que entregaron encajó perfecto con nuestra realidad.</p>
           <div class="testimonial-author">
@@ -497,6 +689,7 @@
           </div>
         </article>
         <article class="testimonial-card">
+          <div class="testimonial-quote" aria-hidden="true">"</div>
           <div class="stars" aria-label="5 estrellas">★★★★★</div>
           <p class="testimonial-text">Necesitábamos un sistema interno para gestionar clientes y nadie nos daba una propuesta clara. IDS llegó, entendió el problema y en pocas semanas teníamos algo funcionando.</p>
           <div class="testimonial-author">
@@ -508,6 +701,7 @@
           </div>
         </article>
         <article class="testimonial-card">
+          <div class="testimonial-quote" aria-hidden="true">"</div>
           <div class="stars" aria-label="5 estrellas">★★★★★</div>
           <p class="testimonial-text">Trabajar con IDS fue diferente a contratar desarrollo tradicional. Hay un enfoque más consultivo, te explican por qué hacen cada cosa y eso genera mucha confianza.</p>
           <div class="testimonial-author">
@@ -522,7 +716,9 @@
     </div>
   </section>
 
-  <!-- FAQ -->
+  <!-- ═══════════════════════════════════════
+       FAQ
+  ═══════════════════════════════════════ -->
   <section class="faq" id="faq" aria-label="Preguntas frecuentes IDS Digital">
     <div class="section-inner">
       <div class="section-label">Preguntas frecuentes</div>
@@ -549,71 +745,56 @@
     </div>
   </section>
 
-  <!-- METODOLOGIA -->
-  <section class="metodologia" id="metodologia" aria-label="Metodología de trabajo IDS Digital">
-    <div class="section-inner">
-      <div class="section-label">Metodología</div>
-      <h2 class="section-title">Cómo trabajamos contigo</h2>
-      <p class="section-sub">Un proceso claro para transformar una necesidad en una solución concreta y ejecutable.</p>
-
-      <div class="metodologia-grid">
-        <div class="metodo-card">
-          <div class="metodo-num">01</div>
-          <h3 class="metodo-name">Diagnóstico</h3>
-          <p class="metodo-desc">Levantamos el problema, el contexto, los usuarios y los objetivos del proyecto.</p>
-        </div>
-        <div class="metodo-card">
-          <div class="metodo-num">02</div>
-          <h3 class="metodo-name">Propuesta</h3>
-          <p class="metodo-desc">Definimos alcance, enfoque técnico y una hoja de ruta clara para avanzar.</p>
-        </div>
-        <div class="metodo-card">
-          <div class="metodo-num">03</div>
-          <h3 class="metodo-name">Desarrollo</h3>
-          <p class="metodo-desc">Construimos la solución, validamos avances y ajustamos según necesidades reales.</p>
-        </div>
-        <div class="metodo-card">
-          <div class="metodo-num">04</div>
-          <h3 class="metodo-name">Entrega</h3>
-          <p class="metodo-desc">Acompañamos la puesta en marcha y dejamos bases sólidas para evolucionar.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA FINAL -->
-  <section class="cta-final" aria-label="Solicitar diagnóstico gratuito">
+  <!-- ═══════════════════════════════════════
+       CTA FINAL
+  ═══════════════════════════════════════ -->
+  <section class="cta-final" aria-label="Solicitar diagnóstico gratuito IDS Digital">
+    <div class="cta-final-glow" aria-hidden="true"></div>
     <div class="cta-final-inner">
+      <div class="section-label" style="text-align:center;">¿Listo para dar el siguiente paso?</div>
       <h2>¿Necesitas software, automatización o IA para tu empresa en Chile?</h2>
       <p>Cuéntanos tu caso y te proponemos una solución concreta, sin compromiso inicial.</p>
       <div class="cta-btns">
-        <a href="#contacto" class="btn-primary">Solicitar diagnóstico gratuito</a>
-        <a href="#servicios" class="btn-cta-sec">Ver servicios →</a>
+        <a href="#contacto" class="btn-primary btn-lg">
+          Solicitar diagnóstico gratuito
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#servicios" class="btn-outline">Ver servicios →</a>
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
+  <!-- ═══════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════ -->
   <footer class="footer" aria-label="Pie de página IDS Digital">
     <div class="footer-inner">
-      <div class="footer-logo" style="display: flex; align-items: center; gap: 12px;">
-        <svg width="36" height="36" viewBox="0 0 60 60" fill="none">
-          <circle cx="30" cy="28" r="7" fill="#3b82f6"/>
-          <circle cx="14" cy="14" r="4.5" fill="#60a5fa"/>
-          <circle cx="46" cy="14" r="4.5" fill="#60a5fa"/>
-          <circle cx="11" cy="38" r="3.5" fill="#60a5fa"/>
-          <circle cx="50" cy="40" r="3.5" fill="#60a5fa"/>
-          <circle cx="28" cy="48" r="3.5" fill="#60a5fa"/>
-          <line x1="30" y1="21" x2="16" y2="16" stroke="#3b82f6" stroke-width="1.5"/>
-          <line x1="30" y1="21" x2="44" y2="16" stroke="#3b82f6" stroke-width="1.5"/>
-          <line x1="24" y1="33" x2="13" y2="36" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
-          <line x1="36" y1="34" x2="48" y2="38" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
-          <line x1="29" y1="35" x2="28" y2="45" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
-        </svg>
-        <div>
-          <div class="footer-name">Inteligencia Digital y Sistemas SpA</div>
-          <div class="footer-sub">Consultora tecnológica · Santiago, Chile · contacto@idsdigital.cl</div>
+      <div class="footer-brand">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+          <svg width="30" height="30" viewBox="0 0 60 60" fill="none" aria-hidden="true">
+            <circle cx="30" cy="28" r="7" fill="#3b82f6"/>
+            <circle cx="14" cy="14" r="4.5" fill="#60a5fa"/>
+            <circle cx="46" cy="14" r="4.5" fill="#60a5fa"/>
+            <circle cx="11" cy="38" r="3.5" fill="#60a5fa"/>
+            <circle cx="50" cy="40" r="3.5" fill="#60a5fa"/>
+            <circle cx="28" cy="48" r="3.5" fill="#60a5fa"/>
+            <line x1="30" y1="21" x2="16" y2="16" stroke="#3b82f6" stroke-width="1.5"/>
+            <line x1="30" y1="21" x2="44" y2="16" stroke="#3b82f6" stroke-width="1.5"/>
+            <line x1="24" y1="33" x2="13" y2="36" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
+            <line x1="36" y1="34" x2="48" y2="38" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
+            <line x1="29" y1="35" x2="28" y2="45" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
+          </svg>
+          <div>
+            <div class="footer-name">Inteligencia Digital y Sistemas SpA</div>
+            <div class="footer-sub">contacto@idsdigital.cl · Santiago, Chile</div>
+          </div>
         </div>
+      </div>
+      <div class="footer-links">
+        <a href="#servicios">Servicios</a>
+        <a href="#metodologia">Metodología</a>
+        <a href="{% url 'blog_list_public' %}">Blog</a>
+        <a href="#contacto">Contacto</a>
       </div>
       <div class="footer-copy">© 2026 Inteligencia Digital y Sistemas SpA. Todos los derechos reservados.</div>
     </div>
