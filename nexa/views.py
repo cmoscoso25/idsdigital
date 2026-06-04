@@ -45,10 +45,14 @@ def empresa_detalle(request, pk):
     empresa = get_object_or_404(EmpresaNexa, pk=pk, usuario=request.user)
     memoria = getattr(empresa, "memoria_marca", None)
     contenidos = empresa.contenidos.all()[:10]
+    palabras_clave_lista = []
+    if memoria and memoria.palabras_clave:
+        palabras_clave_lista = [p.strip() for p in memoria.palabras_clave.split(",") if p.strip()]
     return render(request, "nexa/empresa_detalle.html", {
         "empresa": empresa,
         "memoria": memoria,
         "contenidos": contenidos,
+        "palabras_clave_lista": palabras_clave_lista,
     })
 
 

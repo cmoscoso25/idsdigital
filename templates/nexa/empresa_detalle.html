@@ -75,8 +75,8 @@
         <div class="nxa-detail-row">
           <span class="nxa-detail-label">Palabras clave</span>
           <span class="nxa-detail-value nxa-tags">
-            {% for tag in memoria.palabras_clave.split(",") %}
-              <span class="nxa-tag">{{ tag|strip }}</span>
+            {% for tag in palabras_clave_lista %}
+              <span class="nxa-tag">{{ tag }}</span>
             {% endfor %}
           </span>
         </div>
