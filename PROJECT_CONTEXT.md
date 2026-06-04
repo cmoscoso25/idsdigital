@@ -180,7 +180,7 @@ Plataforma de marketing digital con agentes de IA para pymes y empresas.
 - **Template base:** `templates/nexa/base_nexa.html` — sidebar layout, diseño dark SaaS premium.
 - **CSS:** `static/css/nexa_app.css` — scoped bajo `.nxa-app`.
 - **Formulario landing:** reutiliza `DemoRequest` con `necesidad = "Nexa AI — Demo anticipada"`.
-- **Arquitectura de agentes** (`nexa/services/agentes/`): `estratega.py`, `copywriter.py`, `disenador.py`, `analista.py` — todos simulados, listos para conectar API.
+- **Arquitectura de agentes** (`nexa/services/agentes/`): `estratega.py`, `copywriter.py` (v2 con contenido auténtico por tipo), `disenador.py`, `analista.py` — todos simulados, listos para conectar API.
 - **Próximos pasos:**
   - [ ] Conectar agentes con Claude API (Anthropic SDK ya en requirements)
   - [ ] Integración Meta Graph API para publicación en Instagram/Facebook

@@ -114,7 +114,7 @@ no están instalados en el entorno MCP. Usar siempre el CLI como fallback.
 - **EstrategiaMensual**: modelo con calendario_json (4 semanas). Vistas en `/nexa/app/estrategias/`.
 - **Visualizador de slides**: `contenido_detalle.html` renderiza `estructura_json` visualmente via JS; JSON oculto con toggle.
 - **Producción automática**: `generar_contenido_mes` (POST `/nexa/app/estrategias/<id>/generar/`) itera el `calendario_json`, llama al copywriter por cada publicación y crea `ContenidoGenerado` vinculado a la estrategia.
-- **Copywriter mejorado**: `nexa/services/agentes/copywriter.py` genera titulo, copy, hashtags, cta y estructura_json completa por tipo (carrusel/historia/reel/post/campaña), usando pilar y tono de marca.
+- **Copywriter v2**: `nexa/services/agentes/copywriter.py` genera contenido auténtico por tipo (carrusel/historia/post/reel/campaña). Usa propuesta_valor, servicios, tono de marca y pilar. Sin frases genéricas. Hashtags: 5-8 naturales, máx 24 chars, sin concatenaciones largas. `_contexto()` centraliza acceso a memoria de marca.
 - **Biblioteca**: filtros por empresa, estrategia, tipo y estado. KPIs: total, borradores, aprobados, programados, publicados.
 - **Progress en estrategia**: planificados/generados/avance% calculados en vista, barra visual en template.
 - Próximo paso crítico: conectar agentes con Claude API (Anthropic SDK en requirements).

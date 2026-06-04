@@ -119,42 +119,86 @@
     btnToggle.textContent = visible ? 'Ver JSON' : 'Ocultar JSON';
   });
 
-  function slide(numero, tipo_slide, texto, extra) {
-    const tipoLabel = { portada: '📸 Portada', contenido: '📄 Contenido', cierre: '✅ Cierre', cta: '🔗 CTA' };
+  const tipoIcono = {
+    portada: '📸', problema: '❓', contenido: '📄',
+    beneficio: '✅', cta: '🔗', cierre: '✅',
+    hook: '🎯', desarrollo: '📝', ejemplo: '💡',
+  };
+  const tipoLabel = {
+    portada: 'Portada', problema: 'Problema', contenido: 'Contenido',
+    beneficio: 'Beneficio', cta: 'CTA', cierre: 'Cierre',
+    hook: 'Hook', desarrollo: 'Desarrollo', ejemplo: 'Ejemplo',
+  };
+
+  function slide(numero, tipo_slide, texto, subtexto, extra) {
+    const icono = tipoIcono[tipo_slide] || '◻';
     const label = tipoLabel[tipo_slide] || tipo_slide || '';
-    return `<div class="nxa-slide">
-      <div class="nxa-slide-num">${numero}</div>
-      ${label ? `<span class="nxa-slide-tipo">${label}</span>` : ''}
+    return `<div class="nxa-slide nxa-slide--${tipo_slide || 'contenido'}">
+      <div class="nxa-slide-header">
+        <div class="nxa-slide-num">${numero}</div>
+        ${label ? `<span class="nxa-slide-tipo">${icono} ${label}</span>` : ''}
+      </div>
       <p class="nxa-slide-texto">${texto || ''}</p>
+      ${subtexto ? `<p class="nxa-slide-subtexto">${subtexto}</p>` : ''}
       ${extra ? `<p class="nxa-slide-extra">${extra}</p>` : ''}
     </div>`;
   }
 
-  let html = '<div class="nxa-slides-grid">';
+  let html = '';
 
   if (tipo === 'carrusel' && raw.diapositivas) {
+    html = '<div class="nxa-slides-grid">';
     raw.diapositivas.forEach(d => {
-      html += slide(d.numero, d.tipo, d.texto);
+      html += slide(d.numero, d.tipo, d.texto, d.subtexto || '');
     });
+    html += '</div>';
+
   } else if (tipo === 'historia' && raw.pantallas) {
+    html = '<div class="nxa-historia-grid">';
     raw.pantallas.forEach(p => {
-      html += slide(p.numero, null, p.texto, p.duracion ? `⏱ ${p.duracion}` + (p.sticker ? ` · 🎯 ${p.sticker}` : '') : '');
+      const stickerLabel = { encuesta: '📊 Encuesta', deslizador: '↔ Deslizador', link: '🔗 Link' };
+      const st = p.sticker ? `<span class="nxa-sticker-badge">${stickerLabel[p.sticker] || p.sticker}</span>` : '';
+      html += `<div class="nxa-pantalla">
+        <div class="nxa-pantalla-header">
+          <span class="nxa-pantalla-num">Pantalla ${p.numero}</span>
+          <span class="nxa-pantalla-dur">⏱ ${p.duracion || ''}</span>
+        </div>
+        <p class="nxa-pantalla-texto">${p.texto || ''}</p>
+        ${p.subtexto ? `<p class="nxa-pantalla-sub">${p.subtexto}</p>` : ''}
+        ${st}
+      </div>`;
     });
+    html += '</div>';
+
   } else if (tipo === 'reel' && raw.escenas) {
-    raw.escenas.forEach((e, i) => {
-      html += slide(i + 1, null, e.texto, e.rango ? `⏱ ${e.rango}` : '');
+    const hookTxt = raw.hook ? `<div class="nxa-reel-hook"><span class="nxa-reel-hook-label">Hook</span><p>${raw.hook}</p></div>` : '';
+    html = `<div class="nxa-reel-wrapper">${hookTxt}<div class="nxa-slides-grid">`;
+    raw.escenas.forEach(e => {
+      html += slide(null, e.tipo || 'contenido', e.texto, '', e.rango ? `⏱ ${e.rango}` : '');
     });
+    html += '</div></div>';
+
   } else if (tipo === 'campana' && raw.piezas) {
+    html = '<div class="nxa-slides-grid">';
     raw.piezas.forEach((p, i) => {
       html += slide(i + 1, p.tipo, p.descripcion);
     });
+    html += '</div>';
+
+  } else if (tipo === 'post' && raw.sugerencia_visual) {
+    html = `<div class="nxa-post-preview">
+      <div class="nxa-post-mock">
+        <span class="nxa-post-mock-icon">🖼</span>
+        <p class="nxa-post-mock-texto">${raw.sugerencia_visual}</p>
+      </div>
+      ${raw.pilar ? `<div class="nxa-post-pilar"><span class="nxa-badge nxa-badge--tipo">◈ ${raw.pilar}</span></div>` : ''}
+    </div>`;
+
   } else {
-    html += `<div class="nxa-slide nxa-slide--full">
+    html = `<div class="nxa-slide nxa-slide--full nxa-slide--contenido">
       <p class="nxa-slide-texto">${raw.formato || 'Contenido generado'}</p>
     </div>`;
   }
-
-  html += '</div>';
   viewer.innerHTML = html;
 })();
 </script>
