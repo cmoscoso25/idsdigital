@@ -1,0 +1,96 @@
+{% extends "nexa/base_nexa.html" %}
+
+{% block title %}{{ contenido.titulo|truncatechars:40 }}{% endblock %}
+{% block topbar_title %}{{ contenido.get_tipo_contenido_display }} · {{ contenido.empresa.nombre_empresa }}{% endblock %}
+{% block topbar_actions %}
+  <a href="{% url 'nexa:contenido_list' %}?empresa={{ contenido.empresa.pk }}" class="nxa-btn nxa-btn--ghost">
+    ← Volver
+  </a>
+{% endblock %}
+
+{% block content %}
+<div class="nxa-grid-2">
+  <!-- Contenido principal -->
+  <div class="nxa-card">
+    <div class="nxa-card-header">
+      <h2 class="nxa-card-title">{{ contenido.titulo }}</h2>
+      <span class="nxa-badge nxa-badge--estado nxa-estado--{{ contenido.estado }}">
+        {{ contenido.get_estado_display }}
+      </span>
+    </div>
+
+    <div class="nxa-contenido-copy">
+      <h4 class="nxa-label">Copy</h4>
+      <pre class="nxa-copy-text">{{ contenido.copy }}</pre>
+    </div>
+
+    {% if contenido.hashtags %}
+      <div class="nxa-contenido-hashtags">
+        <h4 class="nxa-label">Hashtags</h4>
+        <p class="nxa-tags-text">{{ contenido.hashtags }}</p>
+      </div>
+    {% endif %}
+
+    {% if contenido.cta %}
+      <div class="nxa-contenido-cta">
+        <h4 class="nxa-label">CTA</h4>
+        <p class="nxa-cta-text">{{ contenido.cta }}</p>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Panel lateral: estructura + acciones -->
+  <div>
+    <!-- Estructura JSON -->
+    <div class="nxa-card" style="margin-bottom:16px;">
+      <div class="nxa-card-header">
+        <h2 class="nxa-card-title">Estructura</h2>
+      </div>
+      <pre class="nxa-json-viewer">{{ contenido.estructura_json }}</pre>
+    </div>
+
+    <!-- Cambiar estado -->
+    <div class="nxa-card">
+      <div class="nxa-card-header">
+        <h2 class="nxa-card-title">Cambiar estado</h2>
+      </div>
+      <form method="post" class="nxa-estado-form">
+        {% csrf_token %}
+        <div class="nxa-estado-btns">
+          {% for valor, etiqueta in contenido.ESTADOS %}
+            <button type="submit" name="estado" value="{{ valor }}"
+              class="nxa-btn nxa-btn--estado nxa-estado--{{ valor }} {% if contenido.estado == valor %}active{% endif %}">
+              {{ etiqueta }}
+            </button>
+          {% endfor %}
+        </div>
+      </form>
+
+      <div class="nxa-detail-list" style="margin-top:16px;">
+        <div class="nxa-detail-row">
+          <span class="nxa-detail-label">Tipo</span>
+          <span class="nxa-detail-value">{{ contenido.get_tipo_contenido_display }}</span>
+        </div>
+        <div class="nxa-detail-row">
+          <span class="nxa-detail-label">Empresa</span>
+          <span class="nxa-detail-value">
+            <a href="{% url 'nexa:empresa_detalle' contenido.empresa.pk %}" class="nxa-link">
+              {{ contenido.empresa.nombre_empresa }}
+            </a>
+          </span>
+        </div>
+        <div class="nxa-detail-row">
+          <span class="nxa-detail-label">Creado</span>
+          <span class="nxa-detail-value nxa-text-muted">{{ contenido.fecha_creacion|date:"d/m/Y H:i" }}</span>
+        </div>
+      </div>
+
+      <div style="margin-top:16px;">
+        <a href="{% url 'nexa:generar' contenido.empresa.pk %}" class="nxa-btn nxa-btn--primary" style="width:100%;">
+          ⚡ Generar nuevo contenido
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

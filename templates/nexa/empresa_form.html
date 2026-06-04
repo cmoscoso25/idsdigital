@@ -1,0 +1,62 @@
+{% extends "nexa/base_nexa.html" %}
+
+{% block title %}{{ accion }}{% endblock %}
+{% block topbar_title %}{{ accion }}{% endblock %}
+
+{% block content %}
+<div class="nxa-form-page">
+  <form method="post" enctype="multipart/form-data" class="nxa-form">
+    {% csrf_token %}
+
+    <div class="nxa-form-section">
+      <h3 class="nxa-form-section-title">Datos de la empresa</h3>
+      <div class="nxa-form-grid">
+        {% for field in form %}
+          {% if field.name in "nombre_empresa,rubro,tono_marca,objetivo_principal,instagram,sitio_web" %}
+            <div class="nxa-form-field">
+              <label class="nxa-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+              {{ field }}
+              {% if field.errors %}
+                <span class="nxa-field-error">{{ field.errors|join:", " }}</span>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div class="nxa-form-field nxa-form-field--full">
+        <label class="nxa-label" for="{{ form.descripcion.id_for_label }}">{{ form.descripcion.label }}</label>
+        {{ form.descripcion }}
+        {% if form.descripcion.errors %}<span class="nxa-field-error">{{ form.descripcion.errors|join:", " }}</span>{% endif %}
+      </div>
+      <div class="nxa-form-field nxa-form-field--full">
+        <label class="nxa-label" for="{{ form.publico_objetivo.id_for_label }}">{{ form.publico_objetivo.label }}</label>
+        {{ form.publico_objetivo }}
+        {% if form.publico_objetivo.errors %}<span class="nxa-field-error">{{ form.publico_objetivo.errors|join:", " }}</span>{% endif %}
+      </div>
+    </div>
+
+    <div class="nxa-form-section">
+      <h3 class="nxa-form-section-title">Identidad visual</h3>
+      <div class="nxa-form-grid">
+        <div class="nxa-form-field">
+          <label class="nxa-label" for="{{ form.color_principal.id_for_label }}">{{ form.color_principal.label }}</label>
+          {{ form.color_principal }}
+        </div>
+        <div class="nxa-form-field">
+          <label class="nxa-label" for="{{ form.color_secundario.id_for_label }}">{{ form.color_secundario.label }}</label>
+          {{ form.color_secundario }}
+        </div>
+        <div class="nxa-form-field">
+          <label class="nxa-label" for="{{ form.logo.id_for_label }}">{{ form.logo.label }}</label>
+          {{ form.logo }}
+        </div>
+      </div>
+    </div>
+
+    <div class="nxa-form-actions">
+      <a href="{% url 'nexa:empresa_list' %}" class="nxa-btn nxa-btn--ghost">Cancelar</a>
+      <button type="submit" class="nxa-btn nxa-btn--primary">{{ accion }}</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

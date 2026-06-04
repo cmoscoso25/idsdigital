@@ -1,0 +1,50 @@
+{% extends "nexa/base_nexa.html" %}
+
+{% block title %}Empresas{% endblock %}
+{% block topbar_title %}Empresas{% endblock %}
+{% block topbar_actions %}
+  <a href="{% url 'nexa:empresa_nueva' %}" class="nxa-btn nxa-btn--primary">+ Nueva empresa</a>
+{% endblock %}
+
+{% block content %}
+{% if empresas %}
+  <div class="nxa-grid-cards">
+    {% for emp in empresas %}
+      <div class="nxa-empresa-card">
+        <div class="nxa-empresa-card-color-bar" style="background: linear-gradient(135deg, {{ emp.color_principal }}, {{ emp.color_secundario }})"></div>
+        <div class="nxa-empresa-card-body">
+          {% if emp.logo %}
+            <img src="{{ emp.logo.url }}" alt="Logo {{ emp.nombre_empresa }}" class="nxa-empresa-logo" />
+          {% else %}
+            <div class="nxa-empresa-logo-placeholder" style="background:{{ emp.color_principal }}20; color:{{ emp.color_principal }}">
+              {{ emp.nombre_empresa|first|upper }}
+            </div>
+          {% endif %}
+          <h3 class="nxa-empresa-nombre">{{ emp.nombre_empresa }}</h3>
+          <p class="nxa-empresa-rubro">{{ emp.rubro }}</p>
+          <p class="nxa-empresa-desc">{{ emp.descripcion|truncatechars:100 }}</p>
+          <div class="nxa-empresa-meta">
+            <span class="nxa-badge">{{ emp.get_tono_marca_display }}</span>
+            {% if emp.memoria_marca %}
+              <span class="nxa-badge nxa-badge--success">Memoria ✓</span>
+            {% else %}
+              <span class="nxa-badge nxa-badge--warning">Sin memoria</span>
+            {% endif %}
+          </div>
+        </div>
+        <div class="nxa-empresa-card-footer">
+          <a href="{% url 'nexa:empresa_detalle' emp.pk %}" class="nxa-btn nxa-btn--ghost nxa-btn--sm">Ver detalle</a>
+          <a href="{% url 'nexa:generar' emp.pk %}" class="nxa-btn nxa-btn--primary nxa-btn--sm">⚡ Generar</a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="nxa-empty nxa-empty--page">
+    <div class="nxa-empty-icon">⬡</div>
+    <h2>Sin empresas registradas</h2>
+    <p>Registra tu primera empresa para comenzar a generar contenido con IA.</p>
+    <a href="{% url 'nexa:empresa_nueva' %}" class="nxa-btn nxa-btn--primary">Registrar empresa</a>
+  </div>
+{% endif %}
+{% endblock %}

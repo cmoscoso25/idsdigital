@@ -1,0 +1,62 @@
+{% extends "nexa/base_nexa.html" %}
+
+{% block title %}Biblioteca de contenidos{% endblock %}
+{% block topbar_title %}Biblioteca de contenidos{% endblock %}
+
+{% block content %}
+<!-- Filtro por empresa -->
+<div class="nxa-filters">
+  <form method="get" class="nxa-filter-form">
+    <select name="empresa" class="nxa-select" onchange="this.form.submit()">
+      <option value="">Todas las empresas</option>
+      {% for emp in empresas %}
+        <option value="{{ emp.pk }}" {% if empresa_id_filtro == emp.pk|stringformat:"s" %}selected{% endif %}>
+          {{ emp.nombre_empresa }}
+        </option>
+      {% endfor %}
+    </select>
+  </form>
+</div>
+
+{% if contenidos %}
+  <div class="nxa-card">
+    <table class="nxa-table">
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Título</th>
+          <th>Empresa</th>
+          <th>Estado</th>
+          <th>Fecha</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in contenidos %}
+          <tr>
+            <td><span class="nxa-badge nxa-badge--tipo">{{ c.get_tipo_contenido_display }}</span></td>
+            <td class="nxa-table-title">{{ c.titulo|truncatechars:60 }}</td>
+            <td class="nxa-text-muted">{{ c.empresa.nombre_empresa }}</td>
+            <td>
+              <span class="nxa-badge nxa-badge--estado nxa-estado--{{ c.estado }}">
+                {{ c.get_estado_display }}
+              </span>
+            </td>
+            <td class="nxa-text-muted">{{ c.fecha_creacion|date:"d/m/y H:i" }}</td>
+            <td>
+              <a href="{% url 'nexa:contenido_detalle' c.pk %}" class="nxa-link-small">Ver →</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <div class="nxa-empty nxa-empty--page">
+    <div class="nxa-empty-icon">◻</div>
+    <h2>Sin contenidos generados</h2>
+    <p>Selecciona una empresa y genera tu primer contenido con IA.</p>
+    <a href="{% url 'nexa:empresa_list' %}" class="nxa-btn nxa-btn--primary">Ir a empresas</a>
+  </div>
+{% endif %}
+{% endblock %}

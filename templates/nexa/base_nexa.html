@@ -1,0 +1,82 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{% block title %}Nexa AI{% endblock %} — Nexa AI by IDS Digital</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'css/nexa_app.css' %}" />
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="nxa-app">
+
+  <!-- Sidebar -->
+  <aside class="nxa-sidebar" id="nxaSidebar">
+    <div class="nxa-sidebar-header">
+      <a href="{% url 'nexa:dashboard' %}" class="nxa-logo-link">
+        <span class="nxa-logo-icon">⚡</span>
+        <span class="nxa-logo-text">Nexa <span class="nxa-logo-ai">AI</span></span>
+      </a>
+    </div>
+
+    <nav class="nxa-nav">
+      <a href="{% url 'nexa:dashboard' %}" class="nxa-nav-item {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+        <span class="nxa-nav-icon">◈</span> Dashboard
+      </a>
+      <a href="{% url 'nexa:empresa_list' %}" class="nxa-nav-item {% if 'empresa' in request.resolver_match.url_name %}active{% endif %}">
+        <span class="nxa-nav-icon">⬡</span> Empresas
+      </a>
+      <a href="{% url 'nexa:contenido_list' %}" class="nxa-nav-item {% if 'contenido' in request.resolver_match.url_name %}active{% endif %}">
+        <span class="nxa-nav-icon">◻</span> Contenidos
+      </a>
+    </nav>
+
+    <div class="nxa-sidebar-footer">
+      <div class="nxa-user-info">
+        <span class="nxa-user-avatar">{{ request.user.email|first|upper }}</span>
+        <span class="nxa-user-email">{{ request.user.email }}</span>
+      </div>
+      <a href="{% url 'nexa_public' %}" class="nxa-link-small" target="_blank">Ver landing →</a>
+      <a href="{% url 'accounts:logout' %}" class="nxa-link-small nxa-logout"
+         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        Cerrar sesión
+      </a>
+      <form id="logout-form" action="{% url 'accounts:logout' %}" method="post" hidden>
+        {% csrf_token %}
+      </form>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="nxa-main">
+    <header class="nxa-topbar">
+      <button class="nxa-menu-btn" id="nxaMenuBtn" aria-label="Menú">☰</button>
+      <div class="nxa-topbar-title">{% block topbar_title %}{% endblock %}</div>
+      <div class="nxa-topbar-actions">{% block topbar_actions %}{% endblock %}</div>
+    </header>
+
+    <main class="nxa-content">
+      {% if messages %}
+        <div class="nxa-messages">
+          {% for msg in messages %}
+            <div class="nxa-alert nxa-alert--{{ msg.tags }}">{{ msg }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <script>
+    const btn = document.getElementById('nxaMenuBtn');
+    const sidebar = document.getElementById('nxaSidebar');
+    if (btn) btn.addEventListener('click', () => sidebar.classList.toggle('open'));
+  </script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

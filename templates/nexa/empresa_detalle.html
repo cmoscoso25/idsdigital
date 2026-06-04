@@ -1,0 +1,135 @@
+{% extends "nexa/base_nexa.html" %}
+
+{% block title %}{{ empresa.nombre_empresa }}{% endblock %}
+{% block topbar_title %}{{ empresa.nombre_empresa }}{% endblock %}
+{% block topbar_actions %}
+  <a href="{% url 'nexa:memoria_editar' empresa.pk %}" class="nxa-btn nxa-btn--ghost">
+    {% if memoria %}Editar memoria{% else %}+ Crear memoria{% endif %}
+  </a>
+  <a href="{% url 'nexa:generar' empresa.pk %}" class="nxa-btn nxa-btn--primary">⚡ Generar contenido</a>
+{% endblock %}
+
+{% block content %}
+<div class="nxa-grid-2">
+  <!-- Info empresa -->
+  <div class="nxa-card">
+    <div class="nxa-card-header">
+      <h2 class="nxa-card-title">Datos de la empresa</h2>
+    </div>
+    <div class="nxa-detail-list">
+      <div class="nxa-detail-row">
+        <span class="nxa-detail-label">Rubro</span>
+        <span class="nxa-detail-value">{{ empresa.rubro }}</span>
+      </div>
+      <div class="nxa-detail-row">
+        <span class="nxa-detail-label">Público objetivo</span>
+        <span class="nxa-detail-value">{{ empresa.publico_objetivo }}</span>
+      </div>
+      <div class="nxa-detail-row">
+        <span class="nxa-detail-label">Tono de marca</span>
+        <span class="nxa-detail-value">{{ empresa.get_tono_marca_display }}</span>
+      </div>
+      <div class="nxa-detail-row">
+        <span class="nxa-detail-label">Objetivo principal</span>
+        <span class="nxa-detail-value">{{ empresa.get_objetivo_principal_display }}</span>
+      </div>
+      {% if empresa.instagram %}
+        <div class="nxa-detail-row">
+          <span class="nxa-detail-label">Instagram</span>
+          <span class="nxa-detail-value">@{{ empresa.instagram }}</span>
+        </div>
+      {% endif %}
+      {% if empresa.sitio_web %}
+        <div class="nxa-detail-row">
+          <span class="nxa-detail-label">Sitio web</span>
+          <span class="nxa-detail-value">
+            <a href="{{ empresa.sitio_web }}" target="_blank" class="nxa-link">{{ empresa.sitio_web }}</a>
+          </span>
+        </div>
+      {% endif %}
+      <div class="nxa-detail-row">
+        <span class="nxa-detail-label">Colores</span>
+        <span class="nxa-detail-value nxa-colors-preview">
+          <span class="nxa-color-dot" style="background:{{ empresa.color_principal }}" title="{{ empresa.color_principal }}"></span>
+          <span class="nxa-color-dot" style="background:{{ empresa.color_secundario }}" title="{{ empresa.color_secundario }}"></span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Memoria de marca -->
+  <div class="nxa-card">
+    <div class="nxa-card-header">
+      <h2 class="nxa-card-title">Memoria de marca</h2>
+    </div>
+    {% if memoria %}
+      <div class="nxa-detail-list">
+        <div class="nxa-detail-row">
+          <span class="nxa-detail-label">Propuesta de valor</span>
+          <span class="nxa-detail-value">{{ memoria.propuesta_valor }}</span>
+        </div>
+        <div class="nxa-detail-row">
+          <span class="nxa-detail-label">Servicios principales</span>
+          <span class="nxa-detail-value">{{ memoria.servicios_principales }}</span>
+        </div>
+        <div class="nxa-detail-row">
+          <span class="nxa-detail-label">Palabras clave</span>
+          <span class="nxa-detail-value nxa-tags">
+            {% for tag in memoria.palabras_clave.split(",") %}
+              <span class="nxa-tag">{{ tag|strip }}</span>
+            {% endfor %}
+          </span>
+        </div>
+        <div class="nxa-detail-row">
+          <span class="nxa-detail-label">Estilo de comunicación</span>
+          <span class="nxa-detail-value">{{ memoria.estilo_comunicacion }}</span>
+        </div>
+        {% if memoria.evitar_mencionar %}
+          <div class="nxa-detail-row">
+            <span class="nxa-detail-label">Evitar mencionar</span>
+            <span class="nxa-detail-value nxa-text-warning">{{ memoria.evitar_mencionar }}</span>
+          </div>
+        {% endif %}
+      </div>
+    {% else %}
+      <div class="nxa-empty">
+        <p>Sin memoria de marca aún.</p>
+        <p class="nxa-text-muted">La memoria de marca permite a los agentes IA generar contenido coherente con tu identidad.</p>
+        <a href="{% url 'nexa:memoria_editar' empresa.pk %}" class="nxa-btn nxa-btn--primary">Crear memoria de marca</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Contenidos recientes de esta empresa -->
+{% if contenidos %}
+  <div class="nxa-card" style="margin-top: 24px;">
+    <div class="nxa-card-header">
+      <h2 class="nxa-card-title">Contenidos generados</h2>
+      <a href="{% url 'nexa:contenido_list' %}?empresa={{ empresa.pk }}" class="nxa-link-small">Ver todos →</a>
+    </div>
+    <table class="nxa-table">
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Título</th>
+          <th>Estado</th>
+          <th>Fecha</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in contenidos %}
+          <tr>
+            <td><span class="nxa-badge nxa-badge--tipo">{{ c.get_tipo_contenido_display }}</span></td>
+            <td>{{ c.titulo|truncatechars:60 }}</td>
+            <td><span class="nxa-badge nxa-badge--estado nxa-estado--{{ c.estado }}">{{ c.get_estado_display }}</span></td>
+            <td class="nxa-text-muted">{{ c.fecha_creacion|date:"d/m/y" }}</td>
+            <td><a href="{% url 'nexa:contenido_detalle' c.pk %}" class="nxa-link-small">Ver →</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endif %}
+{% endblock %}

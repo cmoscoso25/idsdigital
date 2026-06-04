@@ -1,0 +1,15 @@
+from django.urls import path
+from . import views
+
+app_name = "nexa"
+
+urlpatterns = [
+    path("app/", views.dashboard, name="dashboard"),
+    path("app/empresas/", views.empresa_list, name="empresa_list"),
+    path("app/empresas/nueva/", views.empresa_nueva, name="empresa_nueva"),
+    path("app/empresas/<int:pk>/", views.empresa_detalle, name="empresa_detalle"),
+    path("app/empresas/<int:pk>/memoria/", views.memoria_editar, name="memoria_editar"),
+    path("app/empresas/<int:pk>/generar/", views.generar, name="generar"),
+    path("app/contenidos/", views.contenido_list, name="contenido_list"),
+    path("app/contenidos/<int:pk>/", views.contenido_detalle, name="contenido_detalle"),
+]

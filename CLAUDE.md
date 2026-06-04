@@ -100,10 +100,17 @@ no están instalados en el entorno MCP. Usar siempre el CLI como fallback.
 ## Sub-SaaS: Nexa AI
 
 - Ruta pública: `/nexa/` → vista `public.nexa` → template `templates/public/nexa.html`
-- CSS dedicado: `static/css/nexa.css` (scoped bajo `.nexa-page`)
-- No existe aún dashboard privado ni modelos específicos de Nexa — solo landing de captación.
+- CSS landing: `static/css/nexa.css` (scoped bajo `.nexa-page`)
+- **App Django `nexa`** implementada (MVP activo desde 2026-06-04):
+  - Panel privado en `/nexa/app/` — todas las vistas con `@login_required`.
+  - Modelos: `EmpresaNexa`, `MemoriaMarca`, `ContenidoGenerado`.
+  - Servicio IA: `nexa/services/generador_contenido.py` (simulado, listo para API).
+  - Templates en `templates/nexa/` — base con sidebar `base_nexa.html`.
+  - CSS panel: `static/css/nexa_app.css` (scoped bajo `.nxa-app`).
+  - No usar `Workspace` en Nexa aún — las empresas son FK a `accounts.User`.
 - El formulario de demo de Nexa reutiliza `DemoRequest` con `necesidad = "Nexa AI — Demo anticipada"`.
-- Toda lógica futura de Nexa debe ser analizada antes de implementar: puede requerir app propia.
+- Pillow (12.2.0) requerido para `EmpresaNexa.logo` (ImageField) — ya instalado.
+- Próximo paso crítico: conectar `generador_contenido.py` con Claude/OpenAI API.
 
 ## Gestión de contexto — archivos de referencia
 

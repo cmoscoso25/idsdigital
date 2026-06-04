@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "accounts",
     "public",
     "agente_ia",
+    "nexa",
 ]
 
 # MIDDLEWARE

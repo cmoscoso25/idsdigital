@@ -1,0 +1,64 @@
+{% extends "nexa/base_nexa.html" %}
+
+{% block title %}Generar contenido — {{ empresa.nombre_empresa }}{% endblock %}
+{% block topbar_title %}⚡ Generar contenido · {{ empresa.nombre_empresa }}{% endblock %}
+
+{% block content %}
+<div class="nxa-generar-layout">
+  <!-- Panel izquierdo: contexto -->
+  <div class="nxa-card nxa-generar-contexto">
+    <div class="nxa-card-header">
+      <h2 class="nxa-card-title">Contexto de marca</h2>
+    </div>
+    {% if memoria %}
+      <div class="nxa-detail-list">
+        <div class="nxa-detail-row">
+          <span class="nxa-detail-label">Propuesta de valor</span>
+          <span class="nxa-detail-value">{{ memoria.propuesta_valor|truncatechars:120 }}</span>
+        </div>
+        <div class="nxa-detail-row">
+          <span class="nxa-detail-label">Tono</span>
+          <span class="nxa-detail-value">{{ empresa.get_tono_marca_display }}</span>
+        </div>
+        <div class="nxa-detail-row">
+          <span class="nxa-detail-label">Objetivo</span>
+          <span class="nxa-detail-value">{{ empresa.get_objetivo_principal_display }}</span>
+        </div>
+      </div>
+      <div class="nxa-badge nxa-badge--success" style="margin-top:12px;">Memoria de marca activa ✓</div>
+    {% else %}
+      <div class="nxa-empty">
+        <p class="nxa-text-muted">
+          Sin memoria de marca. El contenido generado tendrá menos contexto.
+        </p>
+        <a href="{% url 'nexa:memoria_editar' empresa.pk %}" class="nxa-btn nxa-btn--ghost nxa-btn--sm">
+          + Crear memoria
+        </a>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Panel derecho: formulario de generación -->
+  <div class="nxa-card nxa-generar-form-card">
+    <div class="nxa-card-header">
+      <h2 class="nxa-card-title">Configurar generación</h2>
+    </div>
+    <form method="post" class="nxa-form">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="nxa-form-field nxa-form-field--full">
+          <label class="nxa-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}<span class="nxa-field-error">{{ field.errors|join:", " }}</span>{% endif %}
+        </div>
+      {% endfor %}
+      <div class="nxa-form-actions">
+        <a href="{% url 'nexa:empresa_detalle' empresa.pk %}" class="nxa-btn nxa-btn--ghost">Cancelar</a>
+        <button type="submit" class="nxa-btn nxa-btn--primary nxa-btn--generate">
+          ⚡ Generar con IA
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

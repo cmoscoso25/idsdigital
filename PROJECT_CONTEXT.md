@@ -1,6 +1,6 @@
 # PROJECT_CONTEXT.md — IDS Digital
 
-**Última actualización:** 2026-05-30
+**Última actualización:** 2026-06-04
 
 ---
 
@@ -45,6 +45,7 @@ request autenticado desde la sesión (`current_workspace_id`).
 | `accounts` | Auth, workspaces, RBAC | Activo |
 | `agente_ia` | Chatbot con base de conocimiento propia | Activo |
 | `core` | Health check, vista home redirect | Activo |
+| `nexa` | SaaS privado Nexa AI: empresas, memoria de marca, generación de contenido IA | MVP activo |
 | `ia_diagnostico` | Diagnóstico IA (skeleton, sin URLs) | Pendiente |
 
 ---
@@ -73,6 +74,14 @@ request autenticado desde la sesión (`current_workspace_id`).
 | `/desarrollo-software-medida/` | `public.custom_software_development` | Página SEO |
 | `/inteligencia-artificial-empresas/` | `public.ai_solutions` | Página SEO |
 | `/nexa/` | `public.nexa` | Landing pública Nexa AI by IDS Digital |
+| `/nexa/app/` | `nexa.dashboard` | Dashboard privado Nexa AI (login_required) |
+| `/nexa/app/empresas/` | `nexa.empresa_list` | Lista de empresas del usuario |
+| `/nexa/app/empresas/nueva/` | `nexa.empresa_nueva` | Crear empresa |
+| `/nexa/app/empresas/<id>/` | `nexa.empresa_detalle` | Detalle empresa + memoria |
+| `/nexa/app/empresas/<id>/memoria/` | `nexa.memoria_editar` | Crear / editar memoria de marca |
+| `/nexa/app/empresas/<id>/generar/` | `nexa.generar` | Generar contenido con IA |
+| `/nexa/app/contenidos/` | `nexa.contenido_list` | Biblioteca de contenidos |
+| `/nexa/app/contenidos/<id>/` | `nexa.contenido_detalle` | Detalle + cambio de estado |
 | `/admin/` | Django Admin | Administración interna |
 | `/sitemap.xml` | Django Sitemaps | SEO |
 | `/robots.txt` | `public.robots_txt` | SEO |
@@ -95,6 +104,11 @@ request autenticado desde la sesión (`current_workspace_id`).
 - **LeadNote** — Notas internas asociadas al lead
 - **LeadAuditLog** — Auditoría de cambios (stage, owner, notas) con before/after JSON
 
+### `nexa`
+- **EmpresaNexa** — Empresa registrada por un usuario en Nexa AI: nombre, rubro, descripción, público objetivo, tono de marca, objetivo principal, instagram, sitio_web, logo (ImageField), colores hex, fecha_creacion. FK a `accounts.User`.
+- **MemoriaMarca** — OneToOne con EmpresaNexa: propuesta_valor, servicios_principales, palabras_clave, estilo_comunicacion, evitar_mencionar, instrucciones_ia, resumen_marca. Contexto para agentes IA.
+- **ContenidoGenerado** — Contenido generado por IA para una empresa: tipo (carrusel/historia/post/reel/campaña), titulo, copy, hashtags, cta, estructura_json, estado (borrador/aprobado/programado/publicado), fecha_programada, fecha_creacion.
+
 ### `agente_ia`
 - **CategoriaConocimiento** — Categorías de la base de conocimiento del chatbot
 - **RespuestaConocimiento** — Respuestas con palabras clave, prioridad y contador de uso
@@ -110,6 +124,7 @@ request autenticado desde la sesión (`current_workspace_id`).
 | `static/css/styles.css` | CRM interno (panel) |
 | `static/css/public.css` | Landing (`.landing-page`), Blog (`.blog-dark`) y páginas públicas |
 | `static/css/nexa.css` | Landing Nexa AI (`.nexa-page`) — cargado solo en `/nexa/` |
+| `static/css/nexa_app.css` | Panel privado Nexa AI (`.nxa-app`) — cargado solo en `/nexa/app/*` |
 | `static/js/diagnostico_ia.js` | Frontend del agente conversacional |
 | `static/css/diagnostico_ia.css` | Estilos del chatbot |
 
@@ -146,22 +161,27 @@ request autenticado desde la sesión (`current_workspace_id`).
 - [x] Auth por email o username (`EmailOrUsernameBackend`)
 - [x] Deploy en Render.com (gunicorn + WhiteNoise)
 - [x] Email transaccional vía Resend
+- [x] Nexa AI MVP: app `nexa` con modelos, vistas, templates, servicio IA simulado y admin
 
 ---
 
 ## Sub-SaaS en desarrollo
 
-### Nexa AI by IDS Digital (`/nexa/`)
+### Nexa AI by IDS Digital (`/nexa/` + `/nexa/app/`)
 Plataforma de marketing digital con agentes de IA para pymes y empresas.
-- **Estado:** Landing comercial mejorada disponible en `/nexa/` — SaaS privado NO implementado aún. Beta privada activa para captación de early adopters.
-- **Propósito:** captación de early adopters y validación de producto.
-- **Formulario:** reutiliza `DemoRequest` con `necesidad = "Nexa AI — Demo anticipada"`.
-- **Acciones pendientes:**
-  - [ ] Dashboard privado (app separada o módulo dentro de `public`)
-  - [ ] Integración Meta API para publicación en Instagram/Facebook
-  - [ ] Sistema de agentes IA (Estratega, Copywriter, Diseñador, Analista, Community Manager)
-  - [ ] Planes y pagos (Stripe o similar)
-  - [ ] Memoria de marca (modelo de base de datos)
+- **Estado:** MVP real implementado como app Django `nexa`. Landing pública en `/nexa/`. Panel privado en `/nexa/app/`.
+- **App:** `nexa/` — modelos: `EmpresaNexa`, `MemoriaMarca`, `ContenidoGenerado`.
+- **Servicio IA:** `nexa/services/generador_contenido.py` — actualmente simulado, preparado para conectar con Claude/OpenAI API (punto de conexión marcado en el código).
+- **Template base:** `templates/nexa/base_nexa.html` — sidebar layout, diseño dark SaaS premium.
+- **CSS:** `static/css/nexa_app.css` — scoped bajo `.nxa-app`.
+- **Formulario landing:** reutiliza `DemoRequest` con `necesidad = "Nexa AI — Demo anticipada"`.
+- **Próximos pasos:**
+  - [ ] Conectar `generador_contenido.py` con Claude API (Anthropic SDK ya en requirements)
+  - [ ] Integración Meta Graph API para publicación en Instagram/Facebook
+  - [ ] Sistema de agentes IA especializados (Estratega, Copywriter, Community Manager)
+  - [ ] Planes y pagos (Stripe)
+  - [ ] Botón "Entrar a Nexa" en landing `/nexa/` → `/nexa/app/`
+  - [ ] Paginación en biblioteca de contenidos
 
 ## Funcionalidades pendientes
 

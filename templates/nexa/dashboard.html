@@ -1,0 +1,90 @@
+{% extends "nexa/base_nexa.html" %}
+
+{% block title %}Dashboard{% endblock %}
+{% block topbar_title %}Dashboard{% endblock %}
+{% block topbar_actions %}
+  <a href="{% url 'nexa:empresa_nueva' %}" class="nxa-btn nxa-btn--primary">+ Nueva empresa</a>
+{% endblock %}
+
+{% block content %}
+<!-- KPIs -->
+<div class="nxa-kpi-row">
+  <div class="nxa-kpi">
+    <span class="nxa-kpi-value">{{ total_empresas }}</span>
+    <span class="nxa-kpi-label">Empresas</span>
+  </div>
+  <div class="nxa-kpi">
+    <span class="nxa-kpi-value">{{ total_contenidos }}</span>
+    <span class="nxa-kpi-label">Contenidos generados</span>
+  </div>
+  <div class="nxa-kpi nxa-kpi--warning">
+    <span class="nxa-kpi-value">{{ borradores }}</span>
+    <span class="nxa-kpi-label">Borradores</span>
+  </div>
+  <div class="nxa-kpi nxa-kpi--success">
+    <span class="nxa-kpi-value">{{ aprobados }}</span>
+    <span class="nxa-kpi-label">Aprobados</span>
+  </div>
+</div>
+
+<div class="nxa-grid-2">
+  <!-- Empresas recientes -->
+  <div class="nxa-card">
+    <div class="nxa-card-header">
+      <h2 class="nxa-card-title">Empresas registradas</h2>
+      <a href="{% url 'nexa:empresa_list' %}" class="nxa-link-small">Ver todas →</a>
+    </div>
+    {% if empresas %}
+      <ul class="nxa-list">
+        {% for emp in empresas %}
+          <li class="nxa-list-item">
+            <div class="nxa-list-item-dot" style="background:{{ emp.color_principal }}"></div>
+            <div class="nxa-list-item-body">
+              <a href="{% url 'nexa:empresa_detalle' emp.pk %}" class="nxa-list-item-title">
+                {{ emp.nombre_empresa }}
+              </a>
+              <span class="nxa-list-item-meta">{{ emp.rubro }}</span>
+            </div>
+            <a href="{% url 'nexa:generar' emp.pk %}" class="nxa-btn nxa-btn--ghost nxa-btn--sm">Generar</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <div class="nxa-empty">
+        <p>Aún no tienes empresas registradas.</p>
+        <a href="{% url 'nexa:empresa_nueva' %}" class="nxa-btn nxa-btn--primary">Registrar primera empresa</a>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Contenidos recientes -->
+  <div class="nxa-card">
+    <div class="nxa-card-header">
+      <h2 class="nxa-card-title">Contenidos recientes</h2>
+      <a href="{% url 'nexa:contenido_list' %}" class="nxa-link-small">Ver todos →</a>
+    </div>
+    {% if contenidos_recientes %}
+      <ul class="nxa-list">
+        {% for c in contenidos_recientes %}
+          <li class="nxa-list-item">
+            <span class="nxa-badge nxa-badge--tipo">{{ c.get_tipo_contenido_display }}</span>
+            <div class="nxa-list-item-body">
+              <a href="{% url 'nexa:contenido_detalle' c.pk %}" class="nxa-list-item-title">
+                {{ c.titulo|truncatechars:50 }}
+              </a>
+              <span class="nxa-list-item-meta">{{ c.empresa.nombre_empresa }}</span>
+            </div>
+            <span class="nxa-badge nxa-badge--estado nxa-estado--{{ c.estado }}">
+              {{ c.get_estado_display }}
+            </span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <div class="nxa-empty">
+        <p>Aún no has generado contenidos.</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

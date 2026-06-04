@@ -41,6 +41,7 @@ urlpatterns = [
     path("desarrollo-sistemas-internos/", public_views.desarrollo_sistemas_internos, name="desarrollo_sistemas_internos"),
 
     path("nexa/", public_views.nexa, name="nexa_public"),
+    path("nexa/", include("nexa.urls")),
 
     path("robots.txt", public_views.robots_txt),
     path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="sitemap"),
