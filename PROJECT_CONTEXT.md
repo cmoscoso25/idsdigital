@@ -170,6 +170,8 @@ request autenticado desde la sesión (`current_workspace_id`).
 
 | Commit | Decisión |
 |---|---|
+| Pendiente | Rediseño landing v2: Inter font, canvas partículas, aurora CSS, reveal on scroll |
+| `8d33e5d` | Rediseño landing dark premium + sistema de documentación (FRONTEND/DESIGN_SYSTEM/PROJECT_RULES) |
 | `d168965` | Limpieza y optimización de styles.css |
 | `fe230c6` | Header CRM oscuro con fondo limpio |
 | `b3bc6b1` | Logout con POST y redirects a solicitudes |

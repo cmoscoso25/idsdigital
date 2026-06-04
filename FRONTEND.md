@@ -368,6 +368,56 @@ Antes de diseñar o implementar una nueva página o sección, responder:
 
 ---
 
+## 15. Animaciones — reglas y patrones establecidos
+
+### Sistema de animación del hero (patrón canónico)
+
+El hero de la landing usa **dos capas de animación independientes**:
+
+| Capa | Técnica | Propósito |
+|---|---|---|
+| Canvas (JS) | `requestAnimationFrame` + partículas en red | Movimiento continuo, profundidad tecnológica |
+| Aurora orbs (CSS) | `@keyframes` + `filter:blur` | Gradientes de color que se desplazan suavemente |
+| Grid overlay (CSS) | `background-position` animado | Sensación de espacio infinito |
+| Scan line (CSS) | `@keyframes scan` con `top` | Efecto terminal/tech sutil |
+
+### Reglas de animación
+
+- MUST respetar `prefers-reduced-motion` — el canvas comprueba antes de arrancar.
+- MUST pausar el canvas con `IntersectionObserver` cuando el hero sale del viewport.
+- NEVER usar videos, GIFs pesados ni librerías de animación externas.
+- NEVER animar propiedades que activan layout (width, height, top, left). Solo `transform` y `opacity`.
+- Duración de aurora orbs: 16–26s (`ease-in-out`) — percepción suave, no mecánica.
+- Canvas: velocidad de partículas ≤ 0.35px/frame para elegancia.
+
+### Reveal on scroll (patrón canónico)
+
+```css
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.65s cubic-bezier(.22,.61,.36,1),
+              transform 0.65s cubic-bezier(.22,.61,.36,1);
+}
+[data-reveal].revealed { opacity: 1; transform: translateY(0); }
+```
+
+```javascript
+/* IntersectionObserver activa .revealed — zero libraries */
+var obs = new IntersectionObserver(fn, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+```
+
+- `transition-delay` inline para stagger entre elementos hermanos (ej: `0.1s`, `0.15s`).
+- Solo aplicar a elementos de sección — NEVER a elementos del hero (ya están en viewport).
+
+### Tipografía — Inter (establecida en landing)
+
+- Fuente: **Inter** desde Google Fonts CDN (400, 500, 600, 700, 800).
+- `font-feature-settings: "cv02","cv03","cv04","cv11"` en `.landing-page`.
+- `-webkit-font-smoothing: antialiased` en el body global.
+- H1 landing: 52px / weight 800 / letter-spacing -0.04em.
+- Section titles: 34px / weight 800 / letter-spacing -0.03em.
+
 ## 14. Archivos CSS — reglas de edición
 
 | Archivo | Alcance | Regla |

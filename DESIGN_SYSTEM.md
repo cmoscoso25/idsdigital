@@ -6,6 +6,30 @@ Leer junto con `FRONTEND.md` en tareas visuales. Este archivo define el **qué**
 
 ---
 
+## 0. Tipografía oficial
+
+**Fuente primaria:** Inter (Google Fonts CDN)
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+```
+
+```css
+font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+font-feature-settings: "cv02","cv03","cv04","cv11";
+-webkit-font-smoothing: antialiased;
+```
+
+| Uso | Tamaño | Peso | Letter-spacing |
+|---|---|---|---|
+| H1 landing hero | 52px | 800 | -0.04em |
+| Section title landing | 34px | 800 | -0.03em |
+| H1 blog | 28px | 700 | -0.02em |
+| Card title | 15px | 700 | -0.02em |
+| Body | 15–16px | 400 | 0 |
+| Label / meta | 11–13px | 500–600 | 0.01–0.11em |
+
 ## Principios base
 
 | Prioridad | Principio |
@@ -670,6 +694,42 @@ font-weight: 500
 - [ ] CTA de landing visible sin scroll en todos los breakpoints.
 
 ---
+
+## 13. Animaciones — sistema canónico
+
+### Keyframes establecidos (en `public.css`)
+
+| Nombre | Duración | Uso |
+|---|---|---|
+| `aurora-1/2/3` | 18–26s ease-in-out | Orbs de fondo en hero |
+| `grid-drift` | 40s linear | Grid overlay hero |
+| `dot-pulse` | 2.5s ease-in-out | Badge live indicator |
+| `btn-glow` | 4s ease-in-out | CTA button pulse |
+| `border-shimmer` | 8s ease | Form card border gradient |
+| `reveal-up` | 0.65s cubic-bezier | Fade-in on scroll |
+| `badge-float` | 5s ease-in-out | Hero badge flotante |
+| `scan` | 12s linear | Scan line decorativa del hero |
+
+### Canvas de partículas — patrón canónico
+
+```javascript
+// Parámetros que NO deben cambiarse sin justificación:
+var CONNECT = 155;                    // distancia máxima de conexión (px)
+var MAX_PARTICLES = 55;               // cap de partículas (performance)
+var PARTICLE_SPEED = 0.32;            // velocidad máxima por frame
+var COLORS = ['#3b82f6','#6366f1','#8b5cf6','#06b6d4'];  // paleta oficial
+```
+
+- El canvas se pausa con `IntersectionObserver` cuando el hero sale del viewport.
+- Las partículas hacen wrap (no bounce) para movimiento más fluido.
+- El glow de cada partícula usa `createRadialGradient` con radio 5× el núcleo.
+
+### Reglas
+
+- NEVER animar `width`, `height`, `top`, `left`, `margin` — solo `transform` y `opacity`.
+- NEVER usar `setInterval` para animaciones — solo `requestAnimationFrame`.
+- MUST verificar `prefers-reduced-motion` antes de iniciar cualquier animación JS.
+- NEVER cargar librerías de animación (GSAP, Framer, Anime.js) para efectos que CSS puede resolver.
 
 ## 12. Consistencia visual
 
