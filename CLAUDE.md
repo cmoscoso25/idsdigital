@@ -114,7 +114,13 @@ no están instalados en el entorno MCP. Usar siempre el CLI como fallback.
 - **EstrategiaMensual**: modelo con calendario_json (4 semanas). Vistas en `/nexa/app/estrategias/`.
 - **Visualizador de slides**: `contenido_detalle.html` renderiza `estructura_json` visualmente via JS; JSON oculto con toggle.
 - **Producción automática**: `generar_contenido_mes` (POST `/nexa/app/estrategias/<id>/generar/`) itera el `calendario_json`, llama al copywriter por cada publicación y crea `ContenidoGenerado` vinculado a la estrategia.
-- **Copywriter v2**: `nexa/services/agentes/copywriter.py` genera contenido auténtico por tipo (carrusel/historia/post/reel/campaña). Usa propuesta_valor, servicios, tono de marca y pilar. Sin frases genéricas. Hashtags: 5-8 naturales, máx 24 chars, sin concatenaciones largas. `_contexto()` centraliza acceso a memoria de marca.
+- **Copywriter v3** (2026-06-04): `nexa/services/agentes/copywriter.py` genera contenido con estructura narrativa profesional por formato:
+  - **Post**: Hook → Beneficio → Prueba/dato → CTA (`estructura_json.secciones` con 4 entradas)
+  - **Historia**: 3 pantallas rol-diferenciadas: `problema` (¿te ha pasado? + encuesta) → `consecuencia` (costo de no actuar + deslizador) → `solucion` (marca + propuesta + link)
+  - **Carrusel**: 6 slides obligatorios: portada → problema → `consecuencia` → `solucion` → beneficio → cta
+  - **Reel**: 5 escenas con `texto_pantalla` (versión corta para on-screen) y `duracion_seg`: hook(5s) → problema(5s) → solucion(10s) → beneficio(5s) → cta(5s)
+  - Nuevos helpers: `_prueba_post`, `_texto_problema_historia`, `_consecuencia_historia`, `_consecuencia_slide`, `_solucion_slide`, `_problema_reel`, `_solucion_reel`, `_beneficio_reel`
+  - Render visual actualizado: tipos `consecuencia` (fondo rojo oscuro, ⚠️) y `solucion` (azul positivo, ✓) en carrusel; tipos `problema/solucion/beneficio` en reel.
 - **Biblioteca**: filtros por empresa, estrategia, tipo y estado. KPIs: total, borradores, aprobados, programados, publicados.
 - **Progress en estrategia**: planificados/generados/avance% calculados en vista, barra visual en template.
 - **Creatividades Instagram** (2026-06-04): módulo completo en `nexa/`. Modelo `CreatividadInstagram` tiene `render_html` + `render_css` (campos server-side, listos para reemplazar por imagen IA real). Agente `agente_diseno_instagram.py` genera 4 renders HTML inline-styled: Post (1:1 con chrome Instagram), Historia (3 pantallas 9:16 con stickers), Carrusel (slides navegables con JS), Reel (storyboard 2 cols). Para conectar IA de imágenes: solo cambiar las funciones `_render_*` para devolver `<img src="url_api">` en lugar del HTML generado.

@@ -84,9 +84,14 @@ def _generar_carrusel(ctx: dict) -> dict:
     servicios = ctx["servicios"]
     publico   = ctx["publico"]
 
-    # El tema específico del brief como portada; el pilar como categoría de hashtags
-    hook   = tema if len(tema) > 20 else _hook_carrusel(pilar, nombre, propuesta)
-    titulo = f"{hook} [Carrusel]"
+    # Estructura narrativa: Portada → Problema → Consecuencia → Solución → Beneficio → CTA
+    hook         = tema if len(tema) > 20 else _hook_carrusel(pilar, nombre, propuesta)
+    titulo       = f"{hook} [Carrusel]"
+    problema     = _problema(pilar, publico)
+    consecuencia = _consecuencia_slide(pilar, publico)
+    solucion     = _solucion_slide(pilar, propuesta, servicios, nombre)
+    beneficio    = _beneficio(pilar, servicios[:130], nombre)
+    cta_sl       = _cta_slide(ctx["tono"], nombre, pilar)
 
     copy = (
         f"{hook}\n\n"
@@ -95,11 +100,12 @@ def _generar_carrusel(ctx: dict) -> dict:
     )
 
     slides = [
-        {"numero": 1, "tipo": "portada",   "texto": hook,                "subtexto": f"Por {nombre}"},
-        {"numero": 2, "tipo": "problema",  "texto": _problema(pilar, publico)},
-        {"numero": 3, "tipo": "contenido", "texto": propuesta[:130]},
-        {"numero": 4, "tipo": "beneficio", "texto": _beneficio(pilar, servicios[:130], nombre)},
-        {"numero": 5, "tipo": "cta",       "texto": _cta_slide(ctx["tono"], nombre, pilar)},
+        {"numero": 1, "tipo": "portada",     "texto": hook,        "subtexto": f"Por {nombre}"},
+        {"numero": 2, "tipo": "problema",    "texto": problema},
+        {"numero": 3, "tipo": "consecuencia","texto": consecuencia},
+        {"numero": 4, "tipo": "solucion",    "texto": solucion},
+        {"numero": 5, "tipo": "beneficio",   "texto": beneficio},
+        {"numero": 6, "tipo": "cta",         "texto": cta_sl},
     ]
 
     return {
@@ -119,33 +125,32 @@ def _generar_post(ctx: dict) -> dict:
     tema      = ctx["tema"]
     enfoque   = ctx["enfoque"]
     propuesta = ctx["propuesta"]
-    publico   = ctx["publico"]
+    servicios = ctx["servicios"]
     tono      = ctx["tono"]
 
-    # El tema específico dirige el gancho; el enfoque afina el segundo párrafo
-    gancho  = tema if len(tema) > 20 else _gancho_post(pilar, nombre, tono)
-    titulo  = tema[:80] if len(tema) > 20 else f"{pilar}: {_titular_post(pilar, nombre)}"
-    desarrollo = enfoque if enfoque else propuesta[:150]
+    # Estructura narrativa: Hook → Beneficio → Prueba/dato → CTA
+    hook      = tema if len(tema) > 20 else _gancho_post(pilar, nombre, tono)
+    titulo    = tema[:80] if len(tema) > 20 else f"{pilar}: {_titular_post(pilar, nombre)}"
+    beneficio = enfoque if enfoque else propuesta[:130]
+    prueba    = _prueba_post(pilar, servicios, nombre)
+    cta_copy  = _cta_principal(ctx)
 
-    copy = "\n\n".join([
-        gancho,
-        desarrollo,
-        propuesta[:120],
-        f"¿Quieres saber cómo? {_invitacion(tono)}",
-    ])
-
-    sugerencia = f"Imagen: {tema[:60]} — fondo coherente con la identidad de {nombre}. Texto en overlay: \"{gancho[:55]}\""
+    copy = "\n\n".join([hook, beneficio, prueba, cta_copy])
 
     return {
         "titulo":    titulo,
         "copy":      copy,
         "hashtags":  _hashtags(ctx, tipo="post"),
-        "cta":       _cta_principal(ctx),
+        "cta":       cta_copy,
         "estructura_json": {
-            "formato": "imagen_unica",
-            "sugerencia_visual": sugerencia,
-            "pilar": pilar,
-            "lineas_caption": 4,
+            "formato": "post",
+            "pilar":   pilar,
+            "secciones": [
+                {"tipo": "hook",      "texto": hook},
+                {"tipo": "beneficio", "texto": beneficio},
+                {"tipo": "prueba",    "texto": prueba},
+                {"tipo": "cta",       "texto": cta_copy},
+            ],
         },
     }
 
@@ -157,33 +162,39 @@ def _generar_historia(ctx: dict) -> dict:
     pilar     = ctx["pilar"]
     tema      = ctx["tema"]
     propuesta = ctx["propuesta"]
+    publico   = ctx["publico"]
     tono      = ctx["tono"]
 
-    # Pantalla 1: el tema específico como pregunta o afirmación impactante
-    texto_p1 = tema[:70] if len(tema) > 20 else f"💡 {pilar}"
+    # Estructura narrativa: Problema → Consecuencia → Solución + CTA
+    problema_txt     = tema[:70] if len(tema) > 20 else _texto_problema_historia(pilar, publico)
+    consecuencia_txt = _consecuencia_historia(pilar, nombre, publico)
+    solucion_txt     = propuesta[:80]
+    cta_txt          = _cta_historia(tono)
+
     titulo = f"Historia: {tema[:60]}" if len(tema) > 20 else f"Historia: {pilar}"
-    texto_corto = f"{texto_p1} — {propuesta[:60].rstrip('.')}."
 
     pantallas = [
         {
-            "numero": 1, "duracion": "7s",
-            "texto":    texto_p1,
-            "subtexto": _frase_corta(pilar, propuesta),
-            "sticker":  _sticker(pilar),
+            "numero":   1, "duracion": "7s", "rol": "problema",
+            "texto":    problema_txt,
+            "subtexto": "¿Te ha pasado? 👇",
+            "sticker":  "encuesta",
         },
         {
-            "numero": 2, "duracion": "7s",
-            "texto":    propuesta[:90],
-            "subtexto": f"— {nombre}",
+            "numero":   2, "duracion": "7s", "rol": "consecuencia",
+            "texto":    consecuencia_txt,
+            "subtexto": "El costo de no actuar",
             "sticker":  "deslizador",
         },
         {
-            "numero": 3, "duracion": "6s",
-            "texto":    _cta_historia(tono),
-            "subtexto": "🔗 Link en bio",
+            "numero":   3, "duracion": "6s", "rol": "solucion",
+            "texto":    f"{nombre}: {solucion_txt}",
+            "subtexto": cta_txt,
             "sticker":  "link",
         },
     ]
+
+    texto_corto = f"{problema_txt[:60].rstrip('.')} → {nombre} tiene la solución."
 
     return {
         "titulo":    titulo,
@@ -203,16 +214,52 @@ def _generar_reel(ctx: dict) -> dict:
     propuesta = ctx["propuesta"]
     servicios = ctx["servicios"]
     tono      = ctx["tono"]
+    publico   = ctx["publico"]
 
-    # El hook del reel usa el tema específico del brief cuando está disponible
-    hook   = tema if len(tema) > 20 else _hook_reel(pilar, nombre)
-    titulo = f"Reel: {hook[:60]}"
+    # Storyboard: Hook → Problema → Solución → Beneficio → CTA
+    hook       = tema if len(tema) > 20 else _hook_reel(pilar, nombre)
+    problema   = _problema_reel(pilar, publico)
+    solucion   = _solucion_reel(pilar, propuesta[:80], nombre)
+    beneficio  = _beneficio_reel(pilar, servicios[:80], nombre)
+    cta_texto  = _cta_reel(tono, nombre)
+    titulo     = f"Reel: {hook[:60]}"
 
-    guion = [
-        {"rango": "0-5s",   "texto": hook,                                      "tipo": "hook"},
-        {"rango": "5-15s",  "texto": propuesta[:100],                           "tipo": "desarrollo"},
-        {"rango": "15-25s", "texto": _ejemplo_reel(pilar, servicios[:80], nombre), "tipo": "ejemplo"},
-        {"rango": "25-30s", "texto": _cta_reel(tono, nombre),                   "tipo": "cta"},
+    escenas = [
+        {
+            "numero": 1, "tipo": "hook",
+            "rango": "0-5s", "duracion_seg": 5,
+            "texto": hook,
+            "texto_pantalla": hook[:60],
+            "transicion": "corte",
+        },
+        {
+            "numero": 2, "tipo": "problema",
+            "rango": "5-10s", "duracion_seg": 5,
+            "texto": problema,
+            "texto_pantalla": problema[:60],
+            "transicion": "fundido",
+        },
+        {
+            "numero": 3, "tipo": "solucion",
+            "rango": "10-20s", "duracion_seg": 10,
+            "texto": solucion,
+            "texto_pantalla": solucion[:60],
+            "transicion": "corte",
+        },
+        {
+            "numero": 4, "tipo": "beneficio",
+            "rango": "20-25s", "duracion_seg": 5,
+            "texto": beneficio,
+            "texto_pantalla": beneficio[:60],
+            "transicion": "fundido",
+        },
+        {
+            "numero": 5, "tipo": "cta",
+            "rango": "25-30s", "duracion_seg": 5,
+            "texto": cta_texto,
+            "texto_pantalla": cta_texto[:60],
+            "transicion": "corte",
+        },
     ]
 
     copy = (
@@ -227,10 +274,11 @@ def _generar_reel(ctx: dict) -> dict:
         "hashtags":  _hashtags(ctx, tipo="reel"),
         "cta":       _cta_principal(ctx),
         "estructura_json": {
-            "formato": "reel",
-            "duracion": "30s",
-            "hook": hook,
-            "escenas": guion,
+            "formato":           "reel",
+            "duracion":          "30s",
+            "duracion_total_seg": 30,
+            "hook":              hook,
+            "escenas":           escenas,
         },
     }
 
@@ -268,6 +316,66 @@ def _generar_campana(ctx: dict) -> dict:
 
 
 # ── Helpers de copy ──────────────────────────────────────────────────────────
+
+# ── Nuevos helpers de estructura por formato ─────────────────────────────────
+
+def _prueba_post(pilar: str, servicios: str, nombre: str) -> str:
+    pilar_l = pilar.lower()
+    opciones = [
+        f"Dato: las empresas que implementan {pilar_l} reportan hasta un 40% más de eficiencia operativa.",
+        f"No es teoría: en {nombre} ya lo hacemos con {servicios[:60].lower().rstrip('.')}.",
+        f"Resultado comprobado: {servicios[:70].lower().rstrip('.')} — menos tiempo, más resultados.",
+    ]
+    return random.choice(opciones)
+
+
+def _texto_problema_historia(pilar: str, publico: str) -> str:
+    pilar_l = pilar.lower()
+    return (
+        f"¿Sigues gestionando {pilar_l} de forma manual? "
+        f"Para {_publico_corto(publico)}, eso significa horas perdidas cada semana."
+    )
+
+
+def _consecuencia_historia(pilar: str, nombre: str, publico: str) -> str:
+    pilar_l = pilar.lower()
+    return (
+        f"Sin {pilar_l} bien implementado, las empresas asumen costos innecesarios "
+        f"y pierden competitividad frente a quienes ya lo aplican."
+    )
+
+
+def _consecuencia_slide(pilar: str, publico: str) -> str:
+    pilar_l = pilar.lower()
+    return (
+        f"Sin {pilar_l}, tu empresa pierde tiempo, aumenta costos y cede terreno "
+        f"a competidores que ya tomaron acción."
+    )
+
+
+def _solucion_slide(pilar: str, propuesta: str, servicios: str, nombre: str) -> str:
+    svc = servicios[:80].lower().rstrip(".")
+    prop = propuesta[:60].rstrip(".")
+    return f"{nombre} resuelve esto con {svc}. {prop}."
+
+
+def _problema_reel(pilar: str, publico: str) -> str:
+    pilar_l = pilar.lower()
+    return (
+        f"¿Sabías que {_publico_corto(publico)} pierde horas semanales "
+        f"por no tener {pilar_l} bien implementado?"
+    )
+
+
+def _solucion_reel(pilar: str, propuesta: str, nombre: str) -> str:
+    prop = propuesta.rstrip(".")
+    return f"{nombre} lo soluciona: {prop}."
+
+
+def _beneficio_reel(pilar: str, servicios: str, nombre: str) -> str:
+    svc = servicios[:60].lower().rstrip(".")
+    return f"El resultado: {svc} — menos fricción, más resultados en menos tiempo."
+
 
 def _hook_carrusel(pilar: str, nombre: str, propuesta: str) -> str:
     pilar_l = pilar.lower()

@@ -216,7 +216,8 @@ Plataforma de marketing digital con agentes de IA para pymes y empresas.
 
 | Commit | Decisión |
 |---|---|
-| 2026-06-04 | Composición visual inteligente para creatividades Instagram: `_kpi_cards()`, `_slide_body()`, `_escena_visual()` en `agente_diseno_instagram.py`. KPI por categoría en post, hero SVG en historia, slide body por tipo en carrusel, frames CapCut en reel. |
+| 2026-06-04 v3 | Motor de estructura por formato Instagram en `copywriter.py`: post 4 secciones (hook/beneficio/prueba/cta), historia 3 roles (problema/consecuencia/solucion), carrusel 6 slides, reel 5 escenas con texto_pantalla+duracion_seg. Render actualizado para tipos consecuencia/solucion. |
+| 2026-06-04 v2 | Composición visual inteligente para creatividades Instagram: `_kpi_cards()`, `_slide_body()`, `_escena_visual()` en `agente_diseno_instagram.py`. KPI por categoría en post, hero SVG en historia, slide body por tipo en carrusel, frames CapCut en reel. |
 | Pendiente | Rediseño landing v2: Inter font, canvas partículas, aurora CSS, reveal on scroll |
 | `8d33e5d` | Rediseño landing dark premium + sistema de documentación (FRONTEND/DESIGN_SYSTEM/PROJECT_RULES) |
 | `d168965` | Limpieza y optimización de styles.css |

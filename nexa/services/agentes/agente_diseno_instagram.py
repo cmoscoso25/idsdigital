@@ -831,6 +831,38 @@ def _slide_body(tipo: str, s: dict, vis: dict, c1: str, c2: str) -> str:
             f'</div>'
         )
 
+    if tipo == "consecuencia":
+        sub_li = (
+            f'<li style="display:flex;align-items:flex-start;gap:6px">'
+            f'<span style="color:#f59e0b;font-weight:700;flex-shrink:0">⚠</span> {sub}</li>'
+        ) if sub else ""
+        return (
+            f'<div style="width:100%;margin-top:6px">'
+            f'<div style="font-size:22px;opacity:0.6;margin-bottom:6px">⚠️</div>'
+            f'<ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:5px;font-size:11px;color:rgba(255,255,255,0.78)">'
+            f'<li style="display:flex;align-items:flex-start;gap:6px">'
+            f'<span style="color:#f59e0b;font-weight:700;flex-shrink:0">⚠</span> {titulo}</li>'
+            f'{sub_li}'
+            f'<li style="display:flex;align-items:flex-start;gap:6px;opacity:0.4">'
+            f'<span style="color:#fbbf24;font-weight:700;flex-shrink:0">⚠</span> El costo de no actuar</li>'
+            f'</ul>'
+            f'<div style="margin-top:8px;font-size:9px;font-weight:700;letter-spacing:0.1em;'
+            f'border:1px solid #f59e0b55;color:#f59e0b;border-radius:4px;padding:3px 9px;display:inline-block">IMPACTO REAL</div>'
+            f'</div>'
+        )
+
+    if tipo == "solucion":
+        return (
+            f'<div style="width:100%;margin-top:6px">'
+            f'<div style="font-size:22px;opacity:0.6;margin-bottom:6px">✓</div>'
+            f'<div style="background:{c1}18;border:1px solid {c1}44;border-radius:8px;padding:8px 10px;'
+            f'font-size:11px;color:rgba(255,255,255,0.85);margin-bottom:6px;line-height:1.4">{titulo}</div>'
+            f'<div style="width:36px;height:3px;background:linear-gradient(90deg,{c1},{c2});border-radius:2px;margin:4px 0"></div>'
+            f'<div style="font-size:9px;font-weight:700;letter-spacing:0.1em;'
+            f'color:{c1};display:inline-block">SOLUCIÓN PROBADA</div>'
+            f'</div>'
+        )
+
     if tipo in ("cta", "cierre"):
         return (
             f'<div style="width:100%;margin-top:6px;text-align:center">'
@@ -861,18 +893,28 @@ def _escena_visual(tipo: str, vis: dict, c1: str, c2: str, num: int) -> str:
             f'<div style="font-size:8px;font-weight:700;color:{c1};letter-spacing:0.1em;margin-top:2px">HOOK</div>'
             f'</div>'
         )
-    if tipo == "desarrollo":
+    if tipo == "problema":
         return (
-            f'<div {badge}background:#475569">{n}</div>'
-            f'<div style="width:70%;background:rgba(255,255,255,0.1);border-radius:3px;height:3px;margin:4px auto">'
-            f'<div style="width:45%;height:100%;background:{c1};border-radius:3px"></div>'
-            f'</div>'
+            f'<div {badge}background:#b45309">{n}</div>'
+            f'<div style="font-size:8px;font-weight:700;color:#f59e0b;letter-spacing:0.08em;margin-bottom:2px">⚡ PROBLEMA</div>'
         )
-    if tipo == "ejemplo":
+    if tipo in ("desarrollo", "solucion"):
+        bar_pct = "45%" if tipo == "desarrollo" else "75%"
+        label   = "SOLUCIÓN" if tipo == "solucion" else "DESARROLLO"
         return (
             f'<div {badge}background:#1e3a5f">{n}</div>'
-            f'<div style="font-size:8px;font-weight:600;border:1px solid {c2}55;color:{c2};'
-            f'padding:2px 5px;border-radius:3px;letter-spacing:0.06em;margin-bottom:2px">DEMO</div>'
+            f'<div style="font-size:8px;font-weight:700;color:{c1};letter-spacing:0.08em;margin-bottom:3px">{label}</div>'
+            f'<div style="width:70%;background:rgba(255,255,255,0.1);border-radius:3px;height:3px;margin:0 auto">'
+            f'<div style="width:{bar_pct};height:100%;background:{c1};border-radius:3px"></div>'
+            f'</div>'
+        )
+    if tipo in ("ejemplo", "beneficio"):
+        label = "RESULTADO" if tipo == "beneficio" else "DEMO"
+        color = c1 if tipo == "beneficio" else c2
+        return (
+            f'<div {badge}background:#1e3a5f">{n}</div>'
+            f'<div style="font-size:8px;font-weight:600;border:1px solid {color}55;color:{color};'
+            f'padding:2px 5px;border-radius:3px;letter-spacing:0.06em;margin-bottom:2px">{label}</div>'
             f'{vis["chip"]}'
         )
     if tipo == "cta":
@@ -1044,16 +1086,18 @@ def _render_carrusel(empresa, contenido, estructura) -> str:
     accents = vis["slide_accent"]
 
     tipo_bg = {
-        "portada":   f"linear-gradient(145deg,{c1},{c2})",
-        "problema":  "linear-gradient(145deg,#1e1028,#16213e)",
-        "contenido": "linear-gradient(145deg,#0d1b2e,#16213e)",
-        "beneficio": "linear-gradient(145deg,#0d2137,#0a1628)",
-        "cierre":    "linear-gradient(145deg,#12203a,#0d1b2e)",
-        "cta":       f"linear-gradient(145deg,{c2},{c1})",
+        "portada":     f"linear-gradient(145deg,{c1},{c2})",
+        "problema":    "linear-gradient(145deg,#1e1028,#16213e)",
+        "consecuencia":"linear-gradient(145deg,#2a1018,#1a0d14)",
+        "contenido":   "linear-gradient(145deg,#0d1b2e,#16213e)",
+        "solucion":    f"linear-gradient(145deg,#0d2137,#0a2040)",
+        "beneficio":   "linear-gradient(145deg,#0d2137,#0a1628)",
+        "cierre":      "linear-gradient(145deg,#12203a,#0d1b2e)",
+        "cta":         f"linear-gradient(145deg,{c2},{c1})",
     }
     tipo_icon = {
-        "portada": vis["icon"], "problema": "⚡", "contenido": "◈",
-        "beneficio": "✓", "cierre": "→", "cta": "★",
+        "portada": vis["icon"], "problema": "⚡", "consecuencia": "⚠",
+        "contenido": "◈", "solucion": "✓", "beneficio": "✓", "cierre": "→", "cta": "★",
     }
 
     slides_html = ""
@@ -1159,12 +1203,16 @@ def _render_reel(empresa, contenido, estructura) -> str:
 
     tipo_bg = {
         "hook":       f"linear-gradient(145deg,{c1},{c2})",
+        "problema":   "linear-gradient(145deg,#1e1028,#16213e)",
         "desarrollo": "linear-gradient(145deg,#1e1028,#16213e)",
+        "solucion":   "linear-gradient(145deg,#0d1b2e,#0a2040)",
         "ejemplo":    "linear-gradient(145deg,#0d1b2e,#16213e)",
+        "beneficio":  "linear-gradient(145deg,#0d2137,#0a1628)",
         "cta":        f"linear-gradient(145deg,{c2},{c1})",
     }
     tipo_label = {
-        "hook": "HOOK", "desarrollo": "DESARROLLO", "ejemplo": "EJEMPLO", "cta": "CTA",
+        "hook": "HOOK", "problema": "PROBLEMA", "desarrollo": "DESARROLLO",
+        "solucion": "SOLUCIÓN", "ejemplo": "EJEMPLO", "beneficio": "BENEFICIO", "cta": "CTA",
     }
     transicion_sym = {"corte": "✦", "fundido": "◌"}
 
