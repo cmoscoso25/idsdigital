@@ -118,7 +118,13 @@ no están instalados en el entorno MCP. Usar siempre el CLI como fallback.
 - **Biblioteca**: filtros por empresa, estrategia, tipo y estado. KPIs: total, borradores, aprobados, programados, publicados.
 - **Progress en estrategia**: planificados/generados/avance% calculados en vista, barra visual en template.
 - **Creatividades Instagram** (2026-06-04): módulo completo en `nexa/`. Modelo `CreatividadInstagram` tiene `render_html` + `render_css` (campos server-side, listos para reemplazar por imagen IA real). Agente `agente_diseno_instagram.py` genera 4 renders HTML inline-styled: Post (1:1 con chrome Instagram), Historia (3 pantallas 9:16 con stickers), Carrusel (slides navegables con JS), Reel (storyboard 2 cols). Para conectar IA de imágenes: solo cambiar las funciones `_render_*` para devolver `<img src="url_api">` en lugar del HTML generado.
-- `static/css/nexa_app.css` incluye estilos `.nxa-ig-*` para todos los mockups de Instagram.
+- `static/css/nexa_app.css` incluye estilos `.nxa-ig-*` para mockups de Instagram y `.nxar-kpi-*` para KPI cards.
+- **Composición visual inteligente** (2026-06-04 v2): `agente_diseno_instagram.py` incluye 3 helpers de composición:
+  - `_kpi_cards(categoria, c1)` → 3 KPI metrics por industria dentro del post.
+  - `_slide_body(tipo, s, vis, c1, c2)` → contenido diferenciado por tipo de slide en carrusel (portada/problema/contenido/beneficio/cta).
+  - `_escena_visual(tipo, vis, c1, c2, num)` → frames numerados estilo CapCut para reel.
+  - Post: accent bar + KPI cards + CTA premium (fondo blanco con color de marca).
+  - Historia: hero SVG de categoría en pantalla 0, progress bar + chip en pantalla 1, CTA button en pantalla 2.
 - Próximo paso crítico: conectar agentes con Claude API (Anthropic SDK en requirements).
 
 ## Gestión de contexto — archivos de referencia

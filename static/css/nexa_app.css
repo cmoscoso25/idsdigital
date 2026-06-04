@@ -1431,7 +1431,20 @@
 
 .nxar-post-top {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nxar-post-cat-badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 4px;
+  padding: 3px 8px;
 }
 
 .nxar-logo-chip {
@@ -1445,6 +1458,17 @@
   color: rgba(255,255,255,0.9);
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.nxar-post-chip-row {
+  display: flex;
+  justify-content: flex-start;
+  padding: 4px 0;
+}
+
+.nxar-post-cta-arrow {
+  font-size: 18px;
+  color: rgba(255,255,255,0.7);
 }
 
 .nxar-post-body {
@@ -1873,6 +1897,23 @@
   padding: 2px 8px;
 }
 
+.nxar-reel-cat {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.nxar-slide-chip {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid;
+  border-radius: 4px;
+  padding: 3px 8px;
+  display: inline-block;
+}
+
 .nxar-reel-hook-txt {
   font-size: 14px;
   font-weight: 600;
@@ -2009,6 +2050,43 @@
 
 @media (max-width: 600px) {
   .nxar-escenas-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── KPI cards (post render) ── */
+.nxar-kpi-row {
+  display: flex;
+  gap: 5px;
+  margin: 6px 0 2px;
+}
+
+.nxar-kpi-card {
+  flex: 1;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 7px;
+  padding: 5px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.nxar-kpi-val {
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.nxar-kpi-label {
+  font-size: 8px;
+  color: rgba(255,255,255,0.5);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: center;
+  line-height: 1.2;
 }
 
 /* ══════════════════════════════════════════

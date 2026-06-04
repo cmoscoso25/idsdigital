@@ -216,6 +216,7 @@ Plataforma de marketing digital con agentes de IA para pymes y empresas.
 
 | Commit | Decisión |
 |---|---|
+| 2026-06-04 | Composición visual inteligente para creatividades Instagram: `_kpi_cards()`, `_slide_body()`, `_escena_visual()` en `agente_diseno_instagram.py`. KPI por categoría en post, hero SVG en historia, slide body por tipo en carrusel, frames CapCut en reel. |
 | Pendiente | Rediseño landing v2: Inter font, canvas partículas, aurora CSS, reveal on scroll |
 | `8d33e5d` | Rediseño landing dark premium + sistema de documentación (FRONTEND/DESIGN_SYSTEM/PROJECT_RULES) |
 | `d168965` | Limpieza y optimización de styles.css |
