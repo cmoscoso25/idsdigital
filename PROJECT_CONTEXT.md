@@ -153,7 +153,7 @@ request autenticado desde la sesión (`current_workspace_id`).
 
 ### Nexa AI by IDS Digital (`/nexa/`)
 Plataforma de marketing digital con agentes de IA para pymes y empresas.
-- **Estado:** Landing pública disponible en `/nexa/` — SaaS privado NO implementado aún.
+- **Estado:** Landing comercial mejorada disponible en `/nexa/` — SaaS privado NO implementado aún. Beta privada activa para captación de early adopters.
 - **Propósito:** captación de early adopters y validación de producto.
 - **Formulario:** reutiliza `DemoRequest` con `necesidad = "Nexa AI — Demo anticipada"`.
 - **Acciones pendientes:**
