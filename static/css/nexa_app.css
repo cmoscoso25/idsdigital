@@ -843,6 +843,69 @@
 }
 
 /* ══════════════════════════════════════════
+   FILTROS BIBLIOTECA
+   ══════════════════════════════════════════ */
+.nxa-filter-bar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* ══════════════════════════════════════════
+   PROGRESS ESTRATEGIA
+   ══════════════════════════════════════════ */
+.nxa-progress-card {
+  background: var(--nxa-bg-card);
+  border: 1px solid var(--nxa-border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nxa-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nxa-progress-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--nxa-text);
+}
+
+.nxa-progress-nums {
+  font-size: 12px;
+  color: var(--nxa-muted);
+}
+
+.nxa-progress-bar-wrap {
+  height: 6px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.nxa-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--nxa-violet), var(--nxa-blue));
+  border-radius: 4px;
+  transition: width 0.5s ease;
+  min-width: 2px;
+}
+
+.nxa-progress-stats {
+  display: flex;
+  gap: 20px;
+  font-size: 12px;
+  color: var(--nxa-muted);
+}
+
+/* ══════════════════════════════════════════
    VISUALIZADOR DE SLIDES (carrusel, historia, reel)
    ══════════════════════════════════════════ */
 .nxa-slide-viewer {

@@ -4,28 +4,78 @@
 {% block topbar_title %}Biblioteca de contenidos{% endblock %}
 
 {% block content %}
-<!-- Filtro por empresa -->
-<div class="nxa-filters">
-  <form method="get" class="nxa-filter-form">
-    <select name="empresa" class="nxa-select" onchange="this.form.submit()">
-      <option value="">Todas las empresas</option>
-      {% for emp in empresas %}
-        <option value="{{ emp.pk }}" {% if empresa_id_filtro == emp.pk|stringformat:"s" %}selected{% endif %}>
-          {{ emp.nombre_empresa }}
-        </option>
-      {% endfor %}
-    </select>
-  </form>
+<!-- KPIs -->
+<div class="nxa-kpi-row" style="grid-template-columns:repeat(5,1fr);margin-bottom:20px;">
+  <div class="nxa-kpi">
+    <span class="nxa-kpi-value">{{ kpi_total }}</span>
+    <span class="nxa-kpi-label">Total</span>
+  </div>
+  <div class="nxa-kpi">
+    <span class="nxa-kpi-value" style="color:var(--nxa-muted)">{{ kpi_borradores }}</span>
+    <span class="nxa-kpi-label">Borradores</span>
+  </div>
+  <div class="nxa-kpi nxa-kpi--success">
+    <span class="nxa-kpi-value">{{ kpi_aprobados }}</span>
+    <span class="nxa-kpi-label">Aprobados</span>
+  </div>
+  <div class="nxa-kpi nxa-kpi--warning">
+    <span class="nxa-kpi-value">{{ kpi_programados }}</span>
+    <span class="nxa-kpi-label">Programados</span>
+  </div>
+  <div class="nxa-kpi" style="border-color:rgba(59,130,246,0.3)">
+    <span class="nxa-kpi-value" style="color:var(--nxa-blue-l)">{{ kpi_publicados }}</span>
+    <span class="nxa-kpi-label">Publicados</span>
+  </div>
 </div>
 
+<!-- Filtros -->
+<form method="get" class="nxa-filter-bar">
+  <select name="empresa" class="nxa-select" onchange="this.form.submit()">
+    <option value="">Todas las empresas</option>
+    {% for emp in empresas %}
+      <option value="{{ emp.pk }}" {% if empresa_id_filtro == emp.pk|stringformat:"s" %}selected{% endif %}>
+        {{ emp.nombre_empresa }}
+      </option>
+    {% endfor %}
+  </select>
+
+  <select name="estrategia" class="nxa-select" onchange="this.form.submit()">
+    <option value="">Todas las estrategias</option>
+    {% for e in estrategias %}
+      <option value="{{ e.pk }}" {% if estrategia_id_filtro == e.pk|stringformat:"s" %}selected{% endif %}>
+        {{ e.empresa.nombre_empresa }} — {{ e.fecha_creacion|date:"M Y" }}
+      </option>
+    {% endfor %}
+  </select>
+
+  <select name="tipo" class="nxa-select" onchange="this.form.submit()">
+    <option value="">Todos los tipos</option>
+    {% for val, label in tipos %}
+      <option value="{{ val }}" {% if tipo_filtro == val %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+  </select>
+
+  <select name="estado" class="nxa-select" onchange="this.form.submit()">
+    <option value="">Todos los estados</option>
+    {% for val, label in estados %}
+      <option value="{{ val }}" {% if estado_filtro == val %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+  </select>
+
+  {% if empresa_id_filtro or estrategia_id_filtro or tipo_filtro or estado_filtro %}
+    <a href="{% url 'nexa:contenido_list' %}" class="nxa-btn nxa-btn--ghost nxa-btn--sm">✕ Limpiar</a>
+  {% endif %}
+</form>
+
 {% if contenidos %}
-  <div class="nxa-card">
+  <div class="nxa-card" style="margin-top:16px;">
     <table class="nxa-table">
       <thead>
         <tr>
           <th>Tipo</th>
           <th>Título</th>
           <th>Empresa</th>
+          <th>Estrategia</th>
           <th>Estado</th>
           <th>Fecha</th>
           <th></th>
@@ -35,27 +85,41 @@
         {% for c in contenidos %}
           <tr>
             <td><span class="nxa-badge nxa-badge--tipo">{{ c.get_tipo_contenido_display }}</span></td>
-            <td class="nxa-table-title">{{ c.titulo|truncatechars:60 }}</td>
+            <td class="nxa-table-title">{{ c.titulo|truncatechars:55 }}</td>
             <td class="nxa-text-muted">{{ c.empresa.nombre_empresa }}</td>
+            <td class="nxa-text-muted">
+              {% if c.estrategia %}
+                <a href="{% url 'nexa:estrategia_detalle' c.estrategia.pk %}" class="nxa-link-small">
+                  {{ c.estrategia.fecha_creacion|date:"M Y" }}
+                </a>
+              {% else %}
+                <span style="color:var(--nxa-dim)">—</span>
+              {% endif %}
+            </td>
             <td>
               <span class="nxa-badge nxa-badge--estado nxa-estado--{{ c.estado }}">
                 {{ c.get_estado_display }}
               </span>
             </td>
-            <td class="nxa-text-muted">{{ c.fecha_creacion|date:"d/m/y H:i" }}</td>
-            <td>
-              <a href="{% url 'nexa:contenido_detalle' c.pk %}" class="nxa-link-small">Ver →</a>
-            </td>
+            <td class="nxa-text-muted">{{ c.fecha_creacion|date:"d/m/y" }}</td>
+            <td><a href="{% url 'nexa:contenido_detalle' c.pk %}" class="nxa-link-small">Ver →</a></td>
           </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
 {% else %}
-  <div class="nxa-empty nxa-empty--page">
+  <div class="nxa-empty nxa-empty--page" style="margin-top:16px;">
     <div class="nxa-empty-icon">◻</div>
-    <h2>Sin contenidos generados</h2>
-    <p>Selecciona una empresa y genera tu primer contenido con IA.</p>
+    <h2>Sin contenidos</h2>
+    <p>
+      {% if empresa_id_filtro or estrategia_id_filtro or tipo_filtro or estado_filtro %}
+        No hay contenidos con los filtros aplicados.
+        <a href="{% url 'nexa:contenido_list' %}" class="nxa-link">Limpiar filtros</a>
+      {% else %}
+        Genera tu primer contenido desde una empresa o estrategia.
+      {% endif %}
+    </p>
     <a href="{% url 'nexa:empresa_list' %}" class="nxa-btn nxa-btn--primary">Ir a empresas</a>
   </div>
 {% endif %}

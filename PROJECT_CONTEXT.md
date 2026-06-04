@@ -84,7 +84,8 @@ request autenticado desde la sesión (`current_workspace_id`).
 | `/nexa/app/contenidos/<id>/` | `nexa.contenido_detalle` | Detalle + cambio de estado + visualizador de slides |
 | `/nexa/app/estrategias/` | `nexa.estrategia_list` | Lista de estrategias mensuales |
 | `/nexa/app/empresas/<id>/estrategia/` | `nexa.estrategia_nueva` | Generar estrategia mensual |
-| `/nexa/app/estrategias/<id>/` | `nexa.estrategia_detalle` | Detalle + calendario mensual visual |
+| `/nexa/app/estrategias/<id>/` | `nexa.estrategia_detalle` | Detalle + progress + calendario visual |
+| `/nexa/app/estrategias/<id>/generar/` | `nexa.generar_contenido_mes` | Producción automática desde calendario (POST) |
 | `/admin/` | Django Admin | Administración interna |
 | `/sitemap.xml` | Django Sitemaps | SEO |
 | `/robots.txt` | `public.robots_txt` | SEO |
@@ -110,7 +111,7 @@ request autenticado desde la sesión (`current_workspace_id`).
 ### `nexa`
 - **EmpresaNexa** — Empresa registrada por un usuario en Nexa AI: nombre, rubro, descripción, público objetivo, tono de marca, objetivo principal, instagram, sitio_web, logo (ImageField), colores hex, fecha_creacion. FK a `accounts.User`.
 - **MemoriaMarca** — OneToOne con EmpresaNexa: propuesta_valor, servicios_principales, palabras_clave, estilo_comunicacion, evitar_mencionar, instrucciones_ia, resumen_marca. Contexto para agentes IA.
-- **ContenidoGenerado** — Contenido generado por IA: tipo (carrusel/historia/post/reel/campaña), titulo, copy, hashtags, cta, estructura_json, estado (borrador/aprobado/programado/publicado), fecha_programada, fecha_creacion.
+- **ContenidoGenerado** — Contenido generado por IA: tipo (carrusel/historia/post/reel/campaña), titulo, copy, hashtags, cta, estructura_json, estado (borrador/aprobado/programado/publicado), fecha_programada, fecha_creacion. FK opcional a `EstrategiaMensual` (permite saber qué estrategia originó cada contenido).
 - **EstrategiaMensual** — Estrategia mensual generada por el Agente Estratega: objetivo, pilares_contenido, frecuencia_publicacion, publico_objetivo, calendario_json (4 semanas), fecha_creacion. FK a EmpresaNexa.
 
 ### `agente_ia`

@@ -4,14 +4,42 @@
 {% block topbar_title %}Estrategia Mensual · {{ estrategia.empresa.nombre_empresa }}{% endblock %}
 {% block topbar_actions %}
   <a href="{% url 'nexa:estrategia_list' %}" class="nxa-btn nxa-btn--ghost">← Volver</a>
-  <a href="{% url 'nexa:estrategia_nueva' estrategia.empresa.pk %}" class="nxa-btn nxa-btn--primary">
-    ⚡ Regenerar
+  <a href="{% url 'nexa:estrategia_nueva' estrategia.empresa.pk %}" class="nxa-btn nxa-btn--ghost">
+    Regenerar
   </a>
+  {% if planificados > generados %}
+    <form method="post" action="{% url 'nexa:generar_contenido_mes' estrategia.pk %}" style="display:inline;">
+      {% csrf_token %}
+      <button type="submit" class="nxa-btn nxa-btn--primary">
+        ⚡ Generar contenido del mes
+      </button>
+    </form>
+  {% else %}
+    <a href="{% url 'nexa:contenido_list' %}?estrategia={{ estrategia.pk }}" class="nxa-btn nxa-btn--primary">
+      Ver contenidos →
+    </a>
+  {% endif %}
 {% endblock %}
 
 {% block content %}
+<!-- Progress bar -->
+<div class="nxa-progress-card">
+  <div class="nxa-progress-header">
+    <span class="nxa-progress-label">Avance del mes</span>
+    <span class="nxa-progress-nums">{{ generados }} / {{ planificados }} contenidos · {{ avance }}%</span>
+  </div>
+  <div class="nxa-progress-bar-wrap">
+    <div class="nxa-progress-bar" style="width:{{ avance }}%"></div>
+  </div>
+  <div class="nxa-progress-stats">
+    <span>📋 {{ planificados }} planificados</span>
+    <span>✅ {{ generados }} generados</span>
+    <span>📝 {{ planificados|add:"-"|add:generados }} pendientes</span>
+  </div>
+</div>
+
 <!-- Resumen estrategia -->
-<div class="nxa-grid-2" style="margin-bottom:16px;">
+<div class="nxa-grid-2" style="margin:16px 0;">
   <div class="nxa-card">
     <div class="nxa-card-header">
       <h2 class="nxa-card-title">Objetivo mensual</h2>
@@ -43,11 +71,13 @@
         </div>
       {% endfor %}
     </div>
-    <div style="padding:0 20px 16px;">
-      <a href="{% url 'nexa:generar' estrategia.empresa.pk %}" class="nxa-btn nxa-btn--primary nxa-btn--sm">
-        ⚡ Generar contenido de este mes
-      </a>
-    </div>
+    {% if generados > 0 %}
+      <div style="padding:0 20px 16px;">
+        <a href="{% url 'nexa:contenido_list' %}?estrategia={{ estrategia.pk }}" class="nxa-btn nxa-btn--ghost nxa-btn--sm">
+          Ver {{ generados }} contenido{{ generados|pluralize }} generado{{ generados|pluralize }} →
+        </a>
+      </div>
+    {% endif %}
   </div>
 </div>
 
@@ -75,7 +105,6 @@
   if (!cal.semanas) { container.innerHTML = '<p style="padding:20px;color:var(--nxa-muted)">Sin datos de calendario.</p>'; return; }
 
   const tipoIcon = { carrusel: '🖼', historia: '📖', reel: '🎬', post: '📝', campana: '🚀' };
-  const tipoClass = { carrusel: 'nxa-estado--aprobado', historia: 'nxa-estado--programado', reel: 'nxa-estado--publicado', post: '', campana: 'nxa-estado--aprobado' };
 
   let html = '<div class="nxa-cal-grid">';
   cal.semanas.forEach(semana => {
@@ -84,11 +113,10 @@
       <div class="nxa-cal-publicaciones">`;
     semana.publicaciones.forEach(pub => {
       const icon = tipoIcon[pub.tipo] || '📄';
-      const cls = tipoClass[pub.tipo] || '';
       html += `<div class="nxa-cal-item">
         <span class="nxa-cal-dia">${pub.dia}</span>
         <div class="nxa-cal-item-body">
-          <span class="nxa-badge nxa-badge--tipo ${cls}">${icon} ${pub.tipo}</span>
+          <span class="nxa-badge nxa-badge--tipo">${icon} ${pub.tipo}</span>
           <span class="nxa-cal-pilar">${pub.pilar}</span>
           <span class="nxa-cal-desc">${pub.descripcion}</span>
         </div>

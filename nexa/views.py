@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -5,6 +6,7 @@ from .models import EmpresaNexa, MemoriaMarca, ContenidoGenerado, EstrategiaMens
 from .forms import EmpresaNexaForm, MemoriaMarcaForm, GenerarContenidoForm, GenerarEstrategiaForm
 from .services.generador_contenido import generar_contenido
 from .services.agentes.estratega import generar_estrategia
+from .services.agentes.copywriter import generar_contenido_completo
 
 
 @login_required
@@ -110,13 +112,39 @@ def generar(request, pk):
 @login_required
 def contenido_list(request):
     empresa_id = request.GET.get("empresa")
-    qs = ContenidoGenerado.objects.filter(empresa__usuario=request.user).select_related("empresa")
+    estrategia_id = request.GET.get("estrategia")
+    tipo_filtro = request.GET.get("tipo")
+    estado_filtro = request.GET.get("estado")
+
+    qs = ContenidoGenerado.objects.filter(
+        empresa__usuario=request.user
+    ).select_related("empresa", "estrategia")
+
     if empresa_id:
         qs = qs.filter(empresa_id=empresa_id)
+    if estrategia_id:
+        qs = qs.filter(estrategia_id=estrategia_id)
+    if tipo_filtro:
+        qs = qs.filter(tipo_contenido=tipo_filtro)
+    if estado_filtro:
+        qs = qs.filter(estado=estado_filtro)
+
+    base_qs = ContenidoGenerado.objects.filter(empresa__usuario=request.user)
     return render(request, "nexa/contenido_list.html", {
         "contenidos": qs,
         "empresas": EmpresaNexa.objects.filter(usuario=request.user),
+        "estrategias": EstrategiaMensual.objects.filter(empresa__usuario=request.user).select_related("empresa"),
         "empresa_id_filtro": empresa_id,
+        "estrategia_id_filtro": estrategia_id,
+        "tipo_filtro": tipo_filtro,
+        "estado_filtro": estado_filtro,
+        "tipos": ContenidoGenerado.TIPOS,
+        "estados": ContenidoGenerado.ESTADOS,
+        "kpi_total": base_qs.count(),
+        "kpi_borradores": base_qs.filter(estado="borrador").count(),
+        "kpi_aprobados": base_qs.filter(estado="aprobado").count(),
+        "kpi_programados": base_qs.filter(estado="programado").count(),
+        "kpi_publicados": base_qs.filter(estado="publicado").count(),
     })
 
 
@@ -159,10 +187,61 @@ def estrategia_detalle(request, pk):
         EstrategiaMensual, pk=pk, empresa__usuario=request.user
     )
     pilares_lista = [p.strip() for p in estrategia.pilares_contenido.split(",") if p.strip()]
+    cal = estrategia.calendario_json
+    planificados = sum(
+        len(s.get("publicaciones", [])) for s in cal.get("semanas", [])
+    )
+    generados = estrategia.contenidos.count()
+    avance = round(generados / planificados * 100) if planificados > 0 else 0
     return render(request, "nexa/estrategia_detalle.html", {
         "estrategia": estrategia,
         "pilares_lista": pilares_lista,
+        "planificados": planificados,
+        "generados": generados,
+        "avance": avance,
     })
+
+
+@login_required
+def generar_contenido_mes(request, pk):
+    """Genera automáticamente todos los contenidos del calendario mensual."""
+    estrategia = get_object_or_404(
+        EstrategiaMensual, pk=pk, empresa__usuario=request.user
+    )
+    if request.method != "POST":
+        return redirect("nexa:estrategia_detalle", pk=pk)
+
+    empresa = estrategia.empresa
+    memoria = getattr(empresa, "memoria_marca", None)
+    cal = estrategia.calendario_json
+    creados = 0
+
+    for semana in cal.get("semanas", []):
+        for pub in semana.get("publicaciones", []):
+            resultado = generar_contenido_completo(
+                empresa=empresa,
+                memoria_marca=memoria,
+                tipo_contenido=pub["tipo"],
+                pilar=pub["pilar"],
+                objetivo=pub.get("descripcion", pub["pilar"]),
+                semana=semana["semana"],
+            )
+            ContenidoGenerado.objects.create(
+                empresa=empresa,
+                estrategia=estrategia,
+                tipo_contenido=pub["tipo"],
+                titulo=resultado["titulo"],
+                copy=resultado["copy"],
+                hashtags=resultado["hashtags"],
+                cta=resultado["cta"],
+                estructura_json=resultado["estructura_json"],
+                estado="borrador",
+            )
+            creados += 1
+
+    mes = cal.get("mes", "este mes")
+    messages.success(request, f"Se generaron {creados} contenidos para {mes}.")
+    return redirect("nexa:estrategia_detalle", pk=pk)
 
 
 @login_required

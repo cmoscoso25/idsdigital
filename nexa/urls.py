@@ -15,4 +15,5 @@ urlpatterns = [
     path("app/estrategias/", views.estrategia_list, name="estrategia_list"),
     path("app/empresas/<int:pk>/estrategia/", views.estrategia_nueva, name="estrategia_nueva"),
     path("app/estrategias/<int:pk>/", views.estrategia_detalle, name="estrategia_detalle"),
+    path("app/estrategias/<int:pk>/generar/", views.generar_contenido_mes, name="generar_contenido_mes"),
 ]

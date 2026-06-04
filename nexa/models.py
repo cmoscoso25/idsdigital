@@ -105,6 +105,14 @@ class ContenidoGenerado(models.Model):
         related_name="contenidos",
         help_text="Empresa para la que se generó este contenido",
     )
+    estrategia = models.ForeignKey(
+        "EstrategiaMensual",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="contenidos",
+        help_text="Estrategia mensual que originó este contenido (opcional)",
+    )
     tipo_contenido = models.CharField(max_length=20, choices=TIPOS)
     titulo = models.CharField(max_length=300)
     copy = models.TextField(help_text="Texto principal del contenido")
