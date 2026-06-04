@@ -1,0 +1,103 @@
+{% extends "nexa/base_nexa.html" %}
+
+{% block title %}Estrategia · {{ estrategia.empresa.nombre_empresa }}{% endblock %}
+{% block topbar_title %}Estrategia Mensual · {{ estrategia.empresa.nombre_empresa }}{% endblock %}
+{% block topbar_actions %}
+  <a href="{% url 'nexa:estrategia_list' %}" class="nxa-btn nxa-btn--ghost">← Volver</a>
+  <a href="{% url 'nexa:estrategia_nueva' estrategia.empresa.pk %}" class="nxa-btn nxa-btn--primary">
+    ⚡ Regenerar
+  </a>
+{% endblock %}
+
+{% block content %}
+<!-- Resumen estrategia -->
+<div class="nxa-grid-2" style="margin-bottom:16px;">
+  <div class="nxa-card">
+    <div class="nxa-card-header">
+      <h2 class="nxa-card-title">Objetivo mensual</h2>
+    </div>
+    <div style="padding:16px 20px;">
+      <p style="color:var(--nxa-text);font-size:14px;line-height:1.7;">{{ estrategia.objetivo }}</p>
+    </div>
+    <div class="nxa-detail-list">
+      <div class="nxa-detail-row">
+        <span class="nxa-detail-label">Frecuencia</span>
+        <span class="nxa-detail-value">{{ estrategia.frecuencia_publicacion }}</span>
+      </div>
+      <div class="nxa-detail-row">
+        <span class="nxa-detail-label">Público</span>
+        <span class="nxa-detail-value">{{ estrategia.publico_objetivo|truncatechars:120 }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="nxa-card">
+    <div class="nxa-card-header">
+      <h2 class="nxa-card-title">Pilares de contenido</h2>
+    </div>
+    <div style="padding:16px 20px;display:flex;flex-wrap:wrap;gap:10px;">
+      {% for pilar in pilares_lista %}
+        <div class="nxa-pilar-card">
+          <span class="nxa-pilar-icon">◈</span>
+          <span class="nxa-pilar-texto">{{ pilar }}</span>
+        </div>
+      {% endfor %}
+    </div>
+    <div style="padding:0 20px 16px;">
+      <a href="{% url 'nexa:generar' estrategia.empresa.pk %}" class="nxa-btn nxa-btn--primary nxa-btn--sm">
+        ⚡ Generar contenido de este mes
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Calendario mensual -->
+<div class="nxa-card">
+  <div class="nxa-card-header">
+    <h2 class="nxa-card-title">
+      Calendario de contenido
+      {% if estrategia.calendario_json.mes %}
+        <span class="nxa-text-muted" style="font-weight:400;font-size:12px;margin-left:8px;">
+          {{ estrategia.calendario_json.mes }}
+        </span>
+      {% endif %}
+    </h2>
+  </div>
+  <div id="nxaCalendario" class="nxa-calendario"></div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+  const cal = {{ estrategia.calendario_json|safe }};
+  const container = document.getElementById('nxaCalendario');
+  if (!cal.semanas) { container.innerHTML = '<p style="padding:20px;color:var(--nxa-muted)">Sin datos de calendario.</p>'; return; }
+
+  const tipoIcon = { carrusel: '🖼', historia: '📖', reel: '🎬', post: '📝', campana: '🚀' };
+  const tipoClass = { carrusel: 'nxa-estado--aprobado', historia: 'nxa-estado--programado', reel: 'nxa-estado--publicado', post: '', campana: 'nxa-estado--aprobado' };
+
+  let html = '<div class="nxa-cal-grid">';
+  cal.semanas.forEach(semana => {
+    html += `<div class="nxa-cal-semana">
+      <div class="nxa-cal-semana-header">Semana ${semana.semana}</div>
+      <div class="nxa-cal-publicaciones">`;
+    semana.publicaciones.forEach(pub => {
+      const icon = tipoIcon[pub.tipo] || '📄';
+      const cls = tipoClass[pub.tipo] || '';
+      html += `<div class="nxa-cal-item">
+        <span class="nxa-cal-dia">${pub.dia}</span>
+        <div class="nxa-cal-item-body">
+          <span class="nxa-badge nxa-badge--tipo ${cls}">${icon} ${pub.tipo}</span>
+          <span class="nxa-cal-pilar">${pub.pilar}</span>
+          <span class="nxa-cal-desc">${pub.descripcion}</span>
+        </div>
+      </div>`;
+    });
+    html += '</div></div>';
+  });
+  html += '</div>';
+  container.innerHTML = html;
+})();
+</script>
+{% endblock %}

@@ -6,6 +6,7 @@
   <a href="{% url 'nexa:memoria_editar' empresa.pk %}" class="nxa-btn nxa-btn--ghost">
     {% if memoria %}Editar memoria{% else %}+ Crear memoria{% endif %}
   </a>
+  <a href="{% url 'nexa:estrategia_nueva' empresa.pk %}" class="nxa-btn nxa-btn--ghost">◈ Estrategia mensual</a>
   <a href="{% url 'nexa:generar' empresa.pk %}" class="nxa-btn nxa-btn--primary">⚡ Generar contenido</a>
 {% endblock %}
 

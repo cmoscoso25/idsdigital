@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
-from .models import EmpresaNexa, MemoriaMarca, ContenidoGenerado
-from .forms import EmpresaNexaForm, MemoriaMarcaForm, GenerarContenidoForm
+from .models import EmpresaNexa, MemoriaMarca, ContenidoGenerado, EstrategiaMensual
+from .forms import EmpresaNexaForm, MemoriaMarcaForm, GenerarContenidoForm, GenerarEstrategiaForm
 from .services.generador_contenido import generar_contenido
+from .services.agentes.estratega import generar_estrategia
 
 
 @login_required
@@ -116,6 +117,51 @@ def contenido_list(request):
         "contenidos": qs,
         "empresas": EmpresaNexa.objects.filter(usuario=request.user),
         "empresa_id_filtro": empresa_id,
+    })
+
+
+@login_required
+def estrategia_list(request):
+    estrategias = EstrategiaMensual.objects.filter(
+        empresa__usuario=request.user
+    ).select_related("empresa")
+    empresas = EmpresaNexa.objects.filter(usuario=request.user)
+    return render(request, "nexa/estrategia_list.html", {
+        "estrategias": estrategias,
+        "empresas": empresas,
+    })
+
+
+@login_required
+def estrategia_nueva(request, pk):
+    empresa = get_object_or_404(EmpresaNexa, pk=pk, usuario=request.user)
+    memoria = getattr(empresa, "memoria_marca", None)
+    if request.method == "POST":
+        resultado = generar_estrategia(empresa=empresa, memoria_marca=memoria)
+        estrategia = EstrategiaMensual.objects.create(
+            empresa=empresa,
+            objetivo=resultado["objetivo"],
+            pilares_contenido=resultado["pilares_contenido"],
+            frecuencia_publicacion=resultado["frecuencia_publicacion"],
+            publico_objetivo=resultado["publico_objetivo"],
+            calendario_json=resultado["calendario_json"],
+        )
+        return redirect("nexa:estrategia_detalle", pk=estrategia.pk)
+    return render(request, "nexa/estrategia_nueva.html", {
+        "empresa": empresa,
+        "memoria": memoria,
+    })
+
+
+@login_required
+def estrategia_detalle(request, pk):
+    estrategia = get_object_or_404(
+        EstrategiaMensual, pk=pk, empresa__usuario=request.user
+    )
+    pilares_lista = [p.strip() for p in estrategia.pilares_contenido.split(",") if p.strip()]
+    return render(request, "nexa/estrategia_detalle.html", {
+        "estrategia": estrategia,
+        "pilares_lista": pilares_lista,
     })
 
 

@@ -129,3 +129,35 @@ class ContenidoGenerado(models.Model):
 
     def __str__(self):
         return f"{self.get_tipo_contenido_display()} — {self.titulo[:60]}"
+
+
+class EstrategiaMensual(models.Model):
+    empresa = models.ForeignKey(
+        EmpresaNexa,
+        on_delete=models.CASCADE,
+        related_name="estrategias",
+        help_text="Empresa para la que se generó esta estrategia",
+    )
+    objetivo = models.TextField(help_text="Objetivo principal de la estrategia mensual")
+    pilares_contenido = models.TextField(
+        help_text="Pilares temáticos de contenido separados por coma"
+    )
+    frecuencia_publicacion = models.CharField(
+        max_length=100,
+        help_text="Frecuencia recomendada de publicación, ej: 3 veces por semana",
+    )
+    publico_objetivo = models.TextField(help_text="Público objetivo específico para este mes")
+    calendario_json = models.JSONField(
+        default=dict,
+        help_text="Calendario semanal generado: 4 semanas con tipos y temas de contenido",
+    )
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Estrategia Mensual"
+        verbose_name_plural = "Estrategias Mensuales"
+        ordering = ["-fecha_creacion"]
+        indexes = [models.Index(fields=["empresa"])]
+
+    def __str__(self):
+        return f"Estrategia {self.empresa.nombre_empresa} — {self.fecha_creacion.strftime('%m/%Y') if self.fecha_creacion else ''}"

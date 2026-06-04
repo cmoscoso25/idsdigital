@@ -10,46 +10,55 @@
 
 {% block content %}
 <div class="nxa-grid-2">
-  <!-- Contenido principal -->
-  <div class="nxa-card">
-    <div class="nxa-card-header">
-      <h2 class="nxa-card-title">{{ contenido.titulo }}</h2>
-      <span class="nxa-badge nxa-badge--estado nxa-estado--{{ contenido.estado }}">
-        {{ contenido.get_estado_display }}
-      </span>
+  <!-- Columna izquierda: copy + visualizador -->
+  <div style="display:flex;flex-direction:column;gap:16px;">
+
+    <!-- Copy, hashtags, CTA -->
+    <div class="nxa-card">
+      <div class="nxa-card-header">
+        <h2 class="nxa-card-title">{{ contenido.titulo }}</h2>
+        <span class="nxa-badge nxa-badge--estado nxa-estado--{{ contenido.estado }}">
+          {{ contenido.get_estado_display }}
+        </span>
+      </div>
+      <div class="nxa-contenido-copy">
+        <h4 class="nxa-label">Copy</h4>
+        <pre class="nxa-copy-text">{{ contenido.copy }}</pre>
+      </div>
+      {% if contenido.hashtags %}
+        <div class="nxa-contenido-hashtags">
+          <h4 class="nxa-label">Hashtags</h4>
+          <p class="nxa-tags-text">{{ contenido.hashtags }}</p>
+        </div>
+      {% endif %}
+      {% if contenido.cta %}
+        <div class="nxa-contenido-cta">
+          <h4 class="nxa-label">CTA</h4>
+          <p class="nxa-cta-text">{{ contenido.cta }}</p>
+        </div>
+      {% endif %}
     </div>
 
-    <div class="nxa-contenido-copy">
-      <h4 class="nxa-label">Copy</h4>
-      <pre class="nxa-copy-text">{{ contenido.copy }}</pre>
+    <!-- Visualizador de estructura -->
+    <div class="nxa-card">
+      <div class="nxa-card-header">
+        <h2 class="nxa-card-title">Vista previa de estructura</h2>
+        <button class="nxa-btn nxa-btn--ghost nxa-btn--sm" id="btnToggleJson">Ver JSON</button>
+      </div>
+
+      <!-- Slides visuales (renderizados por JS) -->
+      <div id="nxaSlideViewer" class="nxa-slide-viewer"></div>
+
+      <!-- JSON oculto por defecto -->
+      <div id="nxaJsonRaw" style="display:none;">
+        <pre class="nxa-json-viewer">{{ contenido.estructura_json }}</pre>
+      </div>
     </div>
 
-    {% if contenido.hashtags %}
-      <div class="nxa-contenido-hashtags">
-        <h4 class="nxa-label">Hashtags</h4>
-        <p class="nxa-tags-text">{{ contenido.hashtags }}</p>
-      </div>
-    {% endif %}
-
-    {% if contenido.cta %}
-      <div class="nxa-contenido-cta">
-        <h4 class="nxa-label">CTA</h4>
-        <p class="nxa-cta-text">{{ contenido.cta }}</p>
-      </div>
-    {% endif %}
   </div>
 
-  <!-- Panel lateral: estructura + acciones -->
+  <!-- Panel lateral: acciones -->
   <div>
-    <!-- Estructura JSON -->
-    <div class="nxa-card" style="margin-bottom:16px;">
-      <div class="nxa-card-header">
-        <h2 class="nxa-card-title">Estructura</h2>
-      </div>
-      <pre class="nxa-json-viewer">{{ contenido.estructura_json }}</pre>
-    </div>
-
-    <!-- Cambiar estado -->
     <div class="nxa-card">
       <div class="nxa-card-header">
         <h2 class="nxa-card-title">Cambiar estado</h2>
@@ -93,4 +102,60 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+  const raw = {{ contenido.estructura_json|safe }};
+  const tipo = "{{ contenido.tipo_contenido }}";
+  const viewer = document.getElementById('nxaSlideViewer');
+  const jsonDiv = document.getElementById('nxaJsonRaw');
+  const btnToggle = document.getElementById('btnToggleJson');
+
+  btnToggle.addEventListener('click', function () {
+    const visible = jsonDiv.style.display !== 'none';
+    jsonDiv.style.display = visible ? 'none' : 'block';
+    btnToggle.textContent = visible ? 'Ver JSON' : 'Ocultar JSON';
+  });
+
+  function slide(numero, tipo_slide, texto, extra) {
+    const tipoLabel = { portada: '📸 Portada', contenido: '📄 Contenido', cierre: '✅ Cierre', cta: '🔗 CTA' };
+    const label = tipoLabel[tipo_slide] || tipo_slide || '';
+    return `<div class="nxa-slide">
+      <div class="nxa-slide-num">${numero}</div>
+      ${label ? `<span class="nxa-slide-tipo">${label}</span>` : ''}
+      <p class="nxa-slide-texto">${texto || ''}</p>
+      ${extra ? `<p class="nxa-slide-extra">${extra}</p>` : ''}
+    </div>`;
+  }
+
+  let html = '<div class="nxa-slides-grid">';
+
+  if (tipo === 'carrusel' && raw.diapositivas) {
+    raw.diapositivas.forEach(d => {
+      html += slide(d.numero, d.tipo, d.texto);
+    });
+  } else if (tipo === 'historia' && raw.pantallas) {
+    raw.pantallas.forEach(p => {
+      html += slide(p.numero, null, p.texto, p.duracion ? `⏱ ${p.duracion}` + (p.sticker ? ` · 🎯 ${p.sticker}` : '') : '');
+    });
+  } else if (tipo === 'reel' && raw.escenas) {
+    raw.escenas.forEach((e, i) => {
+      html += slide(i + 1, null, e.texto, e.rango ? `⏱ ${e.rango}` : '');
+    });
+  } else if (tipo === 'campana' && raw.piezas) {
+    raw.piezas.forEach((p, i) => {
+      html += slide(i + 1, p.tipo, p.descripcion);
+    });
+  } else {
+    html += `<div class="nxa-slide nxa-slide--full">
+      <p class="nxa-slide-texto">${raw.formato || 'Contenido generado'}</p>
+    </div>`;
+  }
+
+  html += '</div>';
+  viewer.innerHTML = html;
+})();
+</script>
 {% endblock %}

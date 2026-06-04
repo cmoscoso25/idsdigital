@@ -1,0 +1,50 @@
+{% extends "nexa/base_nexa.html" %}
+
+{% block title %}Estrategias{% endblock %}
+{% block topbar_title %}Estrategias Mensuales{% endblock %}
+
+{% block content %}
+{% if estrategias %}
+  <div class="nxa-card">
+    <table class="nxa-table">
+      <thead>
+        <tr>
+          <th>Empresa</th>
+          <th>Frecuencia</th>
+          <th>Pilares</th>
+          <th>Fecha</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in estrategias %}
+          <tr>
+            <td class="nxa-table-title">{{ e.empresa.nombre_empresa }}</td>
+            <td class="nxa-text-muted">{{ e.frecuencia_publicacion }}</td>
+            <td class="nxa-text-muted">{{ e.pilares_contenido|truncatechars:60 }}</td>
+            <td class="nxa-text-muted">{{ e.fecha_creacion|date:"d/m/Y" }}</td>
+            <td><a href="{% url 'nexa:estrategia_detalle' e.pk %}" class="nxa-link-small">Ver →</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <div class="nxa-empty nxa-empty--page">
+    <div class="nxa-empty-icon">◈</div>
+    <h2>Sin estrategias generadas</h2>
+    <p>Selecciona una empresa y genera tu primera estrategia mensual.</p>
+    {% if empresas %}
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px;">
+        {% for emp in empresas %}
+          <a href="{% url 'nexa:estrategia_nueva' emp.pk %}" class="nxa-btn nxa-btn--primary nxa-btn--sm">
+            ⚡ {{ emp.nombre_empresa }}
+          </a>
+        {% endfor %}
+      </div>
+    {% else %}
+      <a href="{% url 'nexa:empresa_nueva' %}" class="nxa-btn nxa-btn--primary">Registrar empresa</a>
+    {% endif %}
+  </div>
+{% endif %}
+{% endblock %}

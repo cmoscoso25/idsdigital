@@ -33,6 +33,9 @@
       <a href="{% url 'nexa:contenido_list' %}" class="nxa-nav-item {% if 'contenido' in request.resolver_match.url_name %}active{% endif %}">
         <span class="nxa-nav-icon">◻</span> Contenidos
       </a>
+      <a href="{% url 'nexa:estrategia_list' %}" class="nxa-nav-item {% if 'estrategia' in request.resolver_match.url_name %}active{% endif %}">
+        <span class="nxa-nav-icon">◈</span> Estrategias
+      </a>
     </nav>
 
     <div class="nxa-sidebar-footer">

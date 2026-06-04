@@ -1,6 +1,6 @@
 # PROJECT_CONTEXT.md — IDS Digital
 
-**Última actualización:** 2026-06-04
+**Última actualización:** 2026-06-04 (v2)
 
 ---
 
@@ -81,7 +81,10 @@ request autenticado desde la sesión (`current_workspace_id`).
 | `/nexa/app/empresas/<id>/memoria/` | `nexa.memoria_editar` | Crear / editar memoria de marca |
 | `/nexa/app/empresas/<id>/generar/` | `nexa.generar` | Generar contenido con IA |
 | `/nexa/app/contenidos/` | `nexa.contenido_list` | Biblioteca de contenidos |
-| `/nexa/app/contenidos/<id>/` | `nexa.contenido_detalle` | Detalle + cambio de estado |
+| `/nexa/app/contenidos/<id>/` | `nexa.contenido_detalle` | Detalle + cambio de estado + visualizador de slides |
+| `/nexa/app/estrategias/` | `nexa.estrategia_list` | Lista de estrategias mensuales |
+| `/nexa/app/empresas/<id>/estrategia/` | `nexa.estrategia_nueva` | Generar estrategia mensual |
+| `/nexa/app/estrategias/<id>/` | `nexa.estrategia_detalle` | Detalle + calendario mensual visual |
 | `/admin/` | Django Admin | Administración interna |
 | `/sitemap.xml` | Django Sitemaps | SEO |
 | `/robots.txt` | `public.robots_txt` | SEO |
@@ -107,7 +110,8 @@ request autenticado desde la sesión (`current_workspace_id`).
 ### `nexa`
 - **EmpresaNexa** — Empresa registrada por un usuario en Nexa AI: nombre, rubro, descripción, público objetivo, tono de marca, objetivo principal, instagram, sitio_web, logo (ImageField), colores hex, fecha_creacion. FK a `accounts.User`.
 - **MemoriaMarca** — OneToOne con EmpresaNexa: propuesta_valor, servicios_principales, palabras_clave, estilo_comunicacion, evitar_mencionar, instrucciones_ia, resumen_marca. Contexto para agentes IA.
-- **ContenidoGenerado** — Contenido generado por IA para una empresa: tipo (carrusel/historia/post/reel/campaña), titulo, copy, hashtags, cta, estructura_json, estado (borrador/aprobado/programado/publicado), fecha_programada, fecha_creacion.
+- **ContenidoGenerado** — Contenido generado por IA: tipo (carrusel/historia/post/reel/campaña), titulo, copy, hashtags, cta, estructura_json, estado (borrador/aprobado/programado/publicado), fecha_programada, fecha_creacion.
+- **EstrategiaMensual** — Estrategia mensual generada por el Agente Estratega: objetivo, pilares_contenido, frecuencia_publicacion, publico_objetivo, calendario_json (4 semanas), fecha_creacion. FK a EmpresaNexa.
 
 ### `agente_ia`
 - **CategoriaConocimiento** — Categorías de la base de conocimiento del chatbot
@@ -175,13 +179,14 @@ Plataforma de marketing digital con agentes de IA para pymes y empresas.
 - **Template base:** `templates/nexa/base_nexa.html` — sidebar layout, diseño dark SaaS premium.
 - **CSS:** `static/css/nexa_app.css` — scoped bajo `.nxa-app`.
 - **Formulario landing:** reutiliza `DemoRequest` con `necesidad = "Nexa AI — Demo anticipada"`.
+- **Arquitectura de agentes** (`nexa/services/agentes/`): `estratega.py`, `copywriter.py`, `disenador.py`, `analista.py` — todos simulados, listos para conectar API.
 - **Próximos pasos:**
-  - [ ] Conectar `generador_contenido.py` con Claude API (Anthropic SDK ya en requirements)
+  - [ ] Conectar agentes con Claude API (Anthropic SDK ya en requirements)
   - [ ] Integración Meta Graph API para publicación en Instagram/Facebook
-  - [ ] Sistema de agentes IA especializados (Estratega, Copywriter, Community Manager)
   - [ ] Planes y pagos (Stripe)
   - [ ] Botón "Entrar a Nexa" en landing `/nexa/` → `/nexa/app/`
   - [ ] Paginación en biblioteca de contenidos
+  - [ ] Analista: métricas reales cuando se conecte Instagram
 
 ## Funcionalidades pendientes
 

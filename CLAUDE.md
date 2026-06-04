@@ -110,7 +110,10 @@ no están instalados en el entorno MCP. Usar siempre el CLI como fallback.
   - No usar `Workspace` en Nexa aún — las empresas son FK a `accounts.User`.
 - El formulario de demo de Nexa reutiliza `DemoRequest` con `necesidad = "Nexa AI — Demo anticipada"`.
 - Pillow (12.2.0) requerido para `EmpresaNexa.logo` (ImageField) — ya instalado.
-- Próximo paso crítico: conectar `generador_contenido.py` con Claude/OpenAI API.
+- **Arquitectura de agentes** en `nexa/services/agentes/`: `estratega.py`, `copywriter.py`, `disenador.py`, `analista.py`.
+- **EstrategiaMensual**: modelo con calendario_json (4 semanas). Vistas en `/nexa/app/estrategias/`.
+- **Visualizador de slides**: `contenido_detalle.html` renderiza `estructura_json` visualmente via JS; JSON oculto con toggle.
+- Próximo paso crítico: conectar agentes con Claude API (Anthropic SDK en requirements).
 
 ## Gestión de contexto — archivos de referencia
 

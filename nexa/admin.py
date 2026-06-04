@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import EmpresaNexa, MemoriaMarca, ContenidoGenerado
+from .models import EmpresaNexa, MemoriaMarca, ContenidoGenerado, EstrategiaMensual
 
 
 @admin.register(EmpresaNexa)
@@ -34,3 +34,12 @@ class ContenidoGeneradoAdmin(admin.ModelAdmin):
     @admin.display(description="Título")
     def titulo_corto(self, obj):
         return obj.titulo[:60]
+
+
+@admin.register(EstrategiaMensual)
+class EstrategiaMensualAdmin(admin.ModelAdmin):
+    list_display = ["empresa", "frecuencia_publicacion", "fecha_creacion"]
+    list_filter = ["fecha_creacion"]
+    search_fields = ["empresa__nombre_empresa", "objetivo", "pilares_contenido"]
+    readonly_fields = ["fecha_creacion"]
+    raw_id_fields = ["empresa"]

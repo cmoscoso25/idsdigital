@@ -1,5 +1,5 @@
 from django import forms
-from .models import EmpresaNexa, MemoriaMarca, ContenidoGenerado
+from .models import EmpresaNexa, MemoriaMarca, ContenidoGenerado, EstrategiaMensual
 
 
 class EmpresaNexaForm(forms.ModelForm):
@@ -27,6 +27,15 @@ class MemoriaMarcaForm(forms.ModelForm):
             "instrucciones_ia": forms.Textarea(attrs={"rows": 3}),
             "resumen_marca": forms.Textarea(attrs={"rows": 4}),
         }
+
+
+class GenerarEstrategiaForm(forms.Form):
+    empresa_id = forms.IntegerField(widget=forms.HiddenInput())
+    confirmar = forms.BooleanField(
+        required=False,
+        initial=True,
+        label="Generar estrategia basada en la memoria de marca",
+    )
 
 
 class GenerarContenidoForm(forms.Form):

@@ -12,4 +12,7 @@ urlpatterns = [
     path("app/empresas/<int:pk>/generar/", views.generar, name="generar"),
     path("app/contenidos/", views.contenido_list, name="contenido_list"),
     path("app/contenidos/<int:pk>/", views.contenido_detalle, name="contenido_detalle"),
+    path("app/estrategias/", views.estrategia_list, name="estrategia_list"),
+    path("app/empresas/<int:pk>/estrategia/", views.estrategia_nueva, name="estrategia_nueva"),
+    path("app/estrategias/<int:pk>/", views.estrategia_detalle, name="estrategia_detalle"),
 ]

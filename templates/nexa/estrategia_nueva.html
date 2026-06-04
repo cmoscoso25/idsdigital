@@ -1,0 +1,75 @@
+{% extends "nexa/base_nexa.html" %}
+
+{% block title %}Nueva estrategia — {{ empresa.nombre_empresa }}{% endblock %}
+{% block topbar_title %}⚡ Generar estrategia · {{ empresa.nombre_empresa }}{% endblock %}
+
+{% block content %}
+<div class="nxa-generar-layout">
+  <!-- Contexto de marca -->
+  <div class="nxa-card nxa-generar-contexto">
+    <div class="nxa-card-header">
+      <h2 class="nxa-card-title">Contexto</h2>
+    </div>
+    <div class="nxa-detail-list">
+      <div class="nxa-detail-row">
+        <span class="nxa-detail-label">Empresa</span>
+        <span class="nxa-detail-value">{{ empresa.nombre_empresa }}</span>
+      </div>
+      <div class="nxa-detail-row">
+        <span class="nxa-detail-label">Objetivo</span>
+        <span class="nxa-detail-value">{{ empresa.get_objetivo_principal_display }}</span>
+      </div>
+      <div class="nxa-detail-row">
+        <span class="nxa-detail-label">Tono</span>
+        <span class="nxa-detail-value">{{ empresa.get_tono_marca_display }}</span>
+      </div>
+      <div class="nxa-detail-row">
+        <span class="nxa-detail-label">Público</span>
+        <span class="nxa-detail-value">{{ empresa.publico_objetivo|truncatechars:100 }}</span>
+      </div>
+    </div>
+    {% if memoria %}
+      <div style="padding:12px 20px;">
+        <span class="nxa-badge nxa-badge--success">Memoria de marca activa ✓</span>
+      </div>
+    {% else %}
+      <div class="nxa-empty" style="padding:16px;">
+        <p class="nxa-text-muted" style="font-size:12px;">
+          Sin memoria de marca. La estrategia tendrá menos contexto.
+        </p>
+        <a href="{% url 'nexa:memoria_editar' empresa.pk %}" class="nxa-btn nxa-btn--ghost nxa-btn--sm">
+          + Crear memoria
+        </a>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Confirmación de generación -->
+  <div class="nxa-card nxa-generar-form-card">
+    <div class="nxa-card-header">
+      <h2 class="nxa-card-title">Estrategia Mensual IA</h2>
+    </div>
+    <div style="padding:24px;">
+      <p style="color:var(--nxa-muted);font-size:14px;line-height:1.6;margin-bottom:20px;">
+        El <strong style="color:var(--nxa-violet-l)">Agente Estratega</strong> analizará la memoria de marca
+        de <strong>{{ empresa.nombre_empresa }}</strong> y generará:
+      </p>
+      <ul class="nxa-preview-list">
+        <li>🎯 Objetivo mensual detallado</li>
+        <li>📌 Pilares de contenido</li>
+        <li>📅 Frecuencia de publicación recomendada</li>
+        <li>🗓 Calendario de 4 semanas con tipos de contenido</li>
+      </ul>
+      <form method="post" style="margin-top:24px;">
+        {% csrf_token %}
+        <div class="nxa-form-actions">
+          <a href="{% url 'nexa:empresa_detalle' empresa.pk %}" class="nxa-btn nxa-btn--ghost">Cancelar</a>
+          <button type="submit" class="nxa-btn nxa-btn--primary nxa-btn--generate">
+            ⚡ Generar estrategia
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

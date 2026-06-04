@@ -843,6 +843,193 @@
 }
 
 /* ══════════════════════════════════════════
+   VISUALIZADOR DE SLIDES (carrusel, historia, reel)
+   ══════════════════════════════════════════ */
+.nxa-slide-viewer {
+  padding: 16px 20px;
+}
+
+.nxa-slides-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+.nxa-slide {
+  background: rgba(139,92,246,0.06);
+  border: 1px solid rgba(139,92,246,0.2);
+  border-radius: 10px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 100px;
+}
+
+.nxa-slide--full {
+  grid-column: 1 / -1;
+}
+
+.nxa-slide-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--nxa-violet);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.nxa-slide-tipo {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--nxa-violet-l);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.nxa-slide-texto {
+  font-size: 12px;
+  color: var(--nxa-text);
+  line-height: 1.5;
+  flex: 1;
+}
+
+.nxa-slide-extra {
+  font-size: 11px;
+  color: var(--nxa-cyan);
+}
+
+/* ══════════════════════════════════════════
+   ESTRATEGIA — PILARES
+   ══════════════════════════════════════════ */
+.nxa-pilar-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(59,130,246,0.08);
+  border: 1px solid rgba(59,130,246,0.2);
+  border-radius: 8px;
+  padding: 8px 14px;
+}
+
+.nxa-pilar-icon {
+  color: var(--nxa-blue-l);
+  font-size: 14px;
+}
+
+.nxa-pilar-texto {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--nxa-text);
+}
+
+.nxa-preview-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nxa-preview-list li {
+  font-size: 14px;
+  color: var(--nxa-muted);
+  padding: 8px 12px;
+  background: var(--nxa-bg-card);
+  border: 1px solid var(--nxa-border);
+  border-radius: 6px;
+}
+
+/* ══════════════════════════════════════════
+   CALENDARIO MENSUAL
+   ══════════════════════════════════════════ */
+.nxa-calendario {
+  padding: 16px 20px;
+}
+
+.nxa-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.nxa-cal-semana {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--nxa-border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.nxa-cal-semana-header {
+  background: rgba(139,92,246,0.12);
+  border-bottom: 1px solid rgba(139,92,246,0.2);
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--nxa-violet-l);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.nxa-cal-publicaciones {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.nxa-cal-item {
+  display: flex;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--nxa-border);
+  align-items: flex-start;
+}
+
+.nxa-cal-item:last-child { border-bottom: none; }
+
+.nxa-cal-dia {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--nxa-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  min-width: 40px;
+  padding-top: 2px;
+}
+
+.nxa-cal-item-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+
+.nxa-cal-pilar {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--nxa-text);
+}
+
+.nxa-cal-desc {
+  font-size: 11px;
+  color: var(--nxa-dim);
+  line-height: 1.4;
+}
+
+@media (max-width: 900px) {
+  .nxa-cal-grid { grid-template-columns: 1fr 1fr; }
+  .nxa-slides-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+}
+
+@media (max-width: 600px) {
+  .nxa-cal-grid { grid-template-columns: 1fr; }
+}
+
+/* ══════════════════════════════════════════
    UTILIDADES
    ══════════════════════════════════════════ */
 .nxa-text-muted { color: var(--nxa-muted); }
