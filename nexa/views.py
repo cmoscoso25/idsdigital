@@ -223,8 +223,10 @@ def generar_contenido_mes(request, pk):
                 memoria_marca=memoria,
                 tipo_contenido=pub["tipo"],
                 pilar=pub["pilar"],
-                objetivo=pub.get("descripcion", pub["pilar"]),
+                objetivo=pub.get("objetivo_pieza", pub.get("descripcion", pub["pilar"])),
                 semana=semana["semana"],
+                tema=pub.get("tema", pub["pilar"]),
+                enfoque=pub.get("enfoque", ""),
             )
             ContenidoGenerado.objects.create(
                 empresa=empresa,

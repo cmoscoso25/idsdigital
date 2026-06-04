@@ -18,12 +18,17 @@ def generar_contenido_completo(
     pilar: str,
     objetivo: str,
     semana: int = 1,
+    tema: str = None,
+    enfoque: str = None,
 ) -> dict:
     """
     Genera una pieza de contenido completa lista para publicar.
+    - pilar: categoría temática (ej. "Automatización")
+    - tema: asunto específico del brief (ej. "5 tareas que puedes automatizar hoy")
+    - enfoque: ángulo o propósito de la pieza
     Retorna: titulo, copy, hashtags, cta, estructura_json.
     """
-    ctx = _contexto(empresa, memoria_marca, pilar, objetivo, semana)
+    ctx = _contexto(empresa, memoria_marca, pilar, objetivo, semana, tema, enfoque)
     generadores = {
         "carrusel": _generar_carrusel,
         "post":     _generar_post,
@@ -43,48 +48,54 @@ def generar_copy(empresa, memoria_marca, tipo_contenido: str, tema: str, objetiv
 
 # ── Contexto centralizado ──────────────────────────────────────────────────────
 
-def _contexto(empresa, memoria_marca, pilar: str, objetivo: str, semana: int) -> dict:
+def _contexto(empresa, memoria_marca, pilar: str, objetivo: str, semana: int,
+              tema: str = None, enfoque: str = None) -> dict:
     m = memoria_marca
     return {
-        "nombre":      empresa.nombre_empresa,
-        "rubro":       empresa.rubro,
-        "tono":        empresa.tono_marca,
-        "pilar":       pilar,
-        "objetivo":    objetivo,
-        "semana":      semana,
-        "publico":     empresa.publico_objetivo,
-        "propuesta":   (m.propuesta_valor if m else empresa.descripcion[:200]).strip(),
-        "servicios":   (m.servicios_principales if m else empresa.rubro).strip(),
-        "palabras":    ([p.strip() for p in m.palabras_clave.split(",") if p.strip()][:5]
-                       if m and m.palabras_clave else []),
-        "estilo":      (m.estilo_comunicacion if m else "").strip(),
+        "nombre":        empresa.nombre_empresa,
+        "rubro":         empresa.rubro,
+        "tono":          empresa.tono_marca,
+        "pilar":         pilar,
+        # tema: asunto concreto del brief (más específico que el pilar)
+        "tema":          (tema or pilar).strip(),
+        "enfoque":       (enfoque or "").strip(),
+        "objetivo":      objetivo,
+        "semana":        semana,
+        "publico":       empresa.publico_objetivo,
+        "propuesta":     (m.propuesta_valor if m else empresa.descripcion[:200]).strip(),
+        "servicios":     (m.servicios_principales if m else empresa.rubro).strip(),
+        "palabras":      ([p.strip() for p in m.palabras_clave.split(",") if p.strip()][:5]
+                         if m and m.palabras_clave else []),
+        "estilo":        (m.estilo_comunicacion if m else "").strip(),
         "instrucciones": (m.instrucciones_ia if m else "").strip(),
-        "resumen":     (m.resumen_marca if m else "").strip(),
-        "evitar":      (m.evitar_mencionar if m else "").strip(),
-        "slug":        empresa.nombre_empresa.replace(" ", ""),
+        "resumen":       (m.resumen_marca if m else "").strip(),
+        "evitar":        (m.evitar_mencionar if m else "").strip(),
+        "slug":          empresa.nombre_empresa.replace(" ", ""),
     }
 
 
 # ── CARRUSEL ──────────────────────────────────────────────────────────────────
 
 def _generar_carrusel(ctx: dict) -> dict:
-    nombre   = ctx["nombre"]
-    pilar    = ctx["pilar"]
+    nombre    = ctx["nombre"]
+    pilar     = ctx["pilar"]
+    tema      = ctx["tema"]
     propuesta = ctx["propuesta"]
     servicios = ctx["servicios"]
-    publico  = ctx["publico"]
+    publico   = ctx["publico"]
 
-    hook = _hook_carrusel(pilar, nombre, propuesta)
+    # El tema específico del brief como portada; el pilar como categoría de hashtags
+    hook   = tema if len(tema) > 20 else _hook_carrusel(pilar, nombre, propuesta)
     titulo = f"{hook} [Carrusel]"
 
     copy = (
         f"{hook}\n\n"
         f"Si eres {_publico_corto(publico)}, este carrusel es para ti 👇\n\n"
-        f"Desliza para descubrir cómo {nombre} puede ayudarte con {pilar.lower()}."
+        f"Desliza para descubrir cómo {nombre} puede ayudarte."
     )
 
     slides = [
-        {"numero": 1, "tipo": "portada",   "texto": hook, "subtexto": f"Por {nombre}"},
+        {"numero": 1, "tipo": "portada",   "texto": hook,                "subtexto": f"Por {nombre}"},
         {"numero": 2, "tipo": "problema",  "texto": _problema(pilar, publico)},
         {"numero": 3, "tipo": "contenido", "texto": propuesta[:130]},
         {"numero": 4, "tipo": "beneficio", "texto": _beneficio(pilar, servicios[:130], nombre)},
@@ -103,24 +114,27 @@ def _generar_carrusel(ctx: dict) -> dict:
 # ── POST ──────────────────────────────────────────────────────────────────────
 
 def _generar_post(ctx: dict) -> dict:
-    nombre   = ctx["nombre"]
-    pilar    = ctx["pilar"]
+    nombre    = ctx["nombre"]
+    pilar     = ctx["pilar"]
+    tema      = ctx["tema"]
+    enfoque   = ctx["enfoque"]
     propuesta = ctx["propuesta"]
-    servicios = ctx["servicios"]
-    publico  = ctx["publico"]
-    tono     = ctx["tono"]
+    publico   = ctx["publico"]
+    tono      = ctx["tono"]
 
-    gancho = _gancho_post(pilar, nombre, tono)
-    titulo = f"{pilar}: {_titular_post(pilar, nombre)}"
+    # El tema específico dirige el gancho; el enfoque afina el segundo párrafo
+    gancho  = tema if len(tema) > 20 else _gancho_post(pilar, nombre, tono)
+    titulo  = tema[:80] if len(tema) > 20 else f"{pilar}: {_titular_post(pilar, nombre)}"
+    desarrollo = enfoque if enfoque else propuesta[:150]
 
     copy = "\n\n".join([
         gancho,
-        propuesta[:150],
-        f"En {nombre} trabajamos cada día para que {_publico_corto(publico)} pueda {_verbo_objetivo(ctx['objetivo'])} a través de {pilar.lower()}.",
+        desarrollo,
+        propuesta[:120],
         f"¿Quieres saber cómo? {_invitacion(tono)}",
     ])
 
-    sugerencia = f"Imagen: {pilar} — fondo coherente con la identidad de {nombre}. Texto en overlay: \"{gancho[:60]}\""
+    sugerencia = f"Imagen: {tema[:60]} — fondo coherente con la identidad de {nombre}. Texto en overlay: \"{gancho[:55]}\""
 
     return {
         "titulo":    titulo,
@@ -139,32 +153,35 @@ def _generar_post(ctx: dict) -> dict:
 # ── HISTORIA ──────────────────────────────────────────────────────────────────
 
 def _generar_historia(ctx: dict) -> dict:
-    nombre  = ctx["nombre"]
-    pilar   = ctx["pilar"]
+    nombre    = ctx["nombre"]
+    pilar     = ctx["pilar"]
+    tema      = ctx["tema"]
     propuesta = ctx["propuesta"]
-    tono    = ctx["tono"]
+    tono      = ctx["tono"]
 
-    titulo = f"Historia: {pilar}"
-    texto_corto = _texto_historia(pilar, propuesta, nombre)
+    # Pantalla 1: el tema específico como pregunta o afirmación impactante
+    texto_p1 = tema[:70] if len(tema) > 20 else f"💡 {pilar}"
+    titulo = f"Historia: {tema[:60]}" if len(tema) > 20 else f"Historia: {pilar}"
+    texto_corto = f"{texto_p1} — {propuesta[:60].rstrip('.')}."
 
     pantallas = [
         {
             "numero": 1, "duracion": "7s",
-            "texto": f"💡 {pilar}",
+            "texto":    texto_p1,
             "subtexto": _frase_corta(pilar, propuesta),
-            "sticker": _sticker(pilar),
+            "sticker":  _sticker(pilar),
         },
         {
             "numero": 2, "duracion": "7s",
-            "texto": propuesta[:90],
+            "texto":    propuesta[:90],
             "subtexto": f"— {nombre}",
-            "sticker": "deslizador",
+            "sticker":  "deslizador",
         },
         {
             "numero": 3, "duracion": "6s",
-            "texto": _cta_historia(tono),
+            "texto":    _cta_historia(tono),
             "subtexto": "🔗 Link en bio",
-            "sticker": "link",
+            "sticker":  "link",
         },
     ]
 
@@ -180,20 +197,22 @@ def _generar_historia(ctx: dict) -> dict:
 # ── REEL ──────────────────────────────────────────────────────────────────────
 
 def _generar_reel(ctx: dict) -> dict:
-    nombre   = ctx["nombre"]
-    pilar    = ctx["pilar"]
+    nombre    = ctx["nombre"]
+    pilar     = ctx["pilar"]
+    tema      = ctx["tema"]
     propuesta = ctx["propuesta"]
     servicios = ctx["servicios"]
-    tono     = ctx["tono"]
+    tono      = ctx["tono"]
 
-    hook = _hook_reel(pilar, nombre)
+    # El hook del reel usa el tema específico del brief cuando está disponible
+    hook   = tema if len(tema) > 20 else _hook_reel(pilar, nombre)
     titulo = f"Reel: {hook[:60]}"
 
     guion = [
-        {"rango": "0-5s",  "texto": hook, "tipo": "hook"},
-        {"rango": "5-15s", "texto": propuesta[:100], "tipo": "desarrollo"},
-        {"rango": "15-25s","texto": _ejemplo_reel(pilar, servicios[:80], nombre), "tipo": "ejemplo"},
-        {"rango": "25-30s","texto": _cta_reel(tono, nombre), "tipo": "cta"},
+        {"rango": "0-5s",   "texto": hook,                                      "tipo": "hook"},
+        {"rango": "5-15s",  "texto": propuesta[:100],                           "tipo": "desarrollo"},
+        {"rango": "15-25s", "texto": _ejemplo_reel(pilar, servicios[:80], nombre), "tipo": "ejemplo"},
+        {"rango": "25-30s", "texto": _cta_reel(tono, nombre),                   "tipo": "cta"},
     ]
 
     copy = (
