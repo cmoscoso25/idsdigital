@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#0f172a" />
+  <meta name="theme-color" content="#05090f" />
 
   <title>{{ post.meta_title }} | IDS Digital</title>
   <meta name="description" content="{{ post.meta_description }}" />
@@ -52,86 +52,109 @@
   }
   </script>
 
+  <!-- Tipografía Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
   <link rel="stylesheet" href="{% static 'css/public.css' %}" />
 </head>
-<body>
+<body class="blog-dark">
 
   <!-- NAVBAR -->
   <nav class="navbar">
     <div class="navbar-inner">
       <a href="{% url 'home' %}" class="navbar-logo">
-        <div class="navbar-logo-box">IDS</div>
+        <svg width="30" height="30" viewBox="0 0 60 60" fill="none" aria-hidden="true">
+          <circle cx="30" cy="28" r="7" fill="#3b82f6"/>
+          <circle cx="14" cy="14" r="4.5" fill="#60a5fa"/>
+          <circle cx="46" cy="14" r="4.5" fill="#60a5fa"/>
+          <circle cx="11" cy="38" r="3.5" fill="#60a5fa"/>
+          <circle cx="50" cy="40" r="3.5" fill="#60a5fa"/>
+          <circle cx="28" cy="48" r="3.5" fill="#60a5fa"/>
+          <line x1="30" y1="21" x2="16" y2="16" stroke="#3b82f6" stroke-width="1.5"/>
+          <line x1="30" y1="21" x2="44" y2="16" stroke="#3b82f6" stroke-width="1.5"/>
+          <line x1="24" y1="33" x2="13" y2="36" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
+          <line x1="36" y1="34" x2="48" y2="38" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
+          <line x1="29" y1="35" x2="28" y2="45" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
+        </svg>
         <div>
-          <div class="navbar-name">Inteligencia Digital y Sistemas</div>
-          <div class="navbar-sub">Consultora tecnológica · Software · IA · Automatización</div>
+          <div class="navbar-name">IDS Digital</div>
+          <div class="navbar-sub">Inteligencia Digital y Sistemas</div>
         </div>
       </a>
       <div class="navbar-links">
         <a href="{% url 'home' %}#servicios">Servicios</a>
-        <a href="{% url 'blog_list_public' %}">Blog</a>
+        <a href="{% url 'blog_list_public' %}" class="navbar-link-active">Blog</a>
         <a href="{% url 'home' %}#contacto">Contacto</a>
       </div>
       <a href="{% url 'home' %}#contacto" class="btn-nav">Solicitar diagnóstico</a>
     </div>
   </nav>
 
-  <!-- ARTÍCULO -->
-  <main class="article-main">
-    <div class="article-inner">
-
+  <!-- ARTICLE HERO — header del artículo -->
+  <div class="article-hero" aria-label="Encabezado del artículo">
+    <div class="article-hero-grid" aria-hidden="true"></div>
+    <div class="article-hero-glow" aria-hidden="true"></div>
+    <div class="article-hero-inner">
       <!-- Breadcrumb -->
-      <nav class="breadcrumb" aria-label="Breadcrumb">
+      <nav class="bd-breadcrumb" aria-label="Ruta de navegación">
         <a href="{% url 'home' %}">Inicio</a>
-        <span>›</span>
+        <span aria-hidden="true">›</span>
         <a href="{% url 'blog_list_public' %}">Blog</a>
-        <span>›</span>
+        <span aria-hidden="true">›</span>
         <span>{{ post.title }}</span>
       </nav>
+      {% if post.category %}
+      <div class="bd-category">{{ post.category }}</div>
+      {% endif %}
+      <h1 class="article-hero-title">{{ post.title }}</h1>
+      <p class="article-hero-excerpt">{{ post.excerpt }}</p>
+      <div class="article-hero-meta">
+        <span>IDS Digital</span>
+        <span aria-hidden="true">·</span>
+        <span>{{ post.published_at|date:"d \d\e F \d\e Y" }}</span>
+      </div>
+    </div>
+  </div>
 
-      <!-- Header del artículo -->
-      <header class="article-header">
-        {% if post.category %}
-        <div class="blog-card-category">{{ post.category }}</div>
-        {% endif %}
-        <h1 class="article-title">{{ post.title }}</h1>
-        <p class="article-excerpt">{{ post.excerpt }}</p>
-        <div class="article-meta">
-          <span>IDS Digital</span>
-          <span>·</span>
-          <span>{{ post.published_at|date:"d \d\e F \d\e Y" }}</span>
-        </div>
-      </header>
+  <!-- CONTENIDO DEL ARTÍCULO + SIDEBAR -->
+  <main class="bd-article-main" aria-label="Contenido del artículo">
+    <div class="bd-article-body">
 
       <!-- Contenido -->
-      <div class="article-content">
+      <div class="bd-article-content">
         {{ post.content|safe }}
       </div>
 
       <!-- CTA dentro del artículo -->
-      <div class="article-cta">
-        <div class="article-cta-inner">
+      <div class="bd-article-cta">
+        <div class="bd-article-cta-inner">
+          <div class="bd-section-label">¿Te interesa aplicar esto?</div>
           <h3>¿Necesitas implementar esto en tu empresa?</h3>
           <p>En IDS Digital te ayudamos a convertir este conocimiento en una solución concreta para tu organización.</p>
-          <a href="{% url 'home' %}#contacto" class="btn-primary">Solicitar diagnóstico gratuito →</a>
+          <a href="{% url 'home' %}#contacto" class="bd-btn-primary">
+            Solicitar diagnóstico gratuito →
+          </a>
         </div>
       </div>
 
     </div>
 
     <!-- Sidebar -->
-    <aside class="article-sidebar">
+    <aside class="bd-sidebar" aria-label="Artículos relacionados y contacto">
 
       {% if posts_relacionados %}
-      <div class="sidebar-card">
-        <div class="sidebar-title">Otros artículos</div>
-        <div class="sidebar-posts">
+      <div class="bd-sidebar-card">
+        <div class="bd-sidebar-title">Otros artículos</div>
+        <div class="bd-sidebar-posts">
           {% for related in posts_relacionados %}
-          <a href="{% url 'blog_detail_public' related.slug %}" class="sidebar-post">
+          <a href="{% url 'blog_detail_public' related.slug %}" class="bd-sidebar-post">
             {% if related.category %}
-            <div class="sidebar-post-category">{{ related.category }}</div>
+            <div class="bd-sidebar-post-cat">{{ related.category }}</div>
             {% endif %}
-            <div class="sidebar-post-title">{{ related.title }}</div>
-            <div class="sidebar-post-date">{{ related.published_at|date:"d M Y" }}</div>
+            <div class="bd-sidebar-post-title">{{ related.title }}</div>
+            <div class="bd-sidebar-post-date">{{ related.published_at|date:"d M Y" }}</div>
           </a>
           {% endfor %}
         </div>
@@ -139,10 +162,11 @@
       {% endif %}
 
       <!-- CTA sidebar -->
-      <div class="sidebar-card sidebar-cta">
-        <div class="sidebar-title">¿Te interesa esto para tu empresa?</div>
-        <p class="sidebar-cta-text">Cuéntanos tu necesidad y te proponemos una solución a medida, sin compromiso.</p>
-        <a href="{% url 'home' %}#contacto" class="btn-primary" style="display:block; text-align:center;">
+      <div class="bd-sidebar-card bd-sidebar-cta-card">
+        <div class="bd-sidebar-cta-glow" aria-hidden="true"></div>
+        <div class="bd-sidebar-title">¿Te interesa para tu empresa?</div>
+        <p class="bd-sidebar-cta-text">Cuéntanos tu necesidad y te proponemos una solución a medida, sin compromiso.</p>
+        <a href="{% url 'home' %}#contacto" class="bd-btn-primary" style="display:block; text-align:center;">
           Diagnóstico gratuito →
         </a>
       </div>
@@ -151,28 +175,52 @@
   </main>
 
   <!-- CTA FINAL -->
-  <section class="cta-final">
-    <div class="cta-final-inner">
+  <section class="bd-cta-final" aria-label="Solicitar diagnóstico">
+    <div class="bd-cta-glow" aria-hidden="true"></div>
+    <div class="bd-cta-inner">
+      <div class="bd-section-label" style="text-align:center; display:block; margin-bottom:16px;">¿Listo para dar el siguiente paso?</div>
       <h2>¿Necesitas software, automatización o IA para tu empresa en Chile?</h2>
       <p>Cuéntanos tu caso y te proponemos una solución concreta, sin compromiso inicial.</p>
-      <div class="cta-btns">
-        <a href="{% url 'home' %}#contacto" class="btn-primary">Solicitar diagnóstico gratuito</a>
-        <a href="{% url 'blog_list_public' %}" class="btn-cta-sec">Ver más artículos →</a>
+      <div class="bd-cta-btns">
+        <a href="{% url 'home' %}#contacto" class="bd-btn-primary bd-btn-lg">
+          Solicitar diagnóstico gratuito
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="{% url 'blog_list_public' %}" class="bd-btn-outline">Ver más artículos →</a>
       </div>
     </div>
   </section>
 
   <!-- FOOTER -->
-  <footer class="footer">
-    <div class="footer-inner">
-      <div class="footer-logo">
-        <div class="navbar-logo-box">IDS</div>
-        <div>
-          <div class="footer-name">Inteligencia Digital y Sistemas SpA</div>
-          <div class="footer-sub">Consultora tecnológica · Santiago, Chile · contacto@idsdigital.cl</div>
+  <footer class="bd-footer" aria-label="Pie de página">
+    <div class="bd-footer-inner">
+      <div class="bd-footer-brand">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+          <svg width="28" height="28" viewBox="0 0 60 60" fill="none" aria-hidden="true">
+            <circle cx="30" cy="28" r="7" fill="#3b82f6"/>
+            <circle cx="14" cy="14" r="4.5" fill="#60a5fa"/>
+            <circle cx="46" cy="14" r="4.5" fill="#60a5fa"/>
+            <circle cx="11" cy="38" r="3.5" fill="#60a5fa"/>
+            <circle cx="50" cy="40" r="3.5" fill="#60a5fa"/>
+            <circle cx="28" cy="48" r="3.5" fill="#60a5fa"/>
+            <line x1="30" y1="21" x2="16" y2="16" stroke="#3b82f6" stroke-width="1.5"/>
+            <line x1="30" y1="21" x2="44" y2="16" stroke="#3b82f6" stroke-width="1.5"/>
+            <line x1="24" y1="33" x2="13" y2="36" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
+            <line x1="36" y1="34" x2="48" y2="38" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
+            <line x1="29" y1="35" x2="28" y2="45" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
+          </svg>
+          <div>
+            <div class="bd-footer-name">Inteligencia Digital y Sistemas SpA</div>
+            <div class="bd-footer-sub">contacto@idsdigital.cl · Santiago, Chile</div>
+          </div>
         </div>
       </div>
-      <div class="footer-copy">© 2026 Inteligencia Digital y Sistemas SpA. Todos los derechos reservados.</div>
+      <div class="bd-footer-links">
+        <a href="{% url 'home' %}#servicios">Servicios</a>
+        <a href="{% url 'blog_list_public' %}">Blog</a>
+        <a href="{% url 'home' %}#contacto">Contacto</a>
+      </div>
+      <div class="bd-footer-copy">© 2026 Inteligencia Digital y Sistemas SpA. Todos los derechos reservados.</div>
     </div>
   </footer>
 

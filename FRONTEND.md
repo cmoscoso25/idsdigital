@@ -59,13 +59,14 @@ NEVER: efectos decorativos sin propósito · animaciones que distraigan · infor
 
 ---
 
-## 3. Dos superficies visuales
+## 3. Superficies visuales del proyecto
 
-| Superficie | Archivo CSS | Rutas | Audiencia |
-|---|---|---|---|
-| Landing pública | `static/css/public.css` | `/`, `/blog/`, `/servicios/`, `/automatizacion-procesos/`, `/desarrollo-software-medida/`, `/inteligencia-artificial-empresas/` | Prospectos B2B |
-| CRM interno | `static/css/styles.css` | `/panel/*`, `/accounts/*` | Usuarios internos con rol RBAC |
-| Chatbot | `static/css/diagnostico_ia.css` | `/agente-ia/` | Visitantes y usuarios |
+| Superficie | Body class | Archivo CSS | Rutas | Audiencia |
+|---|---|---|---|---|
+| Landing pública | `landing-page` | `public.css` | `/`, `/servicios/`, `/automatizacion-procesos/`, etc. | Prospectos B2B |
+| Blog (lista + detalle) | `blog-dark` | `public.css` | `/blog/`, `/blog/<slug>/` | Lectores y prospectos B2B |
+| CRM interno | _(sin clase especial)_ | `styles.css` | `/panel/*`, `/accounts/*` | Usuarios internos RBAC |
+| Chatbot | _(sin clase especial)_ | `diagnostico_ia.css` | `/agente-ia/` | Visitantes y usuarios |
 
 MUST mantener paleta compartida y coherencia tipográfica entre superficies.
 NEVER introducir estilos que funcionen en una superficie y rompan las otras.

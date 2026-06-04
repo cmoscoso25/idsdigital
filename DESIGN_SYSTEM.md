@@ -755,6 +755,37 @@ CSS crítico para rotación de grupos SVG:
 - MUST verificar `prefers-reduced-motion` antes de iniciar cualquier animación JS.
 - NEVER cargar librerías de animación (GSAP, Framer, Anime.js) para efectos que CSS puede resolver.
 
+## 14. Blog dark — componentes canónicos
+
+El blog usa `class="blog-dark"` en el body y el prefijo `.blog-dark` para todos sus estilos en `public.css`.
+
+### Blog cards (patrón canónico)
+
+```css
+.blog-dark .bd-card {
+  background: rgba(255,255,255,0.04);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  /* hover: border-color → rgba(59,130,246,0.4), transform: translateY(-4px) */
+}
+```
+
+- `::before` con radial-gradient que aparece en hover (opacity 0→1)
+- Category badge: `background: rgba(59,130,246,0.12)`, uppercase, 11px/600
+- Footer de card: border-top sutil + link con SVG arrow que hace gap on hover
+
+### Article content (dark prose)
+
+Texto del artículo en modo oscuro: `color: #cbd5e1`, `line-height: 1.88`.
+Headings: `color: #fff` (h2) y `color: #f1f5f9` (h3).
+Links: `var(--bd-blue-l)` con underline-offset.
+Blockquote: border-left azul + fondo azul sutil.
+Code inline: fondo `rgba(255,255,255,0.08)`, color `var(--bd-blue-l)`.
+
+### Variables CSS del blog (`.blog-dark`)
+
+Comparte la misma paleta que `.landing-page` bajo prefijo `--bd-*`. Al crear páginas de blog nuevas, MUST usar estas variables y no valores hardcodeados.
+
 ## 12. Consistencia visual
 
 ### Patrones obligatorios en todos los módulos

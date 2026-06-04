@@ -107,7 +107,7 @@ request autenticado desde la sesión (`current_workspace_id`).
 | Archivo | Uso |
 |---|---|
 | `static/css/styles.css` | CRM interno (panel) |
-| `static/css/public.css` | Landing y páginas públicas |
+| `static/css/public.css` | Landing (`.landing-page`), Blog (`.blog-dark`) y páginas públicas |
 | `static/js/diagnostico_ia.js` | Frontend del agente conversacional |
 | `static/css/diagnostico_ia.css` | Estilos del chatbot |
 
