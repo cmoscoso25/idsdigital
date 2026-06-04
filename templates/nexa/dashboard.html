@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content %}
-<!-- KPIs -->
+<!-- KPIs fila 1 -->
 <div class="nxa-kpi-row">
   <div class="nxa-kpi">
     <span class="nxa-kpi-value">{{ total_empresas }}</span>
@@ -15,7 +15,7 @@
   </div>
   <div class="nxa-kpi">
     <span class="nxa-kpi-value">{{ total_contenidos }}</span>
-    <span class="nxa-kpi-label">Contenidos generados</span>
+    <span class="nxa-kpi-label">Contenidos</span>
   </div>
   <div class="nxa-kpi nxa-kpi--warning">
     <span class="nxa-kpi-value">{{ borradores }}</span>
@@ -24,6 +24,30 @@
   <div class="nxa-kpi nxa-kpi--success">
     <span class="nxa-kpi-value">{{ aprobados }}</span>
     <span class="nxa-kpi-label">Aprobados</span>
+  </div>
+</div>
+
+<!-- KPIs creatividades fila 2 -->
+<div class="nxa-kpi-row nxa-kpi-row--creatividades">
+  <div class="nxa-kpi nxa-kpi--creatividad">
+    <span class="nxa-kpi-value">{{ total_creatividades }}</span>
+    <span class="nxa-kpi-label">🎨 Creatividades</span>
+  </div>
+  <div class="nxa-kpi">
+    <span class="nxa-kpi-value nxa-kpi-value--sm">{{ creatividades_post }}</span>
+    <span class="nxa-kpi-label">Posts</span>
+  </div>
+  <div class="nxa-kpi">
+    <span class="nxa-kpi-value nxa-kpi-value--sm">{{ creatividades_historia }}</span>
+    <span class="nxa-kpi-label">Historias</span>
+  </div>
+  <div class="nxa-kpi">
+    <span class="nxa-kpi-value nxa-kpi-value--sm">{{ creatividades_carrusel }}</span>
+    <span class="nxa-kpi-label">Carruseles</span>
+  </div>
+  <div class="nxa-kpi">
+    <span class="nxa-kpi-value nxa-kpi-value--sm">{{ creatividades_reel }}</span>
+    <span class="nxa-kpi-label">Reels</span>
   </div>
 </div>
 

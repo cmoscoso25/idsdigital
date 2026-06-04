@@ -139,6 +139,46 @@ class ContenidoGenerado(models.Model):
         return f"{self.get_tipo_contenido_display()} — {self.titulo[:60]}"
 
 
+class CreatividadInstagram(models.Model):
+    TIPOS = [
+        ("post",     "Post"),
+        ("historia", "Historia"),
+        ("carrusel", "Carrusel"),
+        ("reel",     "Reel"),
+    ]
+    ESTADOS = [
+        ("generada",  "Generada"),
+        ("aprobada",  "Aprobada"),
+        ("publicada", "Publicada"),
+    ]
+
+    contenido = models.ForeignKey(
+        ContenidoGenerado,
+        on_delete=models.CASCADE,
+        related_name="creatividades",
+        help_text="Contenido generado a partir del cual se creó esta creatividad",
+    )
+    tipo = models.CharField(max_length=20, choices=TIPOS)
+    prompt_visual = models.TextField(
+        help_text="Prompt profesional listo para enviar a OpenAI Images / Flux / Ideogram / Gemini",
+    )
+    estructura_visual_json = models.JSONField(
+        default=dict,
+        help_text="Especificación visual completa: colores, slides, escenas, elementos de diseño",
+    )
+    estado = models.CharField(max_length=20, choices=ESTADOS, default="generada")
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Creatividad Instagram"
+        verbose_name_plural = "Creatividades Instagram"
+        ordering = ["-fecha_creacion"]
+        indexes = [models.Index(fields=["contenido", "tipo"])]
+
+    def __str__(self):
+        return f"[{self.get_tipo_display()}] {self.contenido.titulo[:50]}"
+
+
 class EstrategiaMensual(models.Model):
     empresa = models.ForeignKey(
         EmpresaNexa,

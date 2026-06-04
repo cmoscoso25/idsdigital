@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import EmpresaNexa, MemoriaMarca, ContenidoGenerado, EstrategiaMensual
+from .models import EmpresaNexa, MemoriaMarca, ContenidoGenerado, CreatividadInstagram, EstrategiaMensual
 
 
 @admin.register(EmpresaNexa)
@@ -43,3 +43,13 @@ class EstrategiaMensualAdmin(admin.ModelAdmin):
     search_fields = ["empresa__nombre_empresa", "objetivo", "pilares_contenido"]
     readonly_fields = ["fecha_creacion"]
     raw_id_fields = ["empresa"]
+
+
+@admin.register(CreatividadInstagram)
+class CreatividadInstagramAdmin(admin.ModelAdmin):
+    list_display = ["__str__", "tipo", "estado", "fecha_creacion"]
+    list_filter = ["tipo", "estado", "fecha_creacion"]
+    search_fields = ["contenido__titulo", "contenido__empresa__nombre_empresa", "prompt_visual"]
+    readonly_fields = ["fecha_creacion"]
+    list_editable = ["estado"]
+    raw_id_fields = ["contenido"]

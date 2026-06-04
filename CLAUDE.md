@@ -117,6 +117,8 @@ no están instalados en el entorno MCP. Usar siempre el CLI como fallback.
 - **Copywriter v2**: `nexa/services/agentes/copywriter.py` genera contenido auténtico por tipo (carrusel/historia/post/reel/campaña). Usa propuesta_valor, servicios, tono de marca y pilar. Sin frases genéricas. Hashtags: 5-8 naturales, máx 24 chars, sin concatenaciones largas. `_contexto()` centraliza acceso a memoria de marca.
 - **Biblioteca**: filtros por empresa, estrategia, tipo y estado. KPIs: total, borradores, aprobados, programados, publicados.
 - **Progress en estrategia**: planificados/generados/avance% calculados en vista, barra visual en template.
+- **Creatividades Instagram** (2026-06-04): módulo completo en `nexa/`. Modelo `CreatividadInstagram` (FK a ContenidoGenerado). Agente `agente_diseno_instagram.py` genera `prompt_visual` + `estructura_visual_json` por tipo. Mockups HTML/CSS en el template (post 1:1, historia 9:16, carrusel navegable, reel storyboard). Puntos de conexión marcados para OpenAI DALL-E 3, Flux, Ideogram y Gemini Imagen.
+- `static/css/nexa_app.css` incluye estilos `.nxa-ig-*` para todos los mockups de Instagram.
 - Próximo paso crítico: conectar agentes con Claude API (Anthropic SDK en requirements).
 
 ## Gestión de contexto — archivos de referencia

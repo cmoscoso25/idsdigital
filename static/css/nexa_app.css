@@ -1245,6 +1245,400 @@
 }
 
 /* ══════════════════════════════════════════
+   CREATIVIDADES — GRID DE TARJETAS
+   ══════════════════════════════════════════ */
+.nxa-kpi-row--creatividades {
+  grid-template-columns: repeat(5, 1fr);
+  margin-top: 8px;
+}
+
+.nxa-kpi--creatividad .nxa-kpi-value { color: var(--nxa-violet-l); }
+.nxa-kpi-value--sm { font-size: 20px; font-weight: 700; }
+
+.nxa-creatividades-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.nxa-creatividad-card {
+  background: var(--nxa-bg-card);
+  border: 1px solid var(--nxa-border);
+  border-radius: 12px;
+  overflow: hidden;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s, transform 0.15s;
+}
+
+.nxa-creatividad-card:hover {
+  border-color: var(--nxa-border-h);
+  transform: translateY(-2px);
+}
+
+.nxa-creatividad-thumb {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--c1, #3b82f6), var(--c2, #8b5cf6));
+}
+
+.nxa-creatividad-thumb--post     { aspect-ratio: 1/1; }
+.nxa-creatividad-thumb--historia { aspect-ratio: 9/16; max-height: 180px; }
+.nxa-creatividad-thumb--carrusel { aspect-ratio: 1/1; }
+.nxa-creatividad-thumb--reel     { aspect-ratio: 9/16; max-height: 180px; }
+
+.nxa-creatividad-thumb-inner {
+  position: relative;
+  z-index: 2;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.nxa-creatividad-tipo-icon { font-size: 24px; }
+
+.nxa-creatividad-thumb-titulo {
+  font-size: 11px;
+  color: rgba(255,255,255,0.9);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.nxa-creatividad-thumb-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.nxa-creatividad-card-body {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nxa-creatividad-card-header {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.nxa-creatividad-empresa {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--nxa-text);
+  margin-top: 2px;
+}
+
+.nxa-creatividad-fecha {
+  font-size: 11px;
+}
+
+/* ══════════════════════════════════════════
+   CREATIVIDAD DETALLE — LAYOUT
+   ══════════════════════════════════════════ */
+.nxa-creatividad-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 20px;
+  align-items: start;
+}
+
+.nxa-mockup-panel {
+  background: var(--nxa-bg-card);
+  border: 1px solid var(--nxa-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.nxa-mockup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--nxa-border);
+}
+
+.nxa-creatividad-info-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ══════════════════════════════════════════
+   MOCKUPS INSTAGRAM — BASE
+   ══════════════════════════════════════════ */
+.nxa-ig-mock {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--c1, #3b82f6), var(--c2, #8b5cf6));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.nxa-ig-mock-inner {
+  position: relative;
+  z-index: 2;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+/* POST 1:1 */
+.nxa-ig-post {
+  aspect-ratio: 1/1;
+  max-width: 400px;
+  margin: 20px auto;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+.nxa-ig-logo-mark {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.nxa-ig-titulo {
+  font-size: clamp(14px, 3vw, 20px);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+.nxa-ig-subtitulo {
+  font-size: 13px;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.4;
+}
+
+.nxa-ig-empresa {
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.nxa-ig-cta-btn {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  backdrop-filter: blur(8px);
+}
+
+.nxa-ig-slide-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(0,0,0,0.4);
+  color: rgba(255,255,255,0.8);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.06em;
+}
+
+/* HISTORIA 9:16 */
+.nxa-ig-historia-wrap {
+  display: flex;
+  gap: 12px;
+  padding: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.nxa-ig-story {
+  width: 140px;
+  aspect-ratio: 9/16;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  flex-shrink: 0;
+}
+
+.nxa-ig-story-num {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 9px;
+  color: rgba(255,255,255,0.6);
+  font-weight: 600;
+}
+
+.nxa-ig-dur {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  font-size: 9px;
+  color: rgba(255,255,255,0.5);
+}
+
+.nxa-ig-sticker {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.25);
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 11px;
+  color: #fff;
+}
+
+/* CARRUSEL */
+.nxa-ig-carrusel-wrap {
+  padding: 20px;
+}
+
+.nxa-ig-carrusel-slides {
+  position: relative;
+  min-height: 280px;
+}
+
+.nxa-ig-carrusel-slide {
+  display: none;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.nxa-ig-carrusel-slide.active { display: flex; }
+
+.nxa-ig-carrusel-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.nxa-ig-slide-num {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  font-weight: 600;
+  align-self: flex-end;
+}
+
+/* REEL STORYBOARD */
+.nxa-ig-reel-storyboard { padding: 16px 20px; }
+
+.nxa-ig-reel-hook-banner {
+  background: rgba(245,158,11,0.1);
+  border: 1px solid rgba(245,158,11,0.3);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--nxa-yellow);
+  margin-bottom: 16px;
+}
+
+.nxa-ig-reel-escenas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.nxa-ig-reel-escena {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nxa-ig-reel-frame {
+  aspect-ratio: 9/16;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  position: relative;
+}
+
+.nxa-ig-reel-texto {
+  font-size: 10px;
+  color: #fff;
+  text-align: center;
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+.nxa-ig-reel-rango {
+  font-size: 10px;
+  color: var(--nxa-cyan);
+  text-align: center;
+  font-weight: 600;
+}
+
+.nxa-ig-reel-transicion {
+  font-size: 9px;
+  color: var(--nxa-dim);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* Prompt + API badges */
+.nxa-prompt-visual {
+  font-size: 13px;
+  color: var(--nxa-muted);
+  line-height: 1.7;
+  font-style: italic;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--nxa-border);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.nxa-api-badge {
+  display: inline-flex;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(59,130,246,0.08);
+  border: 1px solid rgba(59,130,246,0.2);
+  color: var(--nxa-blue-l);
+  opacity: 0.7;
+}
+
+@media (max-width: 900px) {
+  .nxa-creatividad-layout { grid-template-columns: 1fr; }
+  .nxa-kpi-row--creatividades { grid-template-columns: repeat(3, 1fr); }
+  .nxa-ig-historia-wrap { gap: 8px; }
+  .nxa-ig-story { width: 110px; }
+}
+
+@media (max-width: 600px) {
+  .nxa-kpi-row--creatividades { grid-template-columns: 1fr 1fr; }
+  .nxa-creatividades-grid { grid-template-columns: 1fr 1fr; }
+  .nxa-ig-reel-escenas { grid-template-columns: 1fr 1fr; }
+}
+
+/* ══════════════════════════════════════════
    UTILIDADES
    ══════════════════════════════════════════ */
 .nxa-text-muted { color: var(--nxa-muted); }

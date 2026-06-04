@@ -1,0 +1,248 @@
+{% extends "nexa/base_nexa.html" %}
+
+{% block title %}Creatividad · {{ creatividad.get_tipo_display }}{% endblock %}
+{% block topbar_title %}🎨 {{ creatividad.get_tipo_display }} · {{ creatividad.contenido.empresa.nombre_empresa }}{% endblock %}
+{% block topbar_actions %}
+  <a href="{% url 'nexa:creatividad_list' %}" class="nxa-btn nxa-btn--ghost">← Volver</a>
+  <form method="post" action="{% url 'nexa:generar_creatividad' creatividad.contenido.pk %}" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" class="nxa-btn nxa-btn--ghost">↻ Regenerar</button>
+  </form>
+{% endblock %}
+
+{% block content %}
+<div class="nxa-creatividad-layout">
+
+  <!-- Panel izquierdo: mockup visual -->
+  <div class="nxa-mockup-panel">
+    <div class="nxa-mockup-header">
+      <span class="nxa-badge nxa-badge--tipo">Vista previa — {{ creatividad.get_tipo_display }}</span>
+      <span class="nxa-text-muted" style="font-size:12px;">
+        {{ creatividad.estructura_visual_json.dimensiones }}
+      </span>
+    </div>
+
+    <!-- Mockup renderizado por JS -->
+    <div id="nxaMockupViewer"
+         data-tipo="{{ creatividad.tipo }}"
+         data-c1="{{ creatividad.contenido.empresa.color_principal }}"
+         data-c2="{{ creatividad.contenido.empresa.color_secundario }}">
+    </div>
+  </div>
+
+  <!-- Panel derecho: info + prompt + acciones -->
+  <div class="nxa-creatividad-info-panel">
+
+    <!-- Acciones de estado -->
+    <div class="nxa-card" style="margin-bottom:16px;">
+      <div class="nxa-card-header">
+        <h2 class="nxa-card-title">Estado</h2>
+        <span class="nxa-badge nxa-badge--estado nxa-estado--{{ creatividad.estado }}">
+          {{ creatividad.get_estado_display }}
+        </span>
+      </div>
+      <form method="post" class="nxa-estado-form">
+        {% csrf_token %}
+        <div class="nxa-estado-btns">
+          {% for valor, etiqueta in creatividad.ESTADOS %}
+            <button type="submit" name="estado" value="{{ valor }}"
+              class="nxa-btn nxa-btn--estado nxa-estado--{{ valor }} {% if creatividad.estado == valor %}active{% endif %}">
+              {{ etiqueta }}
+            </button>
+          {% endfor %}
+        </div>
+      </form>
+    </div>
+
+    <!-- Datos de la creatividad -->
+    <div class="nxa-card" style="margin-bottom:16px;">
+      <div class="nxa-card-header">
+        <h2 class="nxa-card-title">Especificaciones</h2>
+      </div>
+      <div class="nxa-detail-list">
+        <div class="nxa-detail-row">
+          <span class="nxa-detail-label">Tipo</span>
+          <span class="nxa-detail-value">{{ creatividad.get_tipo_display }}</span>
+        </div>
+        <div class="nxa-detail-row">
+          <span class="nxa-detail-label">Empresa</span>
+          <span class="nxa-detail-value">
+            <a href="{% url 'nexa:empresa_detalle' creatividad.contenido.empresa.pk %}" class="nxa-link">
+              {{ creatividad.contenido.empresa.nombre_empresa }}
+            </a>
+          </span>
+        </div>
+        <div class="nxa-detail-row">
+          <span class="nxa-detail-label">Color principal</span>
+          <span class="nxa-detail-value">
+            <span class="nxa-color-dot" style="background:{{ creatividad.contenido.empresa.color_principal }}"></span>
+            {{ creatividad.contenido.empresa.color_principal }}
+          </span>
+        </div>
+        <div class="nxa-detail-row">
+          <span class="nxa-detail-label">Color secundario</span>
+          <span class="nxa-detail-value">
+            <span class="nxa-color-dot" style="background:{{ creatividad.contenido.empresa.color_secundario }}"></span>
+            {{ creatividad.contenido.empresa.color_secundario }}
+          </span>
+        </div>
+        <div class="nxa-detail-row">
+          <span class="nxa-detail-label">Logo</span>
+          <span class="nxa-detail-value">
+            {% if creatividad.contenido.empresa.logo %}
+              <span class="nxa-badge nxa-badge--success">Disponible ✓</span>
+            {% else %}
+              <span class="nxa-badge">Sin logo</span>
+            {% endif %}
+          </span>
+        </div>
+        <div class="nxa-detail-row">
+          <span class="nxa-detail-label">Dimensiones</span>
+          <span class="nxa-detail-value">{{ creatividad.estructura_visual_json.dimensiones }}</span>
+        </div>
+        <div class="nxa-detail-row">
+          <span class="nxa-detail-label">Contenido origen</span>
+          <span class="nxa-detail-value">
+            <a href="{% url 'nexa:contenido_detalle' creatividad.contenido.pk %}" class="nxa-link">
+              {{ creatividad.contenido.titulo|truncatechars:50 }}
+            </a>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prompt visual -->
+    <div class="nxa-card">
+      <div class="nxa-card-header">
+        <h2 class="nxa-card-title">Prompt visual IA</h2>
+        <span class="nxa-badge" title="Listo para OpenAI Images, Flux, Ideogram o Gemini">
+          🔌 API-ready
+        </span>
+      </div>
+      <div style="padding:16px 20px;">
+        <p class="nxa-prompt-visual">{{ creatividad.prompt_visual }}</p>
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+          <span class="nxa-api-badge">OpenAI DALL-E 3</span>
+          <span class="nxa-api-badge">Flux</span>
+          <span class="nxa-api-badge">Ideogram</span>
+          <span class="nxa-api-badge">Gemini Imagen</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+  const viewer  = document.getElementById('nxaMockupViewer');
+  const tipo    = viewer.dataset.tipo;
+  const c1      = viewer.dataset.c1;
+  const c2      = viewer.dataset.c2;
+  const raw     = {{ creatividad.estructura_visual_json|safe }};
+  const empresa = "{{ creatividad.contenido.empresa.nombre_empresa|escapejs }}";
+  const titulo  = "{{ creatividad.contenido.titulo|truncatechars:60|escapejs }}";
+  const cta     = "{{ creatividad.contenido.cta|default:'Contáctanos →'|truncatechars:40|escapejs }}";
+
+  let html = '';
+
+  if (tipo === 'post') {
+    html = `<div class="nxa-ig-mock nxa-ig-post" style="--c1:${c1};--c2:${c2}">
+      <div class="nxa-ig-mock-inner">
+        <div class="nxa-ig-logo-mark">${empresa[0].toUpperCase()}</div>
+        <h3 class="nxa-ig-titulo">${titulo}</h3>
+        <p class="nxa-ig-empresa">${empresa}</p>
+        <div class="nxa-ig-cta-btn">${cta}</div>
+      </div>
+    </div>`;
+
+  } else if (tipo === 'historia') {
+    const pantallas = raw.pantallas || [];
+    html = '<div class="nxa-ig-historia-wrap">';
+    pantallas.forEach((p, i) => {
+      const color = p.color_fondo || (i === 0 ? c1 : i === 1 ? c2 : '#0f172a');
+      const stickerIcon = { encuesta: '📊', deslizador: '↔', link: '🔗' }[p.sticker] || '🎯';
+      html += `<div class="nxa-ig-mock nxa-ig-story" style="background:${color}">
+        <div class="nxa-ig-story-num">Pantalla ${p.numero}</div>
+        <div class="nxa-ig-mock-inner">
+          <p class="nxa-ig-titulo">${p.titulo || ''}</p>
+          ${p.subtitulo ? `<p class="nxa-ig-subtitulo">${p.subtitulo}</p>` : ''}
+          <div class="nxa-ig-sticker">${stickerIcon} ${p.sticker || ''}</div>
+        </div>
+        <div class="nxa-ig-dur">⏱ ${p.duracion || ''}</div>
+      </div>`;
+    });
+    html += '</div>';
+
+  } else if (tipo === 'carrusel') {
+    const slides = raw.slides || [];
+    const tipoColor = {
+      portada: c1, problema: '#1e293b', contenido: '#1e293b',
+      beneficio: '#162032', cta: c2, cierre: '#162032',
+    };
+    html = `<div class="nxa-ig-carrusel-wrap">
+      <div class="nxa-ig-carrusel-slides" id="nxaCarSlides">`;
+    slides.forEach((s, i) => {
+      const bg = s.color_fondo || tipoColor[s.tipo] || '#1e293b';
+      html += `<div class="nxa-ig-mock nxa-ig-post nxa-ig-carrusel-slide ${i === 0 ? 'active' : ''}" style="background:${bg}">
+        <span class="nxa-ig-slide-badge">${s.tipo || 'slide'}</span>
+        <div class="nxa-ig-mock-inner">
+          <div class="nxa-ig-slide-num">${s.numero}/${slides.length}</div>
+          <p class="nxa-ig-titulo">${s.titulo || ''}</p>
+          ${s.subtitulo ? `<p class="nxa-ig-subtitulo">${s.subtitulo}</p>` : ''}
+        </div>
+      </div>`;
+    });
+    html += `</div>
+      <div class="nxa-ig-carrusel-nav">
+        <button class="nxa-btn nxa-btn--ghost nxa-btn--sm" id="nxaCarPrev">← Anterior</button>
+        <span id="nxaCarIndicator" style="font-size:12px;color:var(--nxa-muted)">1 / ${slides.length}</span>
+        <button class="nxa-btn nxa-btn--ghost nxa-btn--sm" id="nxaCarNext">Siguiente →</button>
+      </div>
+    </div>`;
+
+  } else if (tipo === 'reel') {
+    const escenas = raw.escenas || [];
+    const tipoColor = { hook: c1, desarrollo: '#1e293b', ejemplo: '#162032', cta: c2 };
+    html = '<div class="nxa-ig-reel-storyboard">';
+    if (raw.hook) {
+      html += `<div class="nxa-ig-reel-hook-banner">🎯 Hook: <em>${raw.hook}</em></div>`;
+    }
+    html += '<div class="nxa-ig-reel-escenas">';
+    escenas.forEach(e => {
+      const bg = e.color_fondo || tipoColor[e.tipo] || '#1e293b';
+      html += `<div class="nxa-ig-reel-escena">
+        <div class="nxa-ig-reel-frame" style="background:${bg}">
+          <span class="nxa-ig-slide-badge">${e.tipo || ''}</span>
+          <p class="nxa-ig-reel-texto">${e.texto || ''}</p>
+        </div>
+        <div class="nxa-ig-reel-rango">${e.rango || ''}</div>
+        <div class="nxa-ig-reel-transicion">${e.transicion || ''}</div>
+      </div>`;
+    });
+    html += '</div></div>';
+  }
+
+  viewer.innerHTML = html;
+
+  // Carrusel navigation
+  if (tipo === 'carrusel') {
+    const slides = viewer.querySelectorAll('.nxa-ig-carrusel-slide');
+    const ind = document.getElementById('nxaCarIndicator');
+    let current = 0;
+    function goTo(n) {
+      slides[current].classList.remove('active');
+      current = (n + slides.length) % slides.length;
+      slides[current].classList.add('active');
+      if (ind) ind.textContent = `${current + 1} / ${slides.length}`;
+    }
+    const prev = document.getElementById('nxaCarPrev');
+    const next = document.getElementById('nxaCarNext');
+    if (prev) prev.addEventListener('click', () => goTo(current - 1));
+    if (next) next.addEventListener('click', () => goTo(current + 1));
+  }
+})();
+</script>
+{% endblock %}

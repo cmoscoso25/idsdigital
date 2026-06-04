@@ -16,4 +16,7 @@ urlpatterns = [
     path("app/empresas/<int:pk>/estrategia/", views.estrategia_nueva, name="estrategia_nueva"),
     path("app/estrategias/<int:pk>/", views.estrategia_detalle, name="estrategia_detalle"),
     path("app/estrategias/<int:pk>/generar/", views.generar_contenido_mes, name="generar_contenido_mes"),
+    path("app/creatividades/", views.creatividad_list, name="creatividad_list"),
+    path("app/contenidos/<int:contenido_pk>/creatividad/", views.generar_creatividad_view, name="generar_creatividad"),
+    path("app/creatividades/<int:pk>/", views.creatividad_detalle, name="creatividad_detalle"),
 ]

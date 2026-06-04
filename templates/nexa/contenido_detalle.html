@@ -94,12 +94,44 @@
         </div>
       </div>
 
-      <div style="margin-top:16px;">
-        <a href="{% url 'nexa:generar' contenido.empresa.pk %}" class="nxa-btn nxa-btn--primary" style="width:100%;">
+      <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px;">
+        <form method="post" action="{% url 'nexa:generar_creatividad' contenido.pk %}">
+          {% csrf_token %}
+          <button type="submit" class="nxa-btn nxa-btn--primary" style="width:100%;">
+            🎨 Generar creatividad Instagram
+          </button>
+        </form>
+        <a href="{% url 'nexa:generar' contenido.empresa.pk %}" class="nxa-btn nxa-btn--ghost" style="width:100%;text-align:center;">
           ⚡ Generar nuevo contenido
         </a>
       </div>
     </div>
+
+    <!-- Creatividades existentes -->
+    {% if creatividades %}
+      <div class="nxa-card" style="margin-top:16px;">
+        <div class="nxa-card-header">
+          <h2 class="nxa-card-title">Creatividades</h2>
+          <a href="{% url 'nexa:creatividad_list' %}" class="nxa-link-small">Ver todas →</a>
+        </div>
+        <ul class="nxa-list">
+          {% for cr in creatividades %}
+            <li class="nxa-list-item">
+              <span class="nxa-badge nxa-badge--tipo">{{ cr.get_tipo_display }}</span>
+              <div class="nxa-list-item-body">
+                <a href="{% url 'nexa:creatividad_detalle' cr.pk %}" class="nxa-list-item-title">
+                  Ver creatividad {{ cr.get_tipo_display }}
+                </a>
+                <span class="nxa-list-item-meta">{{ cr.fecha_creacion|date:"d/m/Y H:i" }}</span>
+              </div>
+              <span class="nxa-badge nxa-badge--estado nxa-estado--{{ cr.estado }}">
+                {{ cr.get_estado_display }}
+              </span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

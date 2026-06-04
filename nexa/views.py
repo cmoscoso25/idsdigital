@@ -2,24 +2,31 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
-from .models import EmpresaNexa, MemoriaMarca, ContenidoGenerado, EstrategiaMensual
+from .models import EmpresaNexa, MemoriaMarca, ContenidoGenerado, EstrategiaMensual, CreatividadInstagram
 from .forms import EmpresaNexaForm, MemoriaMarcaForm, GenerarContenidoForm, GenerarEstrategiaForm
 from .services.generador_contenido import generar_contenido
 from .services.agentes.estratega import generar_estrategia
 from .services.agentes.copywriter import generar_contenido_completo
+from .services.agentes.agente_diseno_instagram import generar_creatividad
 
 
 @login_required
 def dashboard(request):
-    qs_empresas = EmpresaNexa.objects.filter(usuario=request.user)
+    qs_empresas   = EmpresaNexa.objects.filter(usuario=request.user)
     qs_contenidos = ContenidoGenerado.objects.filter(empresa__usuario=request.user)
+    qs_creatividades = CreatividadInstagram.objects.filter(contenido__empresa__usuario=request.user)
     return render(request, "nexa/dashboard.html", {
-        "total_empresas": qs_empresas.count(),
-        "total_contenidos": qs_contenidos.count(),
-        "borradores": qs_contenidos.filter(estado="borrador").count(),
-        "aprobados": qs_contenidos.filter(estado="aprobado").count(),
+        "total_empresas":       qs_empresas.count(),
+        "total_contenidos":     qs_contenidos.count(),
+        "borradores":           qs_contenidos.filter(estado="borrador").count(),
+        "aprobados":            qs_contenidos.filter(estado="aprobado").count(),
+        "total_creatividades":  qs_creatividades.count(),
+        "creatividades_post":   qs_creatividades.filter(tipo="post").count(),
+        "creatividades_historia": qs_creatividades.filter(tipo="historia").count(),
+        "creatividades_carrusel": qs_creatividades.filter(tipo="carrusel").count(),
+        "creatividades_reel":   qs_creatividades.filter(tipo="reel").count(),
         "contenidos_recientes": qs_contenidos.select_related("empresa")[:6],
-        "empresas": qs_empresas[:6],
+        "empresas":             qs_empresas[:6],
     })
 
 
@@ -257,4 +264,65 @@ def contenido_detalle(request, pk):
             contenido.estado = nuevo_estado
             contenido.save(update_fields=["estado"])
         return redirect("nexa:contenido_detalle", pk=pk)
-    return render(request, "nexa/contenido_detalle.html", {"contenido": contenido})
+    creatividades = contenido.creatividades.all()
+    return render(request, "nexa/contenido_detalle.html", {
+        "contenido": contenido,
+        "creatividades": creatividades,
+    })
+
+
+# ── Creatividades Instagram ────────────────────────────────────────────────────
+
+@login_required
+def creatividad_list(request):
+    tipo_filtro = request.GET.get("tipo")
+    qs = CreatividadInstagram.objects.filter(
+        contenido__empresa__usuario=request.user
+    ).select_related("contenido", "contenido__empresa")
+    if tipo_filtro:
+        qs = qs.filter(tipo=tipo_filtro)
+    return render(request, "nexa/creatividad_list.html", {
+        "creatividades": qs,
+        "tipo_filtro": tipo_filtro,
+        "tipos": CreatividadInstagram.TIPOS,
+        "kpi_total":    CreatividadInstagram.objects.filter(contenido__empresa__usuario=request.user).count(),
+        "kpi_post":     CreatividadInstagram.objects.filter(contenido__empresa__usuario=request.user, tipo="post").count(),
+        "kpi_historia": CreatividadInstagram.objects.filter(contenido__empresa__usuario=request.user, tipo="historia").count(),
+        "kpi_carrusel": CreatividadInstagram.objects.filter(contenido__empresa__usuario=request.user, tipo="carrusel").count(),
+        "kpi_reel":     CreatividadInstagram.objects.filter(contenido__empresa__usuario=request.user, tipo="reel").count(),
+    })
+
+
+@login_required
+def generar_creatividad_view(request, contenido_pk):
+    contenido = get_object_or_404(ContenidoGenerado, pk=contenido_pk, empresa__usuario=request.user)
+    if request.method != "POST":
+        return redirect("nexa:contenido_detalle", pk=contenido_pk)
+
+    empresa  = contenido.empresa
+    memoria  = getattr(empresa, "memoria_marca", None)
+    resultado = generar_creatividad(empresa=empresa, memoria_marca=memoria, contenido=contenido)
+
+    creatividad = CreatividadInstagram.objects.create(
+        contenido=contenido,
+        tipo=contenido.tipo_contenido,
+        prompt_visual=resultado["prompt_visual"],
+        estructura_visual_json=resultado["estructura_visual_json"],
+        estado="generada",
+    )
+    messages.success(request, f"Creatividad {creatividad.get_tipo_display()} generada correctamente.")
+    return redirect("nexa:creatividad_detalle", pk=creatividad.pk)
+
+
+@login_required
+def creatividad_detalle(request, pk):
+    creatividad = get_object_or_404(
+        CreatividadInstagram, pk=pk, contenido__empresa__usuario=request.user
+    )
+    if request.method == "POST":
+        nuevo_estado = request.POST.get("estado")
+        if nuevo_estado in dict(CreatividadInstagram.ESTADOS):
+            creatividad.estado = nuevo_estado
+            creatividad.save(update_fields=["estado"])
+        return redirect("nexa:creatividad_detalle", pk=pk)
+    return render(request, "nexa/creatividad_detalle.html", {"creatividad": creatividad})

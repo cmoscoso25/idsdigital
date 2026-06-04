@@ -86,6 +86,9 @@ request autenticado desde la sesión (`current_workspace_id`).
 | `/nexa/app/empresas/<id>/estrategia/` | `nexa.estrategia_nueva` | Generar estrategia mensual |
 | `/nexa/app/estrategias/<id>/` | `nexa.estrategia_detalle` | Detalle + progress + calendario visual |
 | `/nexa/app/estrategias/<id>/generar/` | `nexa.generar_contenido_mes` | Producción automática desde calendario (POST) |
+| `/nexa/app/creatividades/` | `nexa.creatividad_list` | Biblioteca de creatividades con KPIs y filtros |
+| `/nexa/app/contenidos/<id>/creatividad/` | `nexa.generar_creatividad` | Generar creatividad desde contenido (POST) |
+| `/nexa/app/creatividades/<id>/` | `nexa.creatividad_detalle` | Detalle con mockup visual + prompt IA |
 | `/admin/` | Django Admin | Administración interna |
 | `/sitemap.xml` | Django Sitemaps | SEO |
 | `/robots.txt` | `public.robots_txt` | SEO |
@@ -111,7 +114,8 @@ request autenticado desde la sesión (`current_workspace_id`).
 ### `nexa`
 - **EmpresaNexa** — Empresa registrada por un usuario en Nexa AI: nombre, rubro, descripción, público objetivo, tono de marca, objetivo principal, instagram, sitio_web, logo (ImageField), colores hex, fecha_creacion. FK a `accounts.User`.
 - **MemoriaMarca** — OneToOne con EmpresaNexa: propuesta_valor, servicios_principales, palabras_clave, estilo_comunicacion, evitar_mencionar, instrucciones_ia, resumen_marca. Contexto para agentes IA.
-- **ContenidoGenerado** — Contenido generado por IA: tipo (carrusel/historia/post/reel/campaña), titulo, copy, hashtags, cta, estructura_json, estado (borrador/aprobado/programado/publicado), fecha_programada, fecha_creacion. FK opcional a `EstrategiaMensual` (permite saber qué estrategia originó cada contenido).
+- **ContenidoGenerado** — Contenido generado por IA: tipo (carrusel/historia/post/reel/campaña), titulo, copy, hashtags, cta, estructura_json, estado (borrador/aprobado/programado/publicado), fecha_programada, fecha_creacion. FK opcional a `EstrategiaMensual`.
+- **CreatividadInstagram** — Creatividad visual derivada de un `ContenidoGenerado`: tipo (post/historia/carrusel/reel), prompt_visual (API-ready para OpenAI/Flux/Ideogram/Gemini), estructura_visual_json (capas, slides, pantallas, escenas), estado (generada/aprobada/publicada).
 - **EstrategiaMensual** — Estrategia mensual generada por el Agente Estratega: objetivo, pilares_contenido, frecuencia_publicacion, publico_objetivo, calendario_json (4 semanas), fecha_creacion. FK a EmpresaNexa.
 
 ### `agente_ia`

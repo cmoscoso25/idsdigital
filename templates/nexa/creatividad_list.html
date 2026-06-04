@@ -1,0 +1,79 @@
+{% extends "nexa/base_nexa.html" %}
+
+{% block title %}Creatividades Instagram{% endblock %}
+{% block topbar_title %}🎨 Creatividades Instagram{% endblock %}
+
+{% block content %}
+<!-- KPIs -->
+<div class="nxa-kpi-row nxa-kpi-row--creatividades">
+  <div class="nxa-kpi nxa-kpi--creatividad">
+    <span class="nxa-kpi-value">{{ kpi_total }}</span>
+    <span class="nxa-kpi-label">Total</span>
+  </div>
+  <div class="nxa-kpi">
+    <span class="nxa-kpi-value nxa-kpi-value--sm">{{ kpi_post }}</span>
+    <span class="nxa-kpi-label">🖼 Posts</span>
+  </div>
+  <div class="nxa-kpi">
+    <span class="nxa-kpi-value nxa-kpi-value--sm">{{ kpi_historia }}</span>
+    <span class="nxa-kpi-label">📱 Historias</span>
+  </div>
+  <div class="nxa-kpi">
+    <span class="nxa-kpi-value nxa-kpi-value--sm">{{ kpi_carrusel }}</span>
+    <span class="nxa-kpi-label">🖼 Carruseles</span>
+  </div>
+  <div class="nxa-kpi">
+    <span class="nxa-kpi-value nxa-kpi-value--sm">{{ kpi_reel }}</span>
+    <span class="nxa-kpi-label">🎬 Reels</span>
+  </div>
+</div>
+
+<!-- Filtros -->
+<div class="nxa-filter-bar" style="margin-bottom:16px;">
+  {% for val, label in tipos %}
+    <a href="?tipo={{ val }}"
+       class="nxa-btn nxa-btn--sm {% if tipo_filtro == val %}nxa-btn--primary{% else %}nxa-btn--ghost{% endif %}">
+      {{ label }}
+    </a>
+  {% endfor %}
+  {% if tipo_filtro %}
+    <a href="{% url 'nexa:creatividad_list' %}" class="nxa-btn nxa-btn--ghost nxa-btn--sm">✕ Todos</a>
+  {% endif %}
+</div>
+
+{% if creatividades %}
+  <div class="nxa-creatividades-grid">
+    {% for cr in creatividades %}
+      <a href="{% url 'nexa:creatividad_detalle' cr.pk %}" class="nxa-creatividad-card">
+        <!-- Miniatura mockup -->
+        <div class="nxa-creatividad-thumb nxa-creatividad-thumb--{{ cr.tipo }}"
+             style="--c1:{{ cr.contenido.empresa.color_principal }};--c2:{{ cr.contenido.empresa.color_secundario }}">
+          <div class="nxa-creatividad-thumb-inner">
+            <span class="nxa-creatividad-tipo-icon">
+              {% if cr.tipo == "post" %}🖼{% elif cr.tipo == "historia" %}📱{% elif cr.tipo == "carrusel" %}▦{% else %}🎬{% endif %}
+            </span>
+            <p class="nxa-creatividad-thumb-titulo">{{ cr.contenido.titulo|truncatechars:40 }}</p>
+          </div>
+          <div class="nxa-creatividad-thumb-overlay"></div>
+        </div>
+        <!-- Info -->
+        <div class="nxa-creatividad-card-body">
+          <div class="nxa-creatividad-card-header">
+            <span class="nxa-badge nxa-badge--tipo">{{ cr.get_tipo_display }}</span>
+            <span class="nxa-badge nxa-badge--estado nxa-estado--{{ cr.estado }}">{{ cr.get_estado_display }}</span>
+          </div>
+          <p class="nxa-creatividad-empresa">{{ cr.contenido.empresa.nombre_empresa }}</p>
+          <p class="nxa-creatividad-fecha nxa-text-muted">{{ cr.fecha_creacion|date:"d/m/Y" }}</p>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="nxa-empty nxa-empty--page">
+    <div class="nxa-empty-icon">🎨</div>
+    <h2>Sin creatividades generadas</h2>
+    <p>Abre cualquier contenido y presiona "Generar creatividad" para crear tu primera creatividad de Instagram.</p>
+    <a href="{% url 'nexa:contenido_list' %}" class="nxa-btn nxa-btn--primary">Ir a contenidos</a>
+  </div>
+{% endif %}
+{% endblock %}
