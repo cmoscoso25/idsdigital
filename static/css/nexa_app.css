@@ -1245,6 +1245,773 @@
 }
 
 /* ══════════════════════════════════════════
+   RENDER INSTAGRAM — LAYOUT DETALLE
+   ══════════════════════════════════════════ */
+.nxar-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 20px;
+  align-items: start;
+}
+
+.nxar-render-panel {
+  background: #080d16;
+  border: 1px solid var(--nxa-border);
+  border-radius: 12px;
+  overflow: hidden;
+  min-height: 400px;
+}
+
+.nxar-sidebar-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.nxar-info-card { margin-bottom: 0; }
+
+.nxar-empty-render {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 60px 24px;
+  text-align: center;
+  color: var(--nxa-muted);
+}
+
+/* ── Stage base ── */
+.nxar-stage {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Chrome compartido ── */
+.nxar-ig-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #111318;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.nxar-ig-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  color: #fff;
+  flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,0.15);
+}
+
+.nxar-ig-avatar--sm {
+  width: 26px;
+  height: 26px;
+  font-size: 11px;
+}
+
+.nxar-ig-account {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.nxar-ig-username {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.nxar-ig-badge {
+  font-size: 10px;
+  color: rgba(255,255,255,0.4);
+}
+
+.nxar-ig-dots {
+  font-size: 18px;
+  color: rgba(255,255,255,0.4);
+  cursor: pointer;
+}
+
+.nxar-ig-footer {
+  background: #111318;
+  padding: 10px 14px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.nxar-ig-actions {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.nxar-ig-action {
+  font-size: 22px;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.nxar-ig-action:hover { transform: scale(1.15); }
+.nxar-ig-action--right { margin-left: auto; }
+
+.nxar-ig-likes {
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 3px;
+}
+
+.nxar-ig-caption {
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+}
+
+/* ── Elementos geométricos de fondo ── */
+.nxar-geo {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.nxar-geo--circle1 {
+  width: 260px;
+  height: 260px;
+  bottom: -80px;
+  right: -80px;
+}
+
+.nxar-geo--circle2 {
+  width: 180px;
+  height: 180px;
+  top: -50px;
+  left: -50px;
+}
+
+.nxar-geo--line {
+  width: 300%;
+  height: 1px;
+  top: 45%;
+  left: -100%;
+  border-radius: 0;
+  transform: rotate(-15deg);
+}
+
+/* ══════════════════════════════════════════
+   POST RENDER
+   ══════════════════════════════════════════ */
+.nxar-post-stage {}
+
+.nxar-chrome-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.nxar-post-frame {
+  position: relative;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+}
+
+.nxar-post-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.nxar-post-top {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.nxar-logo-chip {
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.9);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.nxar-post-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 0;
+}
+
+.nxar-post-titulo {
+  font-size: clamp(18px, 3.5vw, 26px);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.3);
+  margin: 0;
+}
+
+.nxar-post-copy {
+  font-size: 14px;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.nxar-post-bottom {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.nxar-post-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 24px;
+  padding: 8px 22px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* ══════════════════════════════════════════
+   HISTORIA RENDER
+   ══════════════════════════════════════════ */
+.nxar-historia-stage {}
+
+.nxar-historia-wrap {
+  display: flex;
+  gap: 8px;
+  padding: 16px;
+  justify-content: center;
+  overflow-x: auto;
+  background: #080d16;
+}
+
+.nxar-story-screen {
+  position: relative;
+  width: 180px;
+  flex-shrink: 0;
+  aspect-ratio: 9/16;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+.nxar-story-bars {
+  display: flex;
+  gap: 3px;
+  padding: 10px 10px 0;
+  position: relative;
+  z-index: 3;
+}
+
+.nxar-story-bar {
+  flex: 1;
+  height: 2px;
+  background: rgba(255,255,255,0.25);
+  border-radius: 1px;
+}
+
+.nxar-story-bar--done { background: rgba(255,255,255,0.8); }
+.nxar-story-bar--active {
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.nxar-story-account {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  position: relative;
+  z-index: 3;
+}
+
+.nxar-story-username {
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  flex: 1;
+}
+
+.nxar-story-time {
+  font-size: 9px;
+  color: rgba(255,255,255,0.5);
+}
+
+.nxar-story-x {
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+}
+
+.nxar-story-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.nxar-story-titulo {
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+  margin: 0;
+}
+
+.nxar-story-sub {
+  font-size: 11px;
+  color: rgba(255,255,255,0.7);
+  margin: 0;
+}
+
+.nxar-sticker {
+  background: rgba(255,255,255,0.95);
+  border-radius: 10px;
+  padding: 8px 10px;
+  width: 90%;
+}
+
+.nxar-sticker--encuesta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nxar-sticker--encuesta span {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #333;
+  text-align: center;
+}
+
+.nxar-encuesta-op {
+  background: #f0f0f0;
+  border: 2px solid rgba(0,0,0,0.1);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+}
+
+.nxar-sticker--deslizador {
+  font-size: 10px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+}
+
+.nxar-deslizador-track {
+  background: #e0e0e0;
+  border-radius: 20px;
+  height: 28px;
+  margin-top: 6px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.nxar-deslizador-thumb {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  margin-left: 2px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.nxar-sticker--link {
+  border: 2px solid;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+  padding: 6px 10px;
+  background: transparent;
+}
+
+.nxar-story-bottom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  position: relative;
+  z-index: 3;
+}
+
+.nxar-story-reply {
+  flex: 1;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+  padding: 5px 10px;
+  font-size: 10px;
+  color: rgba(255,255,255,0.7);
+}
+
+.nxar-story-share {
+  font-size: 18px;
+  color: rgba(255,255,255,0.7);
+}
+
+/* ══════════════════════════════════════════
+   CARRUSEL RENDER
+   ══════════════════════════════════════════ */
+.nxar-carrusel-stage {}
+
+.nxar-slides-container {
+  position: relative;
+  background: #0d1117;
+}
+
+.nxar-slides-track {
+  aspect-ratio: 1/1;
+  position: relative;
+  overflow: hidden;
+}
+
+.nxar-slide {
+  display: none;
+  position: absolute;
+  inset: 0;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.nxar-slide--active {
+  display: flex;
+}
+
+.nxar-slide-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 28px;
+  gap: 12px;
+}
+
+.nxar-slide-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nxar-slide-tipo-badge {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.6);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.nxar-slide-counter {
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+  font-weight: 600;
+}
+
+.nxar-slide-icon {
+  font-size: 36px;
+  opacity: 0.7;
+  line-height: 1;
+}
+
+.nxar-slide-titulo {
+  font-size: clamp(18px, 3.5vw, 26px);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.nxar-slide-sub {
+  font-size: 14px;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.nxar-slide-logo {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.nxar-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s;
+  padding: 0;
+  line-height: 1;
+}
+
+.nxar-nav-btn:hover { background: rgba(0,0,0,0.75); }
+.nxar-nav-btn--prev { left: 10px; }
+.nxar-nav-btn--next { right: 10px; }
+
+.nxar-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px;
+  background: #111318;
+}
+
+.nxar-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.nxar-dot--active {
+  background: #fff;
+  width: 18px;
+  border-radius: 3px;
+}
+
+/* ══════════════════════════════════════════
+   REEL RENDER
+   ══════════════════════════════════════════ */
+.nxar-reel-stage {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: #080d16;
+}
+
+.nxar-reel-header {
+  border: 1px solid;
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.nxar-reel-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.nxar-reel-nombre {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  flex: 1;
+}
+
+.nxar-reel-dur {
+  font-size: 11px;
+  color: var(--nxa-muted);
+  background: rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 2px 8px;
+}
+
+.nxar-reel-hook-txt {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--nxa-text);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.nxar-reel-timeline-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--nxa-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.nxar-escenas-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.nxar-escena {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nxar-escena-frame {
+  aspect-ratio: 9/16;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  position: relative;
+  gap: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
+
+.nxar-escena-label {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(0,0,0,0.4);
+  color: rgba(255,255,255,0.8);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.08em;
+}
+
+.nxar-escena-texto {
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  line-height: 1.4;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+  margin: 0;
+  padding-top: 20px;
+}
+
+.nxar-escena-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nxar-escena-rango {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--nxa-cyan);
+}
+
+.nxar-escena-trans {
+  font-size: 14px;
+  color: var(--nxa-dim);
+  cursor: help;
+}
+
+.nxar-reel-footer {
+  border-top: 1px solid var(--nxa-border);
+  padding-top: 12px;
+}
+
+.nxar-reel-actions {
+  display: flex;
+  gap: 20px;
+  font-size: 12px;
+  color: var(--nxa-muted);
+}
+
+/* ── Prompt + API ── */
+.nxar-prompt-text {
+  font-size: 12px;
+  color: var(--nxa-muted);
+  line-height: 1.7;
+  font-style: italic;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--nxa-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin: 0 0 10px;
+}
+
+.nxar-api-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.nxar-api-chip {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: rgba(59,130,246,0.08);
+  border: 1px solid rgba(59,130,246,0.2);
+  color: var(--nxa-blue-l);
+  opacity: 0.6;
+}
+
+/* ── Responsive ── */
+@media (max-width: 960px) {
+  .nxar-layout { grid-template-columns: 1fr; }
+  .nxar-historia-wrap { gap: 6px; }
+  .nxar-story-screen { width: 150px; }
+  .nxar-escenas-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .nxar-escenas-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ══════════════════════════════════════════
    CREATIVIDADES — GRID DE TARJETAS
    ══════════════════════════════════════════ */
 .nxa-kpi-row--creatividades {

@@ -167,6 +167,14 @@ class CreatividadInstagram(models.Model):
         help_text="Especificación visual completa: colores, slides, escenas, elementos de diseño",
     )
     estado = models.CharField(max_length=20, choices=ESTADOS, default="generada")
+    render_html = models.TextField(
+        blank=True,
+        help_text="HTML renderizado del mockup — reemplazar por imagen real cuando se active la API de generación",
+    )
+    render_css = models.TextField(
+        blank=True,
+        help_text="CSS scoped del render — permite personalización por creatividad",
+    )
     fecha_creacion = models.DateTimeField(auto_now_add=True)
 
     class Meta:

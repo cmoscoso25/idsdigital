@@ -308,6 +308,8 @@ def generar_creatividad_view(request, contenido_pk):
         tipo=contenido.tipo_contenido,
         prompt_visual=resultado["prompt_visual"],
         estructura_visual_json=resultado["estructura_visual_json"],
+        render_html=resultado.get("render_html", ""),
+        render_css=resultado.get("render_css", ""),
         estado="generada",
     )
     messages.success(request, f"Creatividad {creatividad.get_tipo_display()} generada correctamente.")
