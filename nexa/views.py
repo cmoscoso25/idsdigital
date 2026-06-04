@@ -299,6 +299,12 @@ def generar_creatividad_view(request, contenido_pk):
     if request.method != "POST":
         return redirect("nexa:contenido_detalle", pk=contenido_pk)
 
+    # Si ya existe una creatividad para este contenido, redirigir a ella sin duplicar.
+    existente = contenido.creatividades.first()
+    if existente:
+        messages.info(request, "Este contenido ya tiene una creatividad. Usa '↻ Regenerar' para actualizarla.")
+        return redirect("nexa:creatividad_detalle", pk=existente.pk)
+
     empresa  = contenido.empresa
     memoria  = getattr(empresa, "memoria_marca", None)
     resultado = generar_creatividad(empresa=empresa, memoria_marca=memoria, contenido=contenido)
@@ -314,6 +320,32 @@ def generar_creatividad_view(request, contenido_pk):
     )
     messages.success(request, f"Creatividad {creatividad.get_tipo_display()} generada correctamente.")
     return redirect("nexa:creatividad_detalle", pk=creatividad.pk)
+
+
+@login_required
+def regenerar_creatividad_view(request, creatividad_pk):
+    creatividad = get_object_or_404(
+        CreatividadInstagram, pk=creatividad_pk, contenido__empresa__usuario=request.user
+    )
+    if request.method != "POST":
+        return redirect("nexa:creatividad_detalle", pk=creatividad_pk)
+
+    empresa  = creatividad.contenido.empresa
+    memoria  = getattr(empresa, "memoria_marca", None)
+    resultado = generar_creatividad(empresa=empresa, memoria_marca=memoria, contenido=creatividad.contenido)
+
+    creatividad.prompt_visual          = resultado["prompt_visual"]
+    creatividad.estructura_visual_json = resultado["estructura_visual_json"]
+    creatividad.render_html            = resultado.get("render_html", "")
+    creatividad.render_css             = resultado.get("render_css", "")
+    creatividad.estado                 = "generada"
+    creatividad.veces_regenerada      += 1
+    creatividad.save(update_fields=[
+        "prompt_visual", "estructura_visual_json",
+        "render_html", "render_css", "estado", "veces_regenerada",
+    ])
+    messages.success(request, f"Creatividad {creatividad.get_tipo_display()} regenerada correctamente.")
+    return redirect("nexa:creatividad_detalle", pk=creatividad_pk)
 
 
 @login_required

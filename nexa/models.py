@@ -175,6 +175,10 @@ class CreatividadInstagram(models.Model):
         blank=True,
         help_text="CSS scoped del render — permite personalización por creatividad",
     )
+    veces_regenerada = models.PositiveIntegerField(
+        default=0,
+        help_text="Número de veces que fue regenerada desde su creación inicial",
+    )
     fecha_creacion = models.DateTimeField(auto_now_add=True)
 
     class Meta:

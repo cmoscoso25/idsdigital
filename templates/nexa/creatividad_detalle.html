@@ -4,7 +4,7 @@
 {% block topbar_title %}🎨 {{ creatividad.get_tipo_display }} · {{ creatividad.contenido.empresa.nombre_empresa }}{% endblock %}
 {% block topbar_actions %}
   <a href="{% url 'nexa:creatividad_list' %}" class="nxa-btn nxa-btn--ghost">← Biblioteca</a>
-  <form method="post" action="{% url 'nexa:generar_creatividad' creatividad.contenido.pk %}" style="display:inline;">
+  <form method="post" action="{% url 'nexa:regenerar_creatividad' creatividad.pk %}" style="display:inline;">
     {% csrf_token %}
     <button type="submit" class="nxa-btn nxa-btn--ghost">↻ Regenerar</button>
   </form>
@@ -21,7 +21,7 @@
       <div class="nxar-empty-render">
         <span style="font-size:40px;opacity:0.3;">🎨</span>
         <p>Regenera esta creatividad para ver el mockup visual.</p>
-        <form method="post" action="{% url 'nexa:generar_creatividad' creatividad.contenido.pk %}">
+        <form method="post" action="{% url 'nexa:regenerar_creatividad' creatividad.pk %}">
           {% csrf_token %}
           <button type="submit" class="nxa-btn nxa-btn--primary">↻ Regenerar ahora</button>
         </form>
@@ -104,6 +104,16 @@
             <a href="{% url 'nexa:contenido_detalle' creatividad.contenido.pk %}" class="nxa-link">
               {{ creatividad.contenido.titulo|truncatechars:40 }}
             </a>
+          </span>
+        </div>
+        <div class="nxa-detail-row">
+          <span class="nxa-detail-label">Regenerada</span>
+          <span class="nxa-detail-value nxa-text-muted">
+            {% if creatividad.veces_regenerada %}
+              {{ creatividad.veces_regenerada }} vez{% if creatividad.veces_regenerada != 1 %}ces{% endif %}
+            {% else %}
+              —
+            {% endif %}
           </span>
         </div>
         <div class="nxa-detail-row">
