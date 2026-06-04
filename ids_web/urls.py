@@ -40,6 +40,8 @@ urlpatterns = [
     path("inteligencia-artificial-empresas-chile/", public_views.inteligencia_artificial_empresas_chile, name="inteligencia_artificial_empresas_chile"),
     path("desarrollo-sistemas-internos/", public_views.desarrollo_sistemas_internos, name="desarrollo_sistemas_internos"),
 
+    path("nexa/", public_views.nexa, name="nexa_public"),
+
     path("robots.txt", public_views.robots_txt),
     path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="sitemap"),
 ]

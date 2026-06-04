@@ -40,7 +40,7 @@ request autenticado desde la sesión (`current_workspace_id`).
 
 | App | Propósito | Estado |
 |---|---|---|
-| `public` | Landing, blog SEO, formulario demo, nurturing | Activo |
+| `public` | Landing, blog SEO, formulario demo, nurturing, Nexa AI landing | Activo |
 | `crm` | Gestión de leads y solicitudes de demo | Activo |
 | `accounts` | Auth, workspaces, RBAC | Activo |
 | `agente_ia` | Chatbot con base de conocimiento propia | Activo |
@@ -72,6 +72,7 @@ request autenticado desde la sesión (`current_workspace_id`).
 | `/automatizacion-procesos/` | `public.automation_processes` | Página SEO |
 | `/desarrollo-software-medida/` | `public.custom_software_development` | Página SEO |
 | `/inteligencia-artificial-empresas/` | `public.ai_solutions` | Página SEO |
+| `/nexa/` | `public.nexa` | Landing pública Nexa AI by IDS Digital |
 | `/admin/` | Django Admin | Administración interna |
 | `/sitemap.xml` | Django Sitemaps | SEO |
 | `/robots.txt` | `public.robots_txt` | SEO |
@@ -108,6 +109,7 @@ request autenticado desde la sesión (`current_workspace_id`).
 |---|---|
 | `static/css/styles.css` | CRM interno (panel) |
 | `static/css/public.css` | Landing (`.landing-page`), Blog (`.blog-dark`) y páginas públicas |
+| `static/css/nexa.css` | Landing Nexa AI (`.nexa-page`) — cargado solo en `/nexa/` |
 | `static/js/diagnostico_ia.js` | Frontend del agente conversacional |
 | `static/css/diagnostico_ia.css` | Estilos del chatbot |
 
@@ -146,6 +148,20 @@ request autenticado desde la sesión (`current_workspace_id`).
 - [x] Email transaccional vía Resend
 
 ---
+
+## Sub-SaaS en desarrollo
+
+### Nexa AI by IDS Digital (`/nexa/`)
+Plataforma de marketing digital con agentes de IA para pymes y empresas.
+- **Estado:** Landing pública disponible en `/nexa/` — SaaS privado NO implementado aún.
+- **Propósito:** captación de early adopters y validación de producto.
+- **Formulario:** reutiliza `DemoRequest` con `necesidad = "Nexa AI — Demo anticipada"`.
+- **Acciones pendientes:**
+  - [ ] Dashboard privado (app separada o módulo dentro de `public`)
+  - [ ] Integración Meta API para publicación en Instagram/Facebook
+  - [ ] Sistema de agentes IA (Estratega, Copywriter, Diseñador, Analista, Community Manager)
+  - [ ] Planes y pagos (Stripe o similar)
+  - [ ] Memoria de marca (modelo de base de datos)
 
 ## Funcionalidades pendientes
 

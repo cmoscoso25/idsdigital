@@ -1,0 +1,707 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#05090f" />
+
+  <title>Nexa AI — Marketing digital con inteligencia artificial para empresas | IDS Digital</title>
+  <meta name="description" content="Nexa AI by IDS Digital: tu equipo de marketing impulsado por IA. Crea contenido, campañas y estrategias para Instagram y Facebook. Diseñado para pymes y empresas en Chile." />
+  <meta name="keywords" content="marketing digital IA Chile, agente IA marketing, contenido redes sociales automatizado, carruseles IA, community manager IA, Nexa AI Chile" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.idsdigital.cl/nexa/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Nexa AI — Marketing digital con IA para empresas | IDS Digital" />
+  <meta property="og:description" content="Tu equipo de marketing impulsado por inteligencia artificial. Crea contenido, campañas y estrategias para redes sociales desde un solo lugar." />
+  <meta property="og:url" content="https://www.idsdigital.cl/nexa/" />
+  <meta property="og:site_name" content="Inteligencia Digital y Sistemas" />
+  <meta property="og:locale" content="es_CL" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Nexa AI — Marketing digital con IA | IDS Digital" />
+  <meta name="twitter:description" content="Tu equipo de marketing impulsado por inteligencia artificial para pymes y empresas en Chile." />
+
+  <!-- Tipografía Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="{% static 'css/public.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/nexa.css' %}" />
+</head>
+<body class="nexa-page">
+
+  <!-- ═══════════════════════════════════════
+       NAVBAR
+  ═══════════════════════════════════════ -->
+  <nav class="nx-navbar">
+    <div class="nx-navbar-inner">
+      <a href="{% url 'home' %}" class="nx-navbar-logo" aria-label="IDS Digital — Inicio">
+        <svg width="28" height="28" viewBox="0 0 60 60" fill="none" aria-hidden="true">
+          <circle cx="30" cy="28" r="7" fill="#3b82f6"/>
+          <circle cx="14" cy="14" r="4.5" fill="#60a5fa"/>
+          <circle cx="46" cy="14" r="4.5" fill="#60a5fa"/>
+          <circle cx="11" cy="38" r="3.5" fill="#60a5fa"/>
+          <circle cx="50" cy="40" r="3.5" fill="#60a5fa"/>
+          <circle cx="28" cy="48" r="3.5" fill="#60a5fa"/>
+          <line x1="30" y1="21" x2="16" y2="16" stroke="#3b82f6" stroke-width="1.5"/>
+          <line x1="30" y1="21" x2="44" y2="16" stroke="#3b82f6" stroke-width="1.5"/>
+          <line x1="24" y1="33" x2="13" y2="36" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
+          <line x1="36" y1="34" x2="48" y2="38" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
+          <line x1="29" y1="35" x2="28" y2="45" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
+        </svg>
+        <div>
+          <div class="nx-navbar-name">IDS Digital</div>
+          <div class="nx-navbar-sub">Inteligencia Digital y Sistemas</div>
+        </div>
+      </a>
+      <div class="nx-navbar-links">
+        <a href="{% url 'home' %}#servicios">Servicios</a>
+        <a href="{% url 'blog_list_public' %}">Blog</a>
+        <a href="{% url 'home' %}#contacto">Contacto</a>
+        <a href="{% url 'nexa_public' %}" class="nx-navbar-link-active">Nexa AI</a>
+      </div>
+      <a href="#nexa-demo" class="nx-btn-nav">Solicitar demo</a>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════
+       HERO
+  ═══════════════════════════════════════ -->
+  <section class="nx-hero" id="inicio" aria-label="Nexa AI — Marketing con inteligencia artificial">
+    <div class="nx-hero-grid" aria-hidden="true"></div>
+    <div class="nx-hero-glow nx-hero-glow-1" aria-hidden="true"></div>
+    <div class="nx-hero-glow nx-hero-glow-2" aria-hidden="true"></div>
+
+    <div class="nx-hero-inner">
+      <div class="nx-hero-left">
+
+        <div class="nx-hero-eyebrow">
+          <div class="nx-eyebrow-badge">
+            <span class="nx-eyebrow-dot" aria-hidden="true"></span>
+            by IDS Digital
+          </div>
+          <div class="nx-eyebrow-tag">Plataforma SaaS · Próximamente</div>
+        </div>
+
+        <div class="nx-hero-brand" aria-label="Nexa AI">
+          <span class="nx-brand-nexa">Nexa</span><span class="nx-brand-ai"> AI</span>
+        </div>
+
+        <h1 class="nx-hero-tagline">Tu equipo de marketing impulsado por <span class="nx-accent">inteligencia artificial</span></h1>
+
+        <p class="nx-hero-sub">Explica tu negocio una sola vez y Nexa crea contenido, campañas y recomendaciones para hacer crecer tu marca en redes sociales. Sin diseñador. Sin community manager. Sin perder el tiempo.</p>
+
+        <div class="nx-hero-btns">
+          <a href="#nexa-demo" class="nx-btn-primary">
+            Solicitar demo anticipada
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#como-funciona" class="nx-btn-outline">Ver cómo funciona →</a>
+        </div>
+
+        <div class="nx-hero-trust">
+          <div class="nx-trust-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Estrategia de contenido automática
+          </div>
+          <div class="nx-trust-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Carruseles e historias en segundos
+          </div>
+          <div class="nx-trust-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Publicación vía Meta API oficial
+          </div>
+        </div>
+      </div>
+
+      <!-- Preview visual del producto -->
+      <div class="nx-hero-right" aria-hidden="true">
+        <div class="nx-product-preview">
+          <div class="nx-preview-header">
+            <div class="nx-preview-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="nx-preview-title">Nexa AI — Panel de control</div>
+          </div>
+          <div class="nx-preview-body">
+            <!-- Agentes activos -->
+            <div class="nx-preview-section-label">Agentes activos</div>
+            <div class="nx-preview-agents">
+              <div class="nx-preview-agent nx-agent-blue">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77"/></svg>
+                Estratega
+              </div>
+              <div class="nx-preview-agent nx-agent-violet">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                Copywriter
+              </div>
+              <div class="nx-preview-agent nx-agent-cyan">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                Diseñador
+              </div>
+            </div>
+            <!-- Contenido generado -->
+            <div class="nx-preview-section-label" style="margin-top:14px;">Generado hoy</div>
+            <div class="nx-preview-items">
+              <div class="nx-preview-item">
+                <div class="nx-preview-item-icon nx-icon-blue">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>
+                </div>
+                <div>
+                  <div class="nx-preview-item-name">Carrusel: Beneficios del producto</div>
+                  <div class="nx-preview-item-sub">5 slides · Listo para publicar</div>
+                </div>
+                <div class="nx-preview-item-status nx-status-ready">✓</div>
+              </div>
+              <div class="nx-preview-item">
+                <div class="nx-preview-item-icon nx-icon-violet">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/></svg>
+                </div>
+                <div>
+                  <div class="nx-preview-item-name">Historia: Promoción del mes</div>
+                  <div class="nx-preview-item-sub">Copy + hashtags generados</div>
+                </div>
+                <div class="nx-preview-item-status nx-status-review">→</div>
+              </div>
+              <div class="nx-preview-item">
+                <div class="nx-preview-item-icon nx-icon-cyan">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </div>
+                <div>
+                  <div class="nx-preview-item-name">Calendario: Semana del 9 al 15</div>
+                  <div class="nx-preview-item-sub">7 publicaciones planificadas</div>
+                </div>
+                <div class="nx-preview-item-status nx-status-ready">✓</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       PROBLEMA
+  ═══════════════════════════════════════ -->
+  <section class="nx-section nx-section-alt" aria-label="El problema del marketing para pymes">
+    <div class="nx-section-inner">
+      <div class="nx-section-label" data-reveal>El problema</div>
+      <h2 class="nx-section-title" data-reveal>La mayoría de las pymes no tiene un equipo de marketing</h2>
+      <p class="nx-section-sub" data-reveal>Y contratar uno es caro, lento y difícil de gestionar cuando el negocio no para.</p>
+
+      <div class="nx-problem-grid">
+        <div class="nx-problem-card" data-reveal>
+          <div class="nx-problem-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="nx-problem-name">Sin tiempo</div>
+          <div class="nx-problem-desc">El dueño y el equipo están enfocados en operar, no en publicar contenido todos los días.</div>
+        </div>
+        <div class="nx-problem-card" data-reveal style="transition-delay:.08s">
+          <div class="nx-problem-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><circle cx="10" cy="13" r="2"/><path d="M20 13c0 4-4 8-8 8"/></svg>
+          </div>
+          <div class="nx-problem-name">Sin diseñador</div>
+          <div class="nx-problem-desc">Crear carruseles y piezas visuales de calidad requiere habilidades y herramientas que no siempre están disponibles.</div>
+        </div>
+        <div class="nx-problem-card" data-reveal style="transition-delay:.16s">
+          <div class="nx-problem-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="nx-problem-name">Sin community manager</div>
+          <div class="nx-problem-desc">Mantener una presencia constante y coherente en redes sociales requiere dedicación diaria que nadie tiene.</div>
+        </div>
+        <div class="nx-problem-card" data-reveal style="transition-delay:.24s">
+          <div class="nx-problem-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </div>
+          <div class="nx-problem-name">Sin estrategia</div>
+          <div class="nx-problem-desc">Publicar sin planificación genera resultados inconsistentes y no construye marca ni audiencia a largo plazo.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SOLUCIÓN
+  ═══════════════════════════════════════ -->
+  <section class="nx-section" id="como-funciona" aria-label="Qué hace Nexa AI">
+    <div class="nx-section-inner">
+      <div class="nx-section-label" data-reveal>La solución</div>
+      <h2 class="nx-section-title" data-reveal>Nexa crea tu estrategia y contenido completo, <span class="nx-accent">en minutos</span></h2>
+      <p class="nx-section-sub" data-reveal>Configuras tu marca una sola vez y Nexa genera todo lo que necesitas para crecer en redes sociales.</p>
+
+      <div class="nx-solution-grid">
+        <div class="nx-solution-card" data-reveal>
+          <div class="nx-solution-icon nx-icon-blue" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7"/></svg>
+          </div>
+          <h3 class="nx-solution-name">Estrategia de contenido</h3>
+          <p class="nx-solution-desc">Plan mensual con temas, formatos y frecuencia de publicación adaptado a tu sector y audiencia.</p>
+        </div>
+        <div class="nx-solution-card" data-reveal style="transition-delay:.07s">
+          <div class="nx-solution-icon nx-icon-violet" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <h3 class="nx-solution-name">Carruseles e historias</h3>
+          <p class="nx-solution-desc">Diseños listos para Instagram y Facebook con tu identidad de marca, colores y logotipo.</p>
+        </div>
+        <div class="nx-solution-card" data-reveal style="transition-delay:.14s">
+          <div class="nx-solution-icon nx-icon-cyan" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </div>
+          <h3 class="nx-solution-name">Copies y hashtags</h3>
+          <p class="nx-solution-desc">Textos persuasivos para cada publicación optimizados para engagement y alcance orgánico.</p>
+        </div>
+        <div class="nx-solution-card" data-reveal style="transition-delay:.21s">
+          <div class="nx-solution-icon nx-icon-blue" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <h3 class="nx-solution-name">Calendario editorial</h3>
+          <p class="nx-solution-desc">Visualiza y gestiona todo tu contenido del mes en un calendario claro con estados y aprobaciones.</p>
+        </div>
+        <div class="nx-solution-card" data-reveal style="transition-delay:.28s">
+          <div class="nx-solution-icon nx-icon-violet" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </div>
+          <h3 class="nx-solution-name">Reportes y analítica</h3>
+          <p class="nx-solution-desc">Métricas de rendimiento por publicación, alcance, engagement y evolución de tu audiencia.</p>
+        </div>
+        <div class="nx-solution-card" data-reveal style="transition-delay:.35s">
+          <div class="nx-solution-icon nx-icon-cyan" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.07"/></svg>
+          </div>
+          <h3 class="nx-solution-name">Publicación oficial (próximo)</h3>
+          <p class="nx-solution-desc">Programación y publicación directa en Instagram y Facebook mediante integración con Meta API oficial.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       AGENTES DE IA
+  ═══════════════════════════════════════ -->
+  <section class="nx-section nx-section-alt" aria-label="Agentes de inteligencia artificial de Nexa">
+    <div class="nx-section-inner">
+      <div class="nx-section-label" data-reveal>Equipo de agentes IA</div>
+      <h2 class="nx-section-title" data-reveal>Cinco agentes trabajando por tu marca, <span class="nx-accent">24/7</span></h2>
+      <p class="nx-section-sub" data-reveal>Cada agente tiene un rol especializado y colaboran entre sí para producir el mejor resultado posible.</p>
+
+      <div class="nx-agents-grid">
+
+        <div class="nx-agent-card" data-reveal>
+          <div class="nx-agent-icon nx-agent-blue" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77"/></svg>
+          </div>
+          <div class="nx-agent-number">01</div>
+          <h3 class="nx-agent-name">Agente Estratega</h3>
+          <p class="nx-agent-desc">Analiza tu negocio, sector y competencia para diseñar una estrategia de contenido que construya audiencia y genere resultados medibles.</p>
+          <div class="nx-agent-tags">
+            <span>Estrategia</span><span>Planificación</span><span>Análisis</span>
+          </div>
+        </div>
+
+        <div class="nx-agent-card" data-reveal style="transition-delay:.1s">
+          <div class="nx-agent-icon nx-agent-violet" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </div>
+          <div class="nx-agent-number">02</div>
+          <h3 class="nx-agent-name">Agente Copywriter</h3>
+          <p class="nx-agent-desc">Escribe copies persuasivos, hashtags optimizados y textos para carruseles e historias adaptados al tono y voz de tu marca.</p>
+          <div class="nx-agent-tags">
+            <span>Copies</span><span>Hashtags</span><span>Storytelling</span>
+          </div>
+        </div>
+
+        <div class="nx-agent-card" data-reveal style="transition-delay:.2s">
+          <div class="nx-agent-icon nx-agent-cyan" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </div>
+          <div class="nx-agent-number">03</div>
+          <h3 class="nx-agent-name">Agente Diseñador</h3>
+          <p class="nx-agent-desc">Genera carruseles, historias y piezas visuales con tu identidad de marca, colores, tipografía y logo aplicados automáticamente.</p>
+          <div class="nx-agent-tags">
+            <span>Carruseles</span><span>Historias</span><span>Diseño</span>
+          </div>
+        </div>
+
+        <div class="nx-agent-card" data-reveal style="transition-delay:.3s">
+          <div class="nx-agent-icon nx-agent-blue" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </div>
+          <div class="nx-agent-number">04</div>
+          <h3 class="nx-agent-name">Agente Analista</h3>
+          <p class="nx-agent-desc">Monitorea el rendimiento de tus publicaciones, detecta qué contenido funciona mejor y entrega recomendaciones accionables para mejorar.</p>
+          <div class="nx-agent-tags">
+            <span>Reportes</span><span>Métricas</span><span>Optimización</span>
+          </div>
+        </div>
+
+        <div class="nx-agent-card" data-reveal style="transition-delay:.4s">
+          <div class="nx-agent-icon nx-agent-violet" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="nx-agent-number">05</div>
+          <h3 class="nx-agent-name">Agente Community Manager</h3>
+          <p class="nx-agent-desc">Gestiona el calendario de publicaciones, coordina aprobaciones de contenido y mantiene la consistencia de tu presencia en redes.</p>
+          <div class="nx-agent-tags">
+            <span>Calendario</span><span>Publicación</span><span>Consistencia</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       MEMORIA DE MARCA
+  ═══════════════════════════════════════ -->
+  <section class="nx-section" aria-label="Memoria de marca Nexa AI">
+    <div class="nx-section-inner">
+      <div class="nx-brand-memory-grid">
+        <div class="nx-brand-memory-left" data-reveal>
+          <div class="nx-section-label">Memoria de marca</div>
+          <h2 class="nx-section-title">Configuras una vez. Nexa recuerda todo.</h2>
+          <p class="nx-section-sub" style="margin-bottom:32px;">No vuelves a explicar quién eres. Nexa tiene toda la información de tu empresa guardada y la aplica en cada pieza de contenido que genera.</p>
+
+          <div class="nx-memory-items">
+            <div class="nx-memory-item">
+              <div class="nx-memory-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+              </div>
+              <div>
+                <div class="nx-memory-name">Rubro y descripción del negocio</div>
+                <div class="nx-memory-sub">Qué haces, para quién y cuál es tu propuesta de valor.</div>
+              </div>
+            </div>
+            <div class="nx-memory-item">
+              <div class="nx-memory-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+              </div>
+              <div>
+                <div class="nx-memory-name">Tono de comunicación y audiencia</div>
+                <div class="nx-memory-sub">Formal, cercano, técnico, juvenil — Nexa adapta cada texto.</div>
+              </div>
+            </div>
+            <div class="nx-memory-item">
+              <div class="nx-memory-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </div>
+              <div>
+                <div class="nx-memory-name">Logo, colores y tipografía</div>
+                <div class="nx-memory-sub">Identidad visual aplicada automáticamente en carruseles e historias.</div>
+              </div>
+            </div>
+            <div class="nx-memory-item">
+              <div class="nx-memory-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              </div>
+              <div>
+                <div class="nx-memory-name">Objetivos y métricas clave</div>
+                <div class="nx-memory-sub">Nexa orienta la estrategia hacia los resultados que te importan.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="nx-brand-memory-right" data-reveal style="transition-delay:.15s" aria-hidden="true">
+          <div class="nx-memory-card">
+            <div class="nx-memory-card-header">
+              <div class="nx-memory-card-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              </div>
+              <span>Memoria de marca activa</span>
+              <span class="nx-memory-card-badge">Configurada</span>
+            </div>
+            <div class="nx-memory-card-body">
+              <div class="nx-memory-field">
+                <span class="nx-field-label">Empresa</span>
+                <span class="nx-field-value">Mi Empresa SpA</span>
+              </div>
+              <div class="nx-memory-field">
+                <span class="nx-field-label">Rubro</span>
+                <span class="nx-field-value">Servicios B2B · Tecnología</span>
+              </div>
+              <div class="nx-memory-field">
+                <span class="nx-field-label">Tono</span>
+                <span class="nx-field-value">Profesional, directo, confiable</span>
+              </div>
+              <div class="nx-memory-field">
+                <span class="nx-field-label">Audiencia</span>
+                <span class="nx-field-value">Gerentes y dueños de pymes</span>
+              </div>
+              <div class="nx-memory-field">
+                <span class="nx-field-label">Objetivo</span>
+                <span class="nx-field-value">Generar leads y posicionamiento</span>
+              </div>
+              <div class="nx-memory-colors">
+                <span class="nx-field-label">Paleta</span>
+                <div class="nx-color-dots">
+                  <span style="background:#1e40af"></span>
+                  <span style="background:#0ea5e9"></span>
+                  <span style="background:#f8fafc"></span>
+                  <span style="background:#1e293b"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       FLUJO
+  ═══════════════════════════════════════ -->
+  <section class="nx-section nx-section-alt" aria-label="Cómo funciona Nexa AI">
+    <div class="nx-section-inner">
+      <div class="nx-section-label" data-reveal>Cómo funciona</div>
+      <h2 class="nx-section-title" data-reveal>De cero a contenido publicado en <span class="nx-accent">5 pasos</span></h2>
+
+      <div class="nx-flow-grid">
+        <div class="nx-flow-step" data-reveal>
+          <div class="nx-flow-num">01</div>
+          <div class="nx-flow-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <h3 class="nx-flow-name">Describe tu empresa</h3>
+          <p class="nx-flow-desc">Completa el perfil de tu marca: rubro, audiencia, tono, objetivos y diferenciadores. Una sola vez.</p>
+        </div>
+        <div class="nx-flow-arrow" aria-hidden="true">→</div>
+        <div class="nx-flow-step" data-reveal style="transition-delay:.1s">
+          <div class="nx-flow-num">02</div>
+          <div class="nx-flow-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </div>
+          <h3 class="nx-flow-name">Carga logo y banner</h3>
+          <p class="nx-flow-desc">Sube tus activos visuales. Nexa los memoriza y aplica en cada pieza de contenido generada.</p>
+        </div>
+        <div class="nx-flow-arrow" aria-hidden="true">→</div>
+        <div class="nx-flow-step" data-reveal style="transition-delay:.2s">
+          <div class="nx-flow-num">03</div>
+          <div class="nx-flow-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <h3 class="nx-flow-name">Nexa genera el plan</h3>
+          <p class="nx-flow-desc">Los agentes crean la estrategia, el calendario, carruseles, historias y copies del mes completo.</p>
+        </div>
+        <div class="nx-flow-arrow" aria-hidden="true">→</div>
+        <div class="nx-flow-step" data-reveal style="transition-delay:.3s">
+          <div class="nx-flow-num">04</div>
+          <div class="nx-flow-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <h3 class="nx-flow-name">Revisas y apruebas</h3>
+          <p class="nx-flow-desc">Tienes el control. Revisa, edita o regenera cualquier pieza antes de que salga al público.</p>
+        </div>
+        <div class="nx-flow-arrow" aria-hidden="true">→</div>
+        <div class="nx-flow-step" data-reveal style="transition-delay:.4s">
+          <div class="nx-flow-num">05</div>
+          <div class="nx-flow-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
+          </div>
+          <h3 class="nx-flow-name">Publicas o programas</h3>
+          <p class="nx-flow-desc">Publica manualmente o programa la publicación directa en Instagram y Facebook (integración oficial Meta API).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       PLANES
+  ═══════════════════════════════════════ -->
+  <section class="nx-section" id="planes" aria-label="Planes de Nexa AI">
+    <div class="nx-section-inner">
+      <div class="nx-section-label" data-reveal>Planes</div>
+      <h2 class="nx-section-title" data-reveal>Elige el plan que se adapta a tu negocio</h2>
+      <p class="nx-section-sub" data-reveal>Precios referenciales. La plataforma está en desarrollo activo — sé parte del acceso anticipado.</p>
+
+      <div class="nx-plans-grid">
+
+        <div class="nx-plan-card" data-reveal>
+          <div class="nx-plan-name">Básico</div>
+          <div class="nx-plan-price">
+            <span class="nx-plan-amount">Próximamente</span>
+          </div>
+          <div class="nx-plan-desc">Ideal para emprendedores y negocios que están comenzando su presencia en redes sociales.</div>
+          <ul class="nx-plan-features">
+            <li>1 cuenta de Instagram / Facebook</li>
+            <li>10 publicaciones generadas por mes</li>
+            <li>Carruseles e historias básicas</li>
+            <li>Memoria de marca</li>
+            <li>Calendario editorial</li>
+          </ul>
+          <a href="#nexa-demo" class="nx-btn-outline nx-plan-btn">Solicitar acceso anticipado</a>
+        </div>
+
+        <div class="nx-plan-card nx-plan-featured" data-reveal style="transition-delay:.12s">
+          <div class="nx-plan-badge">Más popular</div>
+          <div class="nx-plan-name">Pro</div>
+          <div class="nx-plan-price">
+            <span class="nx-plan-amount">Próximamente</span>
+          </div>
+          <div class="nx-plan-desc">Para pymes que quieren una presencia profesional y constante en redes sociales.</div>
+          <ul class="nx-plan-features">
+            <li>2 cuentas de Instagram / Facebook</li>
+            <li>30 publicaciones generadas por mes</li>
+            <li>Carruseles, historias y reels</li>
+            <li>Todos los agentes de IA activos</li>
+            <li>Reportes de rendimiento</li>
+            <li>Programación de publicaciones</li>
+          </ul>
+          <a href="#nexa-demo" class="nx-btn-primary nx-plan-btn">Solicitar acceso anticipado</a>
+        </div>
+
+        <div class="nx-plan-card" data-reveal style="transition-delay:.24s">
+          <div class="nx-plan-name">Empresa</div>
+          <div class="nx-plan-price">
+            <span class="nx-plan-amount">A medida</span>
+          </div>
+          <div class="nx-plan-desc">Para empresas con múltiples marcas o necesidades de marketing digital de mayor escala.</div>
+          <ul class="nx-plan-features">
+            <li>Múltiples cuentas y marcas</li>
+            <li>Publicaciones ilimitadas</li>
+            <li>Agentes personalizados</li>
+            <li>Integración con CRM propio</li>
+            <li>Soporte dedicado IDS Digital</li>
+            <li>SLA y onboarding personalizado</li>
+          </ul>
+          <a href="#nexa-demo" class="nx-btn-outline nx-plan-btn">Hablar con el equipo</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       DEMO / CTA + FORMULARIO
+  ═══════════════════════════════════════ -->
+  <section class="nx-section nx-demo-section" id="nexa-demo" aria-label="Solicitar demo de Nexa AI">
+    <div class="nx-demo-glow" aria-hidden="true"></div>
+    <div class="nx-section-inner" style="position:relative; z-index:1;">
+      <div class="nx-demo-grid">
+        <div class="nx-demo-left" data-reveal>
+          <div class="nx-section-label">Acceso anticipado</div>
+          <h2 class="nx-section-title">Lanza tu marketing con IA junto a IDS Digital</h2>
+          <p class="nx-section-sub" style="margin-bottom:32px;">Nexa AI está en desarrollo activo. Regístrate para ser de las primeras empresas en acceder y formar parte del proceso de construcción de la plataforma.</p>
+
+          <div class="nx-demo-benefits">
+            <div class="nx-demo-benefit">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              Acceso anticipado antes del lanzamiento público
+            </div>
+            <div class="nx-demo-benefit">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              Precio especial para early adopters
+            </div>
+            <div class="nx-demo-benefit">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              Onboarding personalizado con el equipo IDS Digital
+            </div>
+            <div class="nx-demo-benefit">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              Influye en el roadmap con tu feedback real
+            </div>
+          </div>
+        </div>
+
+        <div class="nx-demo-right" data-reveal style="transition-delay:.15s">
+          <div class="nx-demo-form-card">
+            <div class="nx-demo-form-title">Solicitar demo anticipada de Nexa AI</div>
+            <div class="nx-demo-form-sub">Te contactamos en menos de 24 horas.</div>
+
+            <form method="post" action="{% url 'public:submit_demo' %}" class="nx-demo-form">
+              {% csrf_token %}
+              <input type="hidden" name="website" value="" />
+              <input type="hidden" name="telefono" value="" />
+              <input type="hidden" name="necesidad" value="Nexa AI — Demo anticipada" />
+              <input type="hidden" name="mensaje" value="Solicitud de demo anticipada desde la página Nexa AI." />
+
+              <div class="nx-form-row">
+                <div class="nx-form-field">
+                  <label for="nexa_nombre">Nombre</label>
+                  <input type="text" id="nexa_nombre" name="nombre" placeholder="Tu nombre" required />
+                </div>
+                <div class="nx-form-field">
+                  <label for="nexa_email">Email</label>
+                  <input type="email" id="nexa_email" name="email" placeholder="correo@empresa.cl" required />
+                </div>
+              </div>
+
+              <div class="nx-form-field">
+                <label for="nexa_empresa">Empresa</label>
+                <input type="text" id="nexa_empresa" name="empresa" placeholder="Nombre de tu empresa" />
+              </div>
+
+              <button type="submit" class="nx-btn-primary" style="width:100%; justify-content:center; margin-top:8px;">
+                Solicitar demo de Nexa AI →
+              </button>
+
+              <div class="nx-form-note">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Sin compromiso · Información confidencial
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════ -->
+  <footer class="nx-footer" aria-label="Pie de página">
+    <div class="nx-footer-inner">
+      <div class="nx-footer-brand">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+          <svg width="26" height="26" viewBox="0 0 60 60" fill="none" aria-hidden="true">
+            <circle cx="30" cy="28" r="7" fill="#3b82f6"/>
+            <circle cx="14" cy="14" r="4.5" fill="#60a5fa"/>
+            <circle cx="46" cy="14" r="4.5" fill="#60a5fa"/>
+            <circle cx="11" cy="38" r="3.5" fill="#60a5fa"/>
+            <circle cx="50" cy="40" r="3.5" fill="#60a5fa"/>
+            <circle cx="28" cy="48" r="3.5" fill="#60a5fa"/>
+            <line x1="30" y1="21" x2="16" y2="16" stroke="#3b82f6" stroke-width="1.5"/>
+            <line x1="30" y1="21" x2="44" y2="16" stroke="#3b82f6" stroke-width="1.5"/>
+            <line x1="24" y1="33" x2="13" y2="36" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
+            <line x1="36" y1="34" x2="48" y2="38" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
+            <line x1="29" y1="35" x2="28" y2="45" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
+          </svg>
+          <div>
+            <div class="nx-footer-name">Inteligencia Digital y Sistemas SpA</div>
+            <div class="nx-footer-sub">contacto@idsdigital.cl · Santiago, Chile</div>
+          </div>
+        </div>
+      </div>
+      <div class="nx-footer-links">
+        <a href="{% url 'home' %}">Inicio</a>
+        <a href="{% url 'home' %}#servicios">Servicios</a>
+        <a href="{% url 'blog_list_public' %}">Blog</a>
+        <a href="{% url 'nexa_public' %}">Nexa AI</a>
+        <a href="{% url 'home' %}#contacto">Contacto</a>
+      </div>
+      <div class="nx-footer-copy">© 2026 Inteligencia Digital y Sistemas SpA. Todos los derechos reservados.</div>
+    </div>
+  </footer>
+
+  <script>
+  /* Reveal on scroll */
+  (function () {
+    var els = document.querySelectorAll('[data-reveal]');
+    if (!els.length) return;
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('revealed'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+    els.forEach(function (el) { obs.observe(el); });
+  })();
+  </script>
+
+</body>
+</html>

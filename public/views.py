@@ -142,6 +142,11 @@ def desarrollo_sistemas_internos(request):
     return render(request, "public/desarrollo_sistemas_internos.html")
 
 
+@require_http_methods(["GET"])
+def nexa(request):
+    return render(request, "public/nexa.html")
+
+
 @require_http_methods(["GET", "HEAD"])
 def robots_txt(request):
     content = """User-agent: *

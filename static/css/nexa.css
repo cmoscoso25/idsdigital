@@ -1,0 +1,1089 @@
+/* =========================================
+   NEXA AI — Estilos de la landing /nexa
+   Scoped bajo .nexa-page — no afecta landing
+   ni blog ni CRM.
+   ========================================= */
+
+.nexa-page {
+  background: #05090f;
+  color: #e2e8f0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-feature-settings: "cv02","cv03","cv04","cv11";
+  -webkit-font-smoothing: antialiased;
+
+  --nx-bg:          #05090f;
+  --nx-bg-card:     rgba(255,255,255,0.04);
+  --nx-bg-card-h:   rgba(255,255,255,0.07);
+  --nx-border:      rgba(255,255,255,0.08);
+  --nx-border-h:    rgba(59,130,246,0.42);
+  --nx-text:        #e2e8f0;
+  --nx-muted:       #94a3b8;
+  --nx-dim:         #64748b;
+  --nx-blue:        #3b82f6;
+  --nx-blue-l:      #60a5fa;
+  --nx-violet:      #8b5cf6;
+  --nx-violet-l:    #a78bfa;
+  --nx-cyan:        #06b6d4;
+  --nx-cyan-l:      #22d3ee;
+  --nx-green:       #22c55e;
+}
+
+/* ── Reveal on scroll (compartido con landing) ── */
+.nexa-page [data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.65s cubic-bezier(.22,.61,.36,1),
+              transform 0.65s cubic-bezier(.22,.61,.36,1);
+}
+
+.nexa-page [data-reveal].revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ══════════════════════════════════════════════
+   NAVBAR
+   ══════════════════════════════════════════════ */
+.nexa-page .nx-navbar {
+  background: rgba(5,9,15,0.90);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid var(--nx-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.nexa-page .nx-navbar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.nexa-page .nx-navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.nexa-page .nx-navbar-name { font-size: 14px; font-weight: 600; color: #fff; }
+.nexa-page .nx-navbar-sub  { font-size: 10px; color: var(--nx-dim); }
+
+.nexa-page .nx-navbar-links {
+  display: flex;
+  gap: 28px;
+  flex: 1;
+  justify-content: center;
+}
+
+.nexa-page .nx-navbar-links a {
+  color: var(--nx-muted);
+  font-size: 13.5px;
+  text-decoration: none;
+  font-weight: 450;
+  transition: color 0.2s;
+}
+
+.nexa-page .nx-navbar-links a:hover { color: #fff; }
+.nexa-page .nx-navbar-links .nx-navbar-link-active { color: var(--nx-violet-l); font-weight: 500; }
+
+.nexa-page .nx-btn-nav {
+  background: var(--nx-violet);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 9px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.nexa-page .nx-btn-nav:hover {
+  background: #7c3aed;
+  box-shadow: 0 0 22px rgba(139,92,246,0.42);
+}
+
+/* ══════════════════════════════════════════════
+   BOTONES GLOBALES
+   ══════════════════════════════════════════════ */
+.nexa-page .nx-btn-primary {
+  background: var(--nx-violet);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 13px 28px;
+  border-radius: 10px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s, transform 0.18s, box-shadow 0.2s;
+  font-family: inherit;
+  letter-spacing: -0.01em;
+}
+
+.nexa-page .nx-btn-primary:hover {
+  background: #7c3aed;
+  transform: translateY(-2px);
+  box-shadow: 0 0 32px rgba(139,92,246,0.45);
+}
+
+.nexa-page .nx-btn-outline {
+  background: transparent;
+  color: var(--nx-muted);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 13px 26px;
+  border-radius: 10px;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.12);
+  display: inline-flex;
+  align-items: center;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.nexa-page .nx-btn-outline:hover {
+  border-color: rgba(255,255,255,0.24);
+  color: #fff;
+  background: rgba(255,255,255,0.04);
+}
+
+/* Accent text */
+.nexa-page .nx-accent {
+  background: linear-gradient(135deg, var(--nx-violet) 0%, var(--nx-blue) 50%, var(--nx-cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Icon color utilities */
+.nexa-page .nx-icon-blue   { background: rgba(59,130,246,0.12);  border-color: rgba(59,130,246,0.25);  color: var(--nx-blue-l); }
+.nexa-page .nx-icon-violet { background: rgba(139,92,246,0.12);  border-color: rgba(139,92,246,0.25);  color: var(--nx-violet-l); }
+.nexa-page .nx-icon-cyan   { background: rgba(6,182,212,0.12);   border-color: rgba(6,182,212,0.25);   color: var(--nx-cyan-l); }
+
+/* ══════════════════════════════════════════════
+   HERO
+   ══════════════════════════════════════════════ */
+.nexa-page .nx-hero {
+  background: var(--nx-bg);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.nexa-page .nx-hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(139,92,246,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139,92,246,0.04) 1px, transparent 1px);
+  background-size: 64px 64px;
+  animation: grid-drift 40s linear infinite;
+  pointer-events: none;
+}
+
+.nexa-page .nx-hero-glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(90px);
+}
+
+.nexa-page .nx-hero-glow-1 {
+  width: 650px;
+  height: 520px;
+  background: radial-gradient(ellipse, rgba(139,92,246,0.18) 0%, transparent 68%);
+  top: -150px;
+  left: -80px;
+  animation: aurora-1 22s ease-in-out infinite;
+}
+
+.nexa-page .nx-hero-glow-2 {
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(ellipse, rgba(6,182,212,0.10) 0%, transparent 68%);
+  top: 80px;
+  right: -60px;
+  animation: aurora-2 28s ease-in-out infinite;
+}
+
+.nexa-page .nx-hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 76px 28px 88px;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 60px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Eyebrow ── */
+.nexa-page .nx-hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+
+.nexa-page .nx-eyebrow-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(139,92,246,0.12);
+  color: var(--nx-violet-l);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(139,92,246,0.25);
+}
+
+.nexa-page .nx-eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--nx-green);
+  border-radius: 50%;
+  animation: dot-pulse 2.5s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.nexa-page .nx-eyebrow-tag {
+  font-size: 11.5px;
+  color: var(--nx-dim);
+  font-weight: 500;
+}
+
+/* ── Brand logotype ── */
+.nexa-page .nx-hero-brand {
+  font-size: 64px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  margin-bottom: 20px;
+}
+
+.nexa-page .nx-brand-nexa {
+  background: linear-gradient(135deg, #c4b5fd 0%, #8b5cf6 40%, #6366f1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nexa-page .nx-brand-ai {
+  color: rgba(255,255,255,0.25);
+  font-size: 40px;
+  vertical-align: super;
+}
+
+/* ── H1 tagline ── */
+.nexa-page .nx-hero-tagline {
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  margin-bottom: 20px;
+}
+
+.nexa-page .nx-hero-sub {
+  font-size: 15.5px;
+  color: var(--nx-muted);
+  line-height: 1.78;
+  margin-bottom: 36px;
+  max-width: 500px;
+}
+
+.nexa-page .nx-hero-btns {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.nexa-page .nx-hero-trust {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nexa-page .nx-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--nx-dim);
+}
+
+.nexa-page .nx-trust-item svg { color: var(--nx-green); flex-shrink: 0; }
+
+/* ── Product preview ── */
+.nexa-page .nx-product-preview {
+  background: rgba(255,255,255,0.05);
+  border-radius: 16px;
+  border: 1px solid var(--nx-border);
+  backdrop-filter: blur(20px);
+  overflow: hidden;
+  box-shadow: 0 28px 70px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.07);
+}
+
+.nexa-page .nx-preview-header {
+  background: rgba(255,255,255,0.04);
+  border-bottom: 1px solid var(--nx-border);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nexa-page .nx-preview-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.nexa-page .nx-preview-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+}
+
+.nexa-page .nx-preview-dots span:nth-child(1) { background: #f87171; }
+.nexa-page .nx-preview-dots span:nth-child(2) { background: #fbbf24; }
+.nexa-page .nx-preview-dots span:nth-child(3) { background: var(--nx-green); }
+
+.nexa-page .nx-preview-title {
+  font-size: 12px;
+  color: var(--nx-dim);
+  flex: 1;
+  text-align: center;
+}
+
+.nexa-page .nx-preview-body { padding: 18px 16px 20px; }
+
+.nexa-page .nx-preview-section-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--nx-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  margin-bottom: 10px;
+}
+
+.nexa-page .nx-preview-agents {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.nexa-page .nx-preview-agent {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid;
+}
+
+.nexa-page .nx-agent-blue   { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.25); color: var(--nx-blue-l); }
+.nexa-page .nx-agent-violet { background: rgba(139,92,246,0.1); border-color: rgba(139,92,246,0.25); color: var(--nx-violet-l); }
+.nexa-page .nx-agent-cyan   { background: rgba(6,182,212,0.1);  border-color: rgba(6,182,212,0.25);  color: var(--nx-cyan-l); }
+
+.nexa-page .nx-preview-items { display: flex; flex-direction: column; gap: 10px; }
+
+.nexa-page .nx-preview-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--nx-border);
+  border-radius: 9px;
+  padding: 10px 12px;
+}
+
+.nexa-page .nx-preview-item-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid;
+}
+
+.nexa-page .nx-preview-item-name { font-size: 12px; font-weight: 500; color: #fff; }
+.nexa-page .nx-preview-item-sub  { font-size: 10.5px; color: var(--nx-dim); margin-top: 2px; }
+
+.nexa-page .nx-preview-item-status {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.nexa-page .nx-status-ready  { color: var(--nx-green); }
+.nexa-page .nx-status-review { color: #fbbf24; }
+
+/* ══════════════════════════════════════════════
+   SECCIONES GENÉRICAS
+   ══════════════════════════════════════════════ */
+.nexa-page .nx-section {
+  border-bottom: 1px solid var(--nx-border);
+}
+
+.nexa-page .nx-section-alt {
+  background: rgba(255,255,255,0.012);
+}
+
+.nexa-page .nx-section-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 88px 28px;
+}
+
+.nexa-page .nx-section-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--nx-violet-l);
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  margin-bottom: 14px;
+}
+
+.nexa-page .nx-section-title {
+  font-size: 34px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 16px;
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+}
+
+.nexa-page .nx-section-sub {
+  font-size: 15.5px;
+  color: var(--nx-muted);
+  margin-bottom: 52px;
+  line-height: 1.75;
+  max-width: 560px;
+}
+
+/* ══════════════════════════════════════════════
+   PROBLEMA
+   ══════════════════════════════════════════════ */
+.nexa-page .nx-problem-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.nexa-page .nx-problem-card {
+  background: rgba(248,113,113,0.04);
+  border: 1px solid rgba(248,113,113,0.12);
+  border-radius: 14px;
+  padding: 24px 22px;
+  transition: border-color 0.25s, background 0.25s;
+}
+
+.nexa-page .nx-problem-card:hover {
+  border-color: rgba(248,113,113,0.28);
+  background: rgba(248,113,113,0.07);
+}
+
+.nexa-page .nx-problem-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(248,113,113,0.1);
+  border: 1px solid rgba(248,113,113,0.2);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f87171;
+  margin-bottom: 14px;
+}
+
+.nexa-page .nx-problem-name { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 8px; letter-spacing: -0.015em; }
+.nexa-page .nx-problem-desc { font-size: 13.5px; color: var(--nx-muted); line-height: 1.65; }
+
+/* ══════════════════════════════════════════════
+   SOLUCIÓN — CARDS
+   ══════════════════════════════════════════════ */
+.nexa-page .nx-solution-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.nexa-page .nx-solution-card {
+  background: var(--nx-bg-card);
+  border-radius: 16px;
+  padding: 26px;
+  border: 1px solid var(--nx-border);
+  transition: border-color 0.28s, background 0.28s, transform 0.22s;
+}
+
+.nexa-page .nx-solution-card:hover {
+  border-color: rgba(139,92,246,0.38);
+  background: var(--nx-bg-card-h);
+  transform: translateY(-3px);
+}
+
+.nexa-page .nx-solution-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  border: 1px solid;
+  transition: box-shadow 0.22s;
+}
+
+.nexa-page .nx-solution-card:hover .nx-solution-icon { box-shadow: 0 0 18px rgba(139,92,246,0.25); }
+
+.nexa-page .nx-solution-name { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 9px; letter-spacing: -0.015em; }
+.nexa-page .nx-solution-desc { font-size: 13.5px; color: var(--nx-muted); line-height: 1.7; }
+
+/* ══════════════════════════════════════════════
+   AGENTES
+   ══════════════════════════════════════════════ */
+.nexa-page .nx-agents-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.nexa-page .nx-agent-card {
+  background: var(--nx-bg-card);
+  border-radius: 16px;
+  padding: 28px;
+  border: 1px solid var(--nx-border);
+  transition: border-color 0.28s, box-shadow 0.28s;
+  position: relative;
+  overflow: hidden;
+}
+
+.nexa-page .nx-agent-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(139,92,246,0.07) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.28s;
+  pointer-events: none;
+}
+
+.nexa-page .nx-agent-card:hover {
+  border-color: rgba(139,92,246,0.35);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+}
+
+.nexa-page .nx-agent-card:hover::before { opacity: 1; }
+
+.nexa-page .nx-agent-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+  border: 1px solid;
+  position: relative;
+  z-index: 1;
+}
+
+.nexa-page .nx-agent-number {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--nx-dim);
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.nexa-page .nx-agent-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+  letter-spacing: -0.02em;
+  position: relative;
+  z-index: 1;
+}
+
+.nexa-page .nx-agent-desc {
+  font-size: 13.5px;
+  color: var(--nx-muted);
+  line-height: 1.72;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.nexa-page .nx-agent-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+
+.nexa-page .nx-agent-tags span {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--nx-violet-l);
+  background: rgba(139,92,246,0.1);
+  border: 1px solid rgba(139,92,246,0.2);
+  padding: 3px 9px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ══════════════════════════════════════════════
+   MEMORIA DE MARCA
+   ══════════════════════════════════════════════ */
+.nexa-page .nx-brand-memory-grid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 72px;
+  align-items: center;
+}
+
+.nexa-page .nx-memory-items {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.nexa-page .nx-memory-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.nexa-page .nx-memory-icon {
+  width: 36px;
+  height: 36px;
+  background: rgba(139,92,246,0.1);
+  border: 1px solid rgba(139,92,246,0.22);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--nx-violet-l);
+  flex-shrink: 0;
+}
+
+.nexa-page .nx-memory-name { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 3px; }
+.nexa-page .nx-memory-sub  { font-size: 13px; color: var(--nx-muted); line-height: 1.55; }
+
+/* Memory card */
+.nexa-page .nx-memory-card {
+  background: var(--nx-bg-card);
+  border-radius: 16px;
+  border: 1px solid rgba(139,92,246,0.22);
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+.nexa-page .nx-memory-card-header {
+  background: rgba(139,92,246,0.08);
+  border-bottom: 1px solid rgba(139,92,246,0.15);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--nx-violet-l);
+  flex: 1;
+}
+
+.nexa-page .nx-memory-card-icon {
+  width: 28px;
+  height: 28px;
+  background: rgba(139,92,246,0.15);
+  border: 1px solid rgba(139,92,246,0.3);
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.nexa-page .nx-memory-card-badge {
+  margin-left: auto;
+  font-size: 10.5px;
+  background: rgba(34,197,94,0.12);
+  color: #4ade80;
+  border: 1px solid rgba(34,197,94,0.22);
+  padding: 2px 9px;
+  border-radius: 20px;
+}
+
+.nexa-page .nx-memory-card-body { padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+
+.nexa-page .nx-memory-field { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.nexa-page .nx-field-label   { font-size: 11.5px; color: var(--nx-dim); font-weight: 500; flex-shrink: 0; }
+.nexa-page .nx-field-value   { font-size: 12.5px; color: var(--nx-text); font-weight: 500; text-align: right; }
+
+.nexa-page .nx-memory-colors { display: flex; align-items: center; gap: 12px; }
+
+.nexa-page .nx-color-dots { display: flex; gap: 6px; }
+
+.nexa-page .nx-color-dots span {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+/* ══════════════════════════════════════════════
+   FLUJO
+   ══════════════════════════════════════════════ */
+.nexa-page .nx-flow-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr auto 1fr;
+  align-items: start;
+  gap: 0;
+}
+
+.nexa-page .nx-flow-step {
+  background: var(--nx-bg-card);
+  border-radius: 14px;
+  padding: 24px 20px;
+  border: 1px solid var(--nx-border);
+  transition: border-color 0.25s;
+}
+
+.nexa-page .nx-flow-step:hover { border-color: rgba(139,92,246,0.35); }
+
+.nexa-page .nx-flow-arrow {
+  color: rgba(139,92,246,0.4);
+  font-size: 20px;
+  align-self: center;
+  padding: 0 4px;
+  font-weight: 300;
+}
+
+.nexa-page .nx-flow-num {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--nx-dim);
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+
+.nexa-page .nx-flow-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(139,92,246,0.1);
+  border: 1px solid rgba(139,92,246,0.2);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--nx-violet-l);
+  margin-bottom: 12px;
+}
+
+.nexa-page .nx-flow-name { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 8px; letter-spacing: -0.01em; }
+.nexa-page .nx-flow-desc { font-size: 13px; color: var(--nx-muted); line-height: 1.65; }
+
+/* ══════════════════════════════════════════════
+   PLANES
+   ══════════════════════════════════════════════ */
+.nexa-page .nx-plans-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.nexa-page .nx-plan-card {
+  background: var(--nx-bg-card);
+  border-radius: 18px;
+  padding: 32px 28px;
+  border: 1px solid var(--nx-border);
+  transition: border-color 0.25s, box-shadow 0.25s;
+  position: relative;
+}
+
+.nexa-page .nx-plan-card.nx-plan-featured {
+  border-color: rgba(139,92,246,0.4);
+  background: rgba(139,92,246,0.05);
+  box-shadow: 0 0 0 1px rgba(139,92,246,0.15), 0 20px 60px rgba(0,0,0,0.35);
+}
+
+.nexa-page .nx-plan-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--nx-violet);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: 20px;
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+
+.nexa-page .nx-plan-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+  letter-spacing: -0.02em;
+}
+
+.nexa-page .nx-plan-price { margin-bottom: 14px; }
+.nexa-page .nx-plan-amount { font-size: 22px; font-weight: 800; color: var(--nx-violet-l); letter-spacing: -0.03em; }
+
+.nexa-page .nx-plan-desc {
+  font-size: 13.5px;
+  color: var(--nx-muted);
+  line-height: 1.65;
+  margin-bottom: 22px;
+}
+
+.nexa-page .nx-plan-features {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.nexa-page .nx-plan-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 13.5px;
+  color: var(--nx-muted);
+  line-height: 1.45;
+}
+
+.nexa-page .nx-plan-features li::before {
+  content: '✓';
+  color: var(--nx-violet-l);
+  font-weight: 700;
+  font-size: 12px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.nexa-page .nx-plan-btn { width: 100%; justify-content: center; }
+
+/* ══════════════════════════════════════════════
+   DEMO / FORMULARIO
+   ══════════════════════════════════════════════ */
+.nexa-page .nx-demo-section {
+  background: linear-gradient(135deg, #06091a 0%, #0d1235 45%, #080514 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.nexa-page .nx-demo-glow {
+  position: absolute;
+  width: 800px;
+  height: 500px;
+  background: radial-gradient(ellipse, rgba(139,92,246,0.12) 0%, rgba(59,130,246,0.06) 50%, transparent 70%);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  filter: blur(70px);
+  pointer-events: none;
+}
+
+.nexa-page .nx-demo-grid {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 60px;
+  align-items: start;
+}
+
+.nexa-page .nx-demo-benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.nexa-page .nx-demo-benefit {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--nx-muted);
+  line-height: 1.5;
+}
+
+.nexa-page .nx-demo-benefit svg { color: var(--nx-green); flex-shrink: 0; margin-top: 2px; }
+
+/* Form card */
+.nexa-page .nx-demo-form-card {
+  background: rgba(255,255,255,0.05);
+  border-radius: 18px;
+  padding: 32px;
+  border: 1px solid rgba(139,92,246,0.2);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 28px 70px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.07);
+}
+
+.nexa-page .nx-demo-form-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+  letter-spacing: -0.02em;
+}
+
+.nexa-page .nx-demo-form-sub {
+  font-size: 13px;
+  color: var(--nx-muted);
+  margin-bottom: 22px;
+}
+
+.nexa-page .nx-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.nexa-page .nx-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.nexa-page .nx-form-field label {
+  font-size: 11.5px;
+  color: var(--nx-muted);
+  font-weight: 500;
+}
+
+.nexa-page .nx-form-field input {
+  background: rgba(255,255,255,0.055);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 9px;
+  padding: 10px 13px;
+  font-size: 13.5px;
+  color: #fff;
+  outline: none;
+  width: 100%;
+  font-family: inherit;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+.nexa-page .nx-form-field input::placeholder { color: var(--nx-dim); }
+
+.nexa-page .nx-form-field input:focus {
+  border-color: var(--nx-violet);
+  background: rgba(139,92,246,0.07);
+  box-shadow: 0 0 0 3px rgba(139,92,246,0.12);
+}
+
+.nexa-page .nx-form-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--nx-dim);
+  margin-top: 12px;
+}
+
+/* ══════════════════════════════════════════════
+   FOOTER
+   ══════════════════════════════════════════════ */
+.nexa-page .nx-footer {
+  background: rgba(0,0,0,0.45);
+  border-top: 1px solid var(--nx-border);
+}
+
+.nexa-page .nx-footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.nexa-page .nx-footer-name { font-size: 13.5px; font-weight: 500; color: var(--nx-muted); }
+.nexa-page .nx-footer-sub  { font-size: 11.5px; color: var(--nx-dim); margin-top: 2px; }
+
+.nexa-page .nx-footer-links { display: flex; gap: 22px; }
+.nexa-page .nx-footer-links a { color: var(--nx-dim); font-size: 13px; text-decoration: none; transition: color 0.2s; }
+.nexa-page .nx-footer-links a:hover { color: var(--nx-muted); }
+.nexa-page .nx-footer-copy { font-size: 12px; color: var(--nx-dim); }
+
+/* ══════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  .nexa-page .nx-problem-grid    { grid-template-columns: 1fr 1fr; }
+  .nexa-page .nx-agents-grid     { grid-template-columns: 1fr 1fr; }
+  .nexa-page .nx-flow-grid       { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .nexa-page .nx-flow-arrow      { display: none; }
+  .nexa-page .nx-brand-memory-grid { grid-template-columns: 1fr; gap: 48px; }
+}
+
+@media (max-width: 1023px) {
+  .nexa-page .nx-hero-inner      { grid-template-columns: 1fr; gap: 44px; padding: 60px 24px 72px; }
+  .nexa-page .nx-demo-grid       { grid-template-columns: 1fr; gap: 48px; }
+  .nexa-page .nx-solution-grid   { grid-template-columns: 1fr 1fr; }
+  .nexa-page .nx-plans-grid      { grid-template-columns: 1fr 1fr; }
+  .nexa-page .nx-hero-brand      { font-size: 48px; }
+  .nexa-page .nx-hero-tagline    { font-size: 26px; }
+  .nexa-page .nx-section-title   { font-size: 28px; }
+  .nexa-page .nx-footer-links    { display: none; }
+}
+
+@media (max-width: 767px) {
+  .nexa-page .nx-navbar-links    { display: none; }
+  .nexa-page .nx-hero-brand      { font-size: 38px; }
+  .nexa-page .nx-hero-tagline    { font-size: 22px; }
+  .nexa-page .nx-hero-btns       { flex-direction: column; }
+  .nexa-page .nx-btn-primary,
+  .nexa-page .nx-btn-outline     { width: 100%; justify-content: center; }
+  .nexa-page .nx-problem-grid    { grid-template-columns: 1fr; }
+  .nexa-page .nx-solution-grid   { grid-template-columns: 1fr; }
+  .nexa-page .nx-agents-grid     { grid-template-columns: 1fr; }
+  .nexa-page .nx-plans-grid      { grid-template-columns: 1fr; }
+  .nexa-page .nx-flow-grid       { grid-template-columns: 1fr; }
+  .nexa-page .nx-section-inner   { padding: 64px 20px; }
+  .nexa-page .nx-form-row        { grid-template-columns: 1fr; }
+  .nexa-page .nx-footer-inner    { flex-direction: column; text-align: center; }
+}
+
+@media (max-width: 480px) {
+  .nexa-page .nx-hero-brand      { font-size: 30px; }
+  .nexa-page .nx-plan-card       { padding: 26px 22px; }
+}

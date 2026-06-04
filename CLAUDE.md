@@ -97,6 +97,14 @@ no están instalados en el entorno MCP. Usar siempre el CLI como fallback.
 5. Aplicar solo tras aprobación explícita del usuario.
 6. Actualizar `PROJECT_CONTEXT.md` si el cambio es estructural.
 
+## Sub-SaaS: Nexa AI
+
+- Ruta pública: `/nexa/` → vista `public.nexa` → template `templates/public/nexa.html`
+- CSS dedicado: `static/css/nexa.css` (scoped bajo `.nexa-page`)
+- No existe aún dashboard privado ni modelos específicos de Nexa — solo landing de captación.
+- El formulario de demo de Nexa reutiliza `DemoRequest` con `necesidad = "Nexa AI — Demo anticipada"`.
+- Toda lógica futura de Nexa debe ser analizada antes de implementar: puede requerir app propia.
+
 ## Gestión de contexto — archivos de referencia
 
 Leer siempre al inicio de cada sesión:
