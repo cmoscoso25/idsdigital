@@ -217,6 +217,7 @@ Plataforma de marketing digital con agentes de IA para pymes y empresas.
 
 | Commit | Decisión |
 |---|---|
+| 2026-06-04 v5 | Fix renders POST: selector rastrea N-1 estilos + rotación determinística; _render_post_problema_solucion rediseñado como split izq/der; _render_post_estadistica con barras de progreso; _render_post_testimonio con tarjeta de resultado. Validado: 5 posts = 5 estilos distintos. |
 | 2026-06-04 v4 | Director Creativo: `director_creativo.py` con 20 estilos (5/formato), selección por afinidad + anti-repetición. 5 renders POST distintos. Variantes visuales en historia/carrusel/reel. Campos estilo+estilo_nombre en modelo (migración 0007). Badge en UI. |
 | 2026-06-04 v3 | Motor de estructura por formato Instagram en `copywriter.py`: post 4 secciones (hook/beneficio/prueba/cta), historia 3 roles (problema/consecuencia/solucion), carrusel 6 slides, reel 5 escenas con texto_pantalla+duracion_seg. Render actualizado para tipos consecuencia/solucion. |
 | 2026-06-04 v2 | Composición visual inteligente para creatividades Instagram: `_kpi_cards()`, `_slide_body()`, `_escena_visual()` en `agente_diseno_instagram.py`. KPI por categoría en post, hero SVG en historia, slide body por tipo en carrusel, frames CapCut en reel. |

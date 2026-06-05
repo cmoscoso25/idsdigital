@@ -1091,6 +1091,7 @@ def _render_post_minimalista(empresa, contenido, estructura) -> str:
 
 
 def _render_post_problema_solucion(empresa, contenido, estructura) -> str:
+    """Split LEFT/RIGHT: problema (40%) | solución (60%). Contraste total."""
     c1 = empresa.color_principal
     c2 = empresa.color_secundario
     nombre = empresa.nombre_empresa
@@ -1098,10 +1099,11 @@ def _render_post_problema_solucion(empresa, contenido, estructura) -> str:
     ig_user = "@" + nombre.lower().replace(" ", "_")
     titulo = _s(contenido.titulo, 70)
     copy1 = _s(contenido.copy.split("\n")[0], 90)
-    cta = _s(contenido.cta or "Contáctanos →", 50)
+    cta = _s(contenido.cta or "Contáctanos →", 40)
     secciones = estructura.get("secciones", [])
     problema_txt = next((s["texto"] for s in secciones if s.get("tipo") == "hook"), titulo)
     solucion_txt = next((s["texto"] for s in secciones if s.get("tipo") == "beneficio"), copy1)
+    prueba_txt   = next((s["texto"] for s in secciones if s.get("tipo") == "prueba"), "")
 
     return f"""
 <div class="nxar-stage nxar-post-stage">
@@ -1114,24 +1116,25 @@ def _render_post_problema_solucion(empresa, contenido, estructura) -> str:
       </div>
       <span class="nxar-ig-dots">⋯</span>
     </div>
-    <div class="nxar-post-frame" style="background:#0d0d14;position:relative;overflow:hidden;aspect-ratio:1/1">
-      <div style="position:relative;z-index:2;height:100%;display:flex;flex-direction:column">
-        <!-- Mitad superior: PROBLEMA -->
-        <div style="flex:1;background:#130d1a;display:flex;flex-direction:column;justify-content:center;padding:20px 22px;position:relative;overflow:hidden">
-          <div style="position:absolute;top:10px;left:14px;font-size:9px;font-weight:800;letter-spacing:0.15em;color:#ef4444;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:4px;padding:3px 8px">⚡ PROBLEMA</div>
-          <p style="font-size:clamp(14px,2.5vw,18px);font-weight:700;color:rgba(255,255,255,0.88);line-height:1.3;margin:22px 0 0">{_s(problema_txt,85)}</p>
-        </div>
-        <!-- Divisor -->
-        <div style="height:3px;background:linear-gradient(90deg,{c1},{c2});position:relative">
-          <div style="position:absolute;left:50%;transform:translateX(-50%) translateY(-50%);background:linear-gradient(135deg,{c1},{c2});border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff">↓</div>
-        </div>
-        <!-- Mitad inferior: SOLUCIÓN -->
-        <div style="flex:1;background:linear-gradient(160deg,{c1}33,{c2}22);display:flex;flex-direction:column;justify-content:center;padding:20px 22px;position:relative">
-          <div style="position:absolute;top:10px;left:14px;font-size:9px;font-weight:800;letter-spacing:0.15em;color:{c1};background:{c1}18;border:1px solid {c1}44;border-radius:4px;padding:3px 8px">✓ SOLUCIÓN</div>
-          <p style="font-size:clamp(13px,2.2vw,16px);font-weight:600;color:rgba(255,255,255,0.9);line-height:1.4;margin:22px 0 8px">{_s(solucion_txt,90)}</p>
-          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.9);color:{c1};border-radius:20px;padding:5px 14px;font-size:10px;font-weight:800;align-self:flex-start">{cta}</div>
-          <span style="position:absolute;bottom:8px;right:12px;font-size:9px;color:rgba(255,255,255,0.25);font-weight:600">{_s(nombre,14)}</span>
-        </div>
+    <div class="nxar-post-frame" style="position:relative;overflow:hidden;aspect-ratio:1/1;display:flex;flex-direction:row">
+      <!-- COLUMNA IZQUIERDA: PROBLEMA (38%) -->
+      <div style="width:38%;background:#100812;display:flex;flex-direction:column;padding:16px 12px 16px 14px;position:relative;border-right:2px solid {c1}88">
+        <div style="font-size:8px;font-weight:900;letter-spacing:0.18em;color:#ef4444;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);border-radius:3px;padding:2px 6px;display:inline-block;margin-bottom:10px">⚡ PROBLEMA</div>
+        <p style="font-size:clamp(11px,2vw,13px);font-weight:700;color:rgba(255,255,255,0.85);line-height:1.4;flex:1;margin:0">{_s(problema_txt,75)}</p>
+        <div style="margin-top:10px;font-size:36px;opacity:0.1;color:#ef4444;line-height:1">?</div>
+        <div style="font-size:8px;color:rgba(255,255,255,0.2);margin-top:6px">{_s(nombre,12)}</div>
+      </div>
+      <!-- DIVISOR con flecha central -->
+      <div style="width:0;position:relative;z-index:3">
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:22px;height:22px;background:linear-gradient(135deg,{c1},{c2});border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;box-shadow:0 0 10px {c1}88">→</div>
+      </div>
+      <!-- COLUMNA DERECHA: SOLUCIÓN (62%) -->
+      <div style="flex:1;background:linear-gradient(160deg,{c1}22,{c2}18,#06060e);display:flex;flex-direction:column;padding:16px 14px 16px 18px;position:relative;overflow:hidden">
+        <div style="position:absolute;top:-20px;right:-20px;width:80px;height:80px;background:radial-gradient({c1}33,transparent 70%);border-radius:50%"></div>
+        <div style="font-size:8px;font-weight:900;letter-spacing:0.18em;color:{c1};background:{c1}14;border:1px solid {c1}33;border-radius:3px;padding:2px 6px;display:inline-block;margin-bottom:10px">✓ SOLUCIÓN</div>
+        <p style="font-size:clamp(11px,2vw,13px);font-weight:600;color:rgba(255,255,255,0.9);line-height:1.45;flex:1;margin:0">{_s(solucion_txt,90)}</p>
+        {f'<p style="font-size:9px;color:{c1};margin:8px 0 0;line-height:1.35;opacity:0.8">{_s(prueba_txt,65)}</p>' if prueba_txt else ""}
+        <div style="margin-top:10px;background:linear-gradient(90deg,{c1},{c2});border-radius:16px;padding:5px 12px;font-size:9px;font-weight:800;color:#fff;display:inline-block;align-self:flex-start">{cta}</div>
       </div>
     </div>
     <div class="nxar-ig-footer">
@@ -1147,6 +1150,7 @@ def _render_post_problema_solucion(empresa, contenido, estructura) -> str:
 
 
 def _render_post_estadistica(empresa, contenido, estructura) -> str:
+    """Número hero gigante + 3 barras de progreso visuales con métricas."""
     c1 = empresa.color_principal
     c2 = empresa.color_secundario
     nombre = empresa.nombre_empresa
@@ -1154,15 +1158,44 @@ def _render_post_estadistica(empresa, contenido, estructura) -> str:
     ig_user = "@" + nombre.lower().replace(" ", "_")
     titulo = _s(contenido.titulo, 70)
     copy1 = _s(contenido.copy.split("\n")[0], 100)
-    cta = _s(contenido.cta or "Saber más →", 50)
+    cta = _s(contenido.cta or "Ver datos →", 45)
     categoria = _detectar_categoria(contenido, empresa)
     vis = _bloque_visual(categoria, c1, c2)
 
-    # Extraer el número/stat del título si existe
     import re as _re
     stat_match = _re.search(r'(\d+[\d.,]*\s*[%xX×]?)', titulo)
     stat_num = stat_match.group(1) if stat_match else "10x"
-    stat_ctx = titulo[:60] if not stat_match else titulo.replace(stat_match.group(0), "").strip()[:55]
+    stat_ctx = (titulo.replace(stat_match.group(0), "").strip() if stat_match else titulo)[:55]
+
+    # KPIs para barras (por categoría)
+    _kpi_bars = {
+        "ia":            [("98%", "Precisión"), ("73%", "Tiempo ↓"), ("4.2x", "ROI")],
+        "software":      [("99.9%", "Uptime"), ("87%", "Satisf."), ("3x", "Velocidad")],
+        "marketing":     [("+48%", "Tráfico"), ("+32%", "Convers."), ("6x", "ROAS")],
+        "automatizacion":[("85%", "Automati."), ("10x", "Velocidad"), ("0%", "Errores")],
+        "productividad": [("70%", "Eficienc."), ("8h/sem", "Ahorro"), ("3x", "Output")],
+    }
+    bars_data = _kpi_bars.get(categoria, [("73%", "Eficiencia"), ("+40%", "Resultados"), ("10x", "ROI")])
+    # Convertir el valor a % para la barra visual
+    def _bar_pct(val: str) -> int:
+        import re
+        m = re.search(r'(\d+)', val)
+        if m:
+            v = int(m.group(1))
+            return min(v, 100) if "%" in val else min(v * 10, 95)
+        return 70
+    bars_html = "".join(
+        f'<div style="margin-bottom:6px">'
+        f'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">'
+        f'<span style="font-size:9px;color:rgba(255,255,255,0.55)">{label}</span>'
+        f'<span style="font-size:10px;font-weight:700;color:{c1}">{val}</span>'
+        f'</div>'
+        f'<div style="background:rgba(255,255,255,0.07);border-radius:3px;height:5px">'
+        f'<div style="width:{_bar_pct(val)}%;height:100%;background:linear-gradient(90deg,{c1},{c2});border-radius:3px"></div>'
+        f'</div>'
+        f'</div>'
+        for val, label in bars_data
+    )
 
     return f"""
 <div class="nxar-stage nxar-post-stage">
@@ -1175,23 +1208,31 @@ def _render_post_estadistica(empresa, contenido, estructura) -> str:
       </div>
       <span class="nxar-ig-dots">⋯</span>
     </div>
-    <div class="nxar-post-frame" style="background:linear-gradient(160deg,#06020e,#0f0a1a);position:relative;overflow:hidden;aspect-ratio:1/1">
+    <div class="nxar-post-frame" style="background:linear-gradient(160deg,#04010c,#0c0818);position:relative;overflow:hidden;aspect-ratio:1/1">
       {vis['pattern']}
-      <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,{c1}18,transparent 65%)"></div>
-      <div style="position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:22px">
+      <div style="position:absolute;top:-30px;left:-30px;width:120px;height:120px;background:radial-gradient({c1}22,transparent 70%);border-radius:50%"></div>
+      <div style="position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:18px 20px">
+        <!-- Header -->
         <div style="display:flex;justify-content:space-between;align-items:center">
-          <span style="font-size:9px;font-weight:700;color:{c1};letter-spacing:0.12em;text-transform:uppercase">{vis['icon']} {vis['label']}</span>
-          <span style="font-size:9px;color:rgba(255,255,255,0.2)">{_s(nombre,12)}</span>
+          <span style="font-size:9px;font-weight:700;color:{c1};letter-spacing:0.12em;text-transform:uppercase">{vis['icon']} ESTADÍSTICA</span>
+          <span style="font-size:9px;color:rgba(255,255,255,0.18)">{_s(nombre,12)}</span>
         </div>
-        <div style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px">
-          <div style="font-size:clamp(56px,12vw,88px);font-weight:900;color:{c1};line-height:1;letter-spacing:-0.05em;text-shadow:0 0 40px {c1}88">{stat_num}</div>
-          <div style="width:48px;height:2px;background:linear-gradient(90deg,{c1},{c2});border-radius:1px"></div>
-          <p style="font-size:13px;color:rgba(255,255,255,0.8);text-align:center;line-height:1.4;margin:0;max-width:80%">{stat_ctx or copy1[:55]}</p>
-          <p style="font-size:10px;color:rgba(255,255,255,0.3);margin:0">Fuente: {_s(nombre,20)}</p>
+        <!-- Hero number -->
+        <div style="display:flex;align-items:flex-end;gap:8px;padding:4px 0">
+          <div style="font-size:clamp(52px,11vw,80px);font-weight:900;color:{c1};line-height:0.9;letter-spacing:-0.05em;text-shadow:0 0 32px {c1}99">{stat_num}</div>
+          <div style="padding-bottom:8px">
+            <p style="font-size:11px;color:rgba(255,255,255,0.75);margin:0;line-height:1.3;max-width:110px">{stat_ctx}</p>
+            <p style="font-size:9px;color:rgba(255,255,255,0.3);margin:2px 0 0">Fuente: {_s(nombre,16)}</p>
+          </div>
         </div>
+        <!-- Barras de progreso -->
+        <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:10px">
+          {bars_html}
+        </div>
+        <!-- CTA -->
         <div style="display:flex;justify-content:space-between;align-items:center">
-          <div style="background:{c1}22;border:1px solid {c1}44;border-radius:20px;padding:5px 14px;font-size:10px;font-weight:700;color:{c1}">{cta}</div>
-          <div style="opacity:0.6">{vis['chip']}</div>
+          <div style="background:linear-gradient(90deg,{c1}33,{c2}22);border:1px solid {c1}44;border-radius:20px;padding:5px 14px;font-size:10px;font-weight:700;color:{c1}">{cta}</div>
+          <div style="opacity:0.55;transform:scale(0.7);transform-origin:right">{vis['chip']}</div>
         </div>
       </div>
     </div>
@@ -1208,14 +1249,24 @@ def _render_post_estadistica(empresa, contenido, estructura) -> str:
 
 
 def _render_post_testimonio(empresa, contenido, estructura) -> str:
+    """Tarjeta de caso de éxito: resultado destacado + cita + atribución."""
     c1 = empresa.color_principal
     c2 = empresa.color_secundario
     nombre = empresa.nombre_empresa
     initial = nombre[0].upper()
     ig_user = "@" + nombre.lower().replace(" ", "_")
-    titulo = _s(contenido.titulo, 80)
+    titulo = _s(contenido.titulo, 75)
     copy1 = _s(contenido.copy.split("\n")[0], 110)
-    cta = _s(contenido.cta or "Ver más →", 50)
+    cta = _s(contenido.cta or "Ver caso completo →", 45)
+
+    # Extraer métrica de resultado del título o copy
+    import re as _re
+    m = _re.search(r'(\d+[\d.,]*\s*[%xX×])', contenido.titulo + " " + contenido.copy[:100])
+    resultado_num = m.group(1) if m else "+40%"
+
+    # Obtener cliente/servicio del contenido
+    lineas = [l.strip() for l in contenido.copy.split("\n") if l.strip()]
+    quote_txt = lineas[0][:80] if lineas else titulo[:80]
 
     return f"""
 <div class="nxar-stage nxar-post-stage">
@@ -1228,22 +1279,35 @@ def _render_post_testimonio(empresa, contenido, estructura) -> str:
       </div>
       <span class="nxar-ig-dots">⋯</span>
     </div>
-    <div class="nxar-post-frame" style="background:linear-gradient(160deg,#07030f,#100b18);position:relative;overflow:hidden;aspect-ratio:1/1">
-      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,{c1},{c2})"></div>
-      <div style="position:absolute;top:16px;left:18px;font-size:72px;font-weight:900;color:{c1};opacity:0.15;line-height:1;font-family:Georgia,serif">"</div>
-      <div style="position:absolute;bottom:60px;right:18px;font-size:72px;font-weight:900;color:{c2};opacity:0.15;line-height:1;font-family:Georgia,serif">"</div>
-      <div style="position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:center;padding:28px 24px;gap:16px">
-        <p style="font-size:clamp(14px,2.6vw,18px);font-style:italic;color:rgba(255,255,255,0.92);line-height:1.5;margin:0;text-align:center">"{titulo}"</p>
-        <div style="display:flex;align-items:center;gap:12px;justify-content:center">
-          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,{c1},{c2});display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:14px;flex-shrink:0">C</div>
+    <div class="nxar-post-frame" style="background:linear-gradient(155deg,#050310,#0e0918);position:relative;overflow:hidden;aspect-ratio:1/1">
+      <!-- Glow de acento -->
+      <div style="position:absolute;bottom:-40px;right:-40px;width:150px;height:150px;background:radial-gradient({c1}22,transparent 70%);border-radius:50%"></div>
+      <!-- Borde superior de color -->
+      <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,{c1},{c2})"></div>
+      <div style="position:relative;z-index:2;height:100%;display:flex;flex-direction:column;padding:20px 20px 16px">
+        <!-- Tarjeta de resultado (hero element) -->
+        <div style="background:linear-gradient(135deg,{c1}22,{c2}14);border:1px solid {c1}44;border-radius:10px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between">
           <div>
-            <p style="margin:0;font-size:12px;font-weight:700;color:#fff">Cliente satisfecho</p>
-            <p style="margin:0;font-size:10px;color:rgba(255,255,255,0.45)">Usuario de {_s(nombre,18)}</p>
+            <div style="font-size:8px;font-weight:700;letter-spacing:0.15em;color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:2px">Resultado obtenido</div>
+            <div style="font-size:clamp(22px,5vw,32px);font-weight:900;color:{c1};line-height:1;letter-spacing:-0.03em">{resultado_num}</div>
           </div>
+          <div style="font-size:9px;font-weight:700;color:{c1};background:{c1}18;border:1px solid {c1}33;border-radius:16px;padding:4px 10px">CASO REAL</div>
         </div>
-        <div style="height:1px;background:linear-gradient(90deg,transparent,{c1}55,transparent)"></div>
-        <div style="display:flex;justify-content:center">
-          <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:5px 16px;font-size:10px;color:rgba(255,255,255,0.6)">{cta}</div>
+        <!-- Comillas decorativas + cita -->
+        <div style="flex:1;position:relative;padding:0 4px">
+          <div style="position:absolute;top:-8px;left:-2px;font-size:44px;font-weight:900;color:{c1};opacity:0.2;line-height:1;font-family:Georgia,serif">"</div>
+          <p style="font-size:clamp(12px,2.2vw,14px);font-style:italic;color:rgba(255,255,255,0.85);line-height:1.5;margin:0;padding-left:14px">{_s(quote_txt,90)}</p>
+        </div>
+        <!-- Atribución -->
+        <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:10px;display:flex;align-items:center;justify-content:space-between">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,{c1},{c2});display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:12px;flex-shrink:0">{initial}</div>
+            <div>
+              <p style="margin:0;font-size:10px;font-weight:700;color:#fff">{_s(nombre,20)}</p>
+              <p style="margin:0;font-size:8px;color:rgba(255,255,255,0.4)">Caso de éxito</p>
+            </div>
+          </div>
+          <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:4px 10px;font-size:8px;font-weight:600;color:rgba(255,255,255,0.55)">{cta[:30]}</div>
         </div>
       </div>
     </div>

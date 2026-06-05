@@ -132,12 +132,18 @@ no están instalados en el entorno MCP. Usar siempre el CLI como fallback.
   - `_escena_visual(tipo, vis, c1, c2, num)` → frames numerados estilo CapCut para reel.
   - Post: accent bar + KPI cards + CTA premium (fondo blanco con color de marca).
   - Historia: hero SVG de categoría en pantalla 0, progress bar + chip en pantalla 1, CTA button en pantalla 2.
-- **Motor de Estilos Creativos** (2026-06-04 v4): `nexa/services/agentes/director_creativo.py` — Director Creativo con catálogo de 20 estilos (5 por formato) y selección inteligente anti-repetición.
+- **Motor de Estilos Creativos** (2026-06-04 v5 — completo): `nexa/services/agentes/director_creativo.py` — Director Creativo con catálogo de 20 estilos (5 por formato) y selección inteligente anti-repetición.
   - POST: Corporate KPI / Minimalista Premium / Problema-Solución / Estadística / Testimonio
   - Historia: Encuesta / Quiz / Antes-Después / CTA Urgente / Detrás de Cámaras
   - Carrusel: Problema-Solución / Lista Numerada / Caso de Éxito / Tutorial Pasos / Mitos vs Realidad
   - Reel: Hook+Solución / Caso de Éxito / Tutorial Rápido / Error Común / Tendencia Educativa
-  - `seleccionar_estilo(tipo, empresa, contenido)` — scoring por afinidad + anti-repetición
+  - `seleccionar_estilo()` — rastrea últimos N-1 estilos (4/5), rotación determinística cuando scores son 0. 5 posts consecutivos producen 5 estilos distintos garantizados.
+  - POST — 5 composiciones visuales completamente distintas:
+    - Corporate KPI: gradiente marca, SVG chip, KPI cards row (actual)
+    - Minimalista Premium: fondo negro, borde izquierdo de color, tipografía enorme (sin KPI)
+    - Problema/Solución: split izquierda/derecha (38%/62%), columna izq dark+rojo, columna der gradiente+verde
+    - Estadística: número hero gigante con glow, 3 barras de progreso con métricas por categoría
+    - Testimonio: tarjeta de resultado destacada (métrica auto-extraída), cita, atribución con avatar
   - Campos `estilo` + `estilo_nombre` en `CreatividadInstagram` (migración 0007)
   - Badge `🎨 Estilo` visible en biblioteca y detalle
 - Próximo paso crítico: conectar agentes con Claude API (Anthropic SDK en requirements).

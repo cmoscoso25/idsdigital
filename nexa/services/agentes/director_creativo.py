@@ -162,28 +162,37 @@ ESTILOS_INSTAGRAM = {
 
 def seleccionar_estilo(tipo: str, empresa, contenido) -> dict:
     """
-    Selecciona el estilo visual óptimo para una pieza Instagram.
-    - Evita repetir el estilo anterior de la misma empresa+tipo.
-    - Prioriza afinidad con el objetivo y tema del contenido.
+    Selecciona el estilo visual óptimo garantizando rotación completa.
+    - Excluye los últimos (N-1) estilos usados → fuerza ciclo por todos los N estilos.
+    - Prioriza afinidad con el objetivo/tema del contenido.
+    - Cuando scores son iguales, usa rotación determinística para garantizar variedad.
     Retorna el dict del estilo con campo adicional 'motivo_seleccion'.
     """
     from nexa.models import CreatividadInstagram
 
     estilos = ESTILOS_INSTAGRAM.get(tipo, ESTILOS_INSTAGRAM["post"])
+    n = len(estilos)
 
-    # Anti-repetición: último estilo usado para esta empresa+tipo
-    ultimo = (
+    # Rastrear los últimos (n-1) estilos usados para forzar el ciclo completo
+    recientes_ids = list(
         CreatividadInstagram.objects
         .filter(contenido__empresa=empresa, tipo=tipo)
         .exclude(estilo="")
         .order_by("-fecha_actualizacion", "-pk")
-        .values_list("estilo", flat=True)
-        .first()
+        .values_list("estilo", flat=True)[: n - 1]
     )
 
-    candidatos = [e for e in estilos if e["id"] != ultimo]
+    candidatos = [e for e in estilos if e["id"] not in recientes_ids]
+    if not candidatos:
+        # Todos usados recientemente — excluir solo el más reciente
+        candidatos = [e for e in estilos if e["id"] != recientes_ids[0]] if recientes_ids else list(estilos)
     if not candidatos:
         candidatos = list(estilos)
+
+    # Total de creatividades existentes → offset para rotación determinística
+    total_existentes = CreatividadInstagram.objects.filter(
+        contenido__empresa=empresa, tipo=tipo
+    ).count()
 
     # Texto de referencia para scoring
     texto_ref = " ".join(filter(None, [
@@ -204,11 +213,21 @@ def seleccionar_estilo(tipo: str, empresa, contenido) -> dict:
         for af in e.get("afinidad_tema", []):
             if af in texto_ref:
                 score += 1
-        scored.append((score, -i, e))  # -i como tiebreaker para rotación
+        scored.append((score, i, e))
 
-    scored.sort(key=lambda x: (x[0], x[1]), reverse=True)
-    selected = scored[0][2]
+    max_score = max(s[0] for s in scored)
 
+    if max_score == 0:
+        # Sin afinidad: rotación determinística por total de existentes
+        idx = total_existentes % len(candidatos)
+        selected = candidatos[idx]
+    else:
+        # Con afinidad: el de mayor score; empate → rotación determinística
+        top = [s for s in scored if s[0] == max_score]
+        idx = total_existentes % len(top)
+        selected = top[idx][2]
+
+    ultimo = recientes_ids[0] if recientes_ids else None
     motivo = _construir_motivo(selected, ultimo, texto_ref)
     return {**selected, "motivo_seleccion": motivo}
 
