@@ -1,18 +1,17 @@
 """
-Servicio de generación de imágenes IA para creatividades Instagram.
+Servicio de generación de imágenes para creatividades Instagram.
 
-Flujo: prompt_visual → API IA → descarga PNG → MEDIA_ROOT → imagen_generada
+Proveedores:
+  internal  — motor visual propio (HTML/CSS/SVG). Sin costo, sin API externa. DEFAULT.
+  fal       — Fal AI / Flux Pro. Premium. Requiere FAL_KEY + saldo.
+  openai    — OpenAI DALL-E. Premium. Requiere OPENAI_API_KEY + saldo.
+  ideogram  — Ideogram. Premium. Stub preparado.
+  gemini    — Gemini Imagen. Premium. Stub preparado.
 
-Proveedor activo:   fal  (Flux Pro via fal-client)
-Preparados:         openai, ideogram, gemini  (retornan error controlado)
-
-Para agregar un proveedor: implementar _generar_con_<nombre>(prompt, tipo) → str (URL)
-y registrarlo en _PROVEEDORES.
-
-Variables de entorno:
-  FAL_KEY              — requerida para proveedor "fal"
-  NEXA_IMAGE_PROVIDER  — proveedor por defecto (default: "fal")
-  NEXA_FAL_MODEL       — modelo Fal AI (default: "fal-ai/flux-pro")
+Variables de entorno opcionales (solo para proveedores premium):
+  FAL_KEY, OPENAI_API_KEY
+  NEXA_IMAGE_PROVIDER  (default: "internal")
+  NEXA_FAL_MODEL       (default: "fal-ai/flux-pro")
 """
 import os
 import uuid
@@ -20,8 +19,10 @@ import requests
 from pathlib import Path
 from django.conf import settings
 
+PROVEEDORES_PREMIUM = {"fal", "openai", "ideogram", "gemini"}
 
-# ── Helpers privados ──────────────────────────────────────────────────────────
+
+# ── Helpers ───────────────────────────────────────────────────────────────────
 
 def _ruta_guardado(creatividad_pk: int, extension: str = "png") -> tuple[Path, str]:
     carpeta = Path(settings.MEDIA_ROOT) / "nexa" / "creatividades"
@@ -36,26 +37,30 @@ def _descargar(url: str, ruta_abs: Path) -> None:
     ruta_abs.write_bytes(respuesta.content)
 
 
-def _imagen_size_fal(tipo: str) -> str:
-    """Mapea tipo de creatividad al image_size de Fal AI."""
-    return "portrait_4_3" if tipo == "historia" else "square_hd"
+# ── Proveedor interno (sin costo, sin API) ────────────────────────────────────
+
+def _generar_con_internal(creatividad) -> dict:
+    """
+    Motor visual interno. Usa render_html/render_css ya generados.
+    No llama ninguna API externa. No requiere créditos ni claves.
+    Devuelve resultado especial sin archivo de imagen.
+    """
+    if not creatividad.render_html:
+        return {
+            "ok": False,
+            "error": "Esta creatividad no tiene render HTML. Usa 'Regenerar' para generarlo.",
+        }
+    return {"ok": True, "ruta": None, "proveedor": "internal", "interno": True}
 
 
-# ── Proveedores ───────────────────────────────────────────────────────────────
+# ── Proveedores premium ───────────────────────────────────────────────────────
 
 def _generar_con_fal(prompt: str, tipo: str) -> str:
-    """
-    Llama a Fal AI (Flux Pro) y devuelve la URL de la imagen generada.
-    Requiere settings.FAL_KEY (cargado desde variable de entorno FAL_KEY al iniciar el servidor).
-    """
     import fal_client
+    import logging
 
     fal_key = getattr(settings, "FAL_KEY", "")
-
-    # Debug seguro: nunca imprime el valor de la key
-    import logging
-    log = logging.getLogger(__name__)
-    log.debug("FAL_KEY presente en settings: %s", bool(fal_key))
+    logging.getLogger(__name__).debug("FAL_KEY presente: %s", bool(fal_key))
 
     if not fal_key:
         raise ValueError(
@@ -63,10 +68,9 @@ def _generar_con_fal(prompt: str, tipo: str) -> str:
             "Reinicia el servidor con la variable de entorno FAL_KEY establecida."
         )
 
-    os.environ["FAL_KEY"] = fal_key  # fal_client la lee del entorno
-
+    os.environ["FAL_KEY"] = fal_key
     modelo = getattr(settings, "NEXA_FAL_MODEL", "fal-ai/flux-pro")
-    size = _imagen_size_fal(tipo)
+    size = "portrait_4_3" if tipo == "historia" else "square_hd"
 
     resultado = fal_client.run(
         modelo,
@@ -77,16 +81,13 @@ def _generar_con_fal(prompt: str, tipo: str) -> str:
             "safety_tolerance": "2",
         },
     )
-
     imagenes = resultado.get("images", [])
     if not imagenes:
         raise ValueError("Fal AI no devolvió imágenes en la respuesta")
-
     return imagenes[0]["url"]
 
 
 def _generar_con_openai(prompt: str, tipo: str) -> str:
-    """Llama a OpenAI DALL-E 2. Requiere OPENAI_API_KEY en entorno."""
     from openai import OpenAI
 
     api_key = os.environ.get("OPENAI_API_KEY", "")
@@ -113,59 +114,70 @@ def _generar_con_gemini(prompt: str, tipo: str) -> str:
 
 # ── Dispatcher ────────────────────────────────────────────────────────────────
 
-_PROVEEDORES = {
-    "fal":      _generar_con_fal,
-    "openai":   _generar_con_openai,
-    "ideogram": _generar_con_ideogram,
-    "gemini":   _generar_con_gemini,
-}
+PROVEEDORES_DISPONIBLES = ["internal", "fal", "openai", "ideogram", "gemini"]
 
-PROVEEDORES_DISPONIBLES = list(_PROVEEDORES.keys())
+_MSG_PREMIUM = (
+    "La generación IA externa es una opción premium. "
+    "Actualmente estás usando el motor visual interno sin costo."
+)
 
 
-def generar_imagen_para_creatividad(
-    creatividad,
-    proveedor: str | None = None,
-) -> dict:
+def generar_imagen_para_creatividad(creatividad, proveedor: str | None = None) -> dict:
     """
-    Genera imagen IA, la descarga y guarda en MEDIA_ROOT.
+    Genera/renderiza creatividad según el proveedor.
 
-    Args:
-        creatividad: instancia de CreatividadInstagram
-        proveedor:   "fal" | "openai" | "ideogram" | "gemini"
-                     Si None, usa settings.NEXA_IMAGE_PROVIDER (default "fal")
+    Proveedor "internal" (default): usa render_html existente, sin API ni costo.
+    Proveedores premium: llaman API externa, requieren créditos y claves.
 
     Returns:
-        {"ok": True,  "ruta": str, "proveedor": str}
-        {"ok": False, "error": str}
+        {"ok": True,  "ruta": str|None, "proveedor": str, "interno": bool}
+        {"ok": False, "error": str, "es_premium": bool}
     """
     if proveedor is None:
-        proveedor = getattr(settings, "NEXA_IMAGE_PROVIDER", "fal")
+        proveedor = getattr(settings, "NEXA_IMAGE_PROVIDER", "internal")
+
+    # Motor interno — no requiere prompt ni API
+    if proveedor == "internal":
+        return _generar_con_internal(creatividad)
+
+    # Proveedores premium — requieren prompt visual
+    if proveedor not in PROVEEDORES_PREMIUM:
+        return {"ok": False, "error": f"Proveedor '{proveedor}' no reconocido", "es_premium": False}
 
     prompt = (creatividad.prompt_visual or "").strip()
     if not prompt:
-        return {"ok": False, "error": "La creatividad no tiene prompt visual configurado"}
+        return {"ok": False, "error": "La creatividad no tiene prompt visual configurado", "es_premium": False}
 
-    fn = _PROVEEDORES.get(proveedor)
-    if fn is None:
-        return {"ok": False, "error": f"Proveedor '{proveedor}' no reconocido"}
+    fn_map = {
+        "fal":      lambda: _generar_con_fal(prompt, creatividad.tipo),
+        "openai":   lambda: _generar_con_openai(prompt, creatividad.tipo),
+        "ideogram": lambda: _generar_con_ideogram(prompt, creatividad.tipo),
+        "gemini":   lambda: _generar_con_gemini(prompt, creatividad.tipo),
+    }
 
     try:
-        url_imagen = fn(prompt, creatividad.tipo)
-        extension = "jpg" if "jpeg" in url_imagen.lower() or "jpg" in url_imagen.lower() else "png"
+        url_imagen = fn_map[proveedor]()
+        extension = "jpg" if any(x in url_imagen.lower() for x in ("jpeg", ".jpg")) else "png"
         ruta_abs, ruta_relativa = _ruta_guardado(creatividad.pk, extension)
         _descargar(url_imagen, ruta_abs)
-        return {"ok": True, "ruta": ruta_relativa, "proveedor": proveedor}
+        return {"ok": True, "ruta": ruta_relativa, "proveedor": proveedor, "interno": False}
 
     except NotImplementedError as exc:
-        return {"ok": False, "error": str(exc)}
+        return {"ok": False, "error": str(exc), "es_premium": True}
     except ValueError as exc:
-        return {"ok": False, "error": str(exc)}
+        return {"ok": False, "error": str(exc), "es_premium": True}
     except Exception as exc:
-        return {"ok": False, "error": str(exc)}
+        # Detectar errores de saldo/cuenta → mensaje premium amigable
+        msg = str(exc).lower()
+        if any(x in msg for x in ("balance", "exhausted", "locked", "billing", "quota", "insufficient")):
+            return {
+                "ok": False,
+                "error": _MSG_PREMIUM,
+                "es_premium": True,
+            }
+        return {"ok": False, "error": str(exc), "es_premium": True}
 
 
-# Alias conveniente para import directo desde shell / tests
 def generar_imagen_fal(creatividad) -> dict:
-    """Shortcut: genera imagen forzando proveedor 'fal'."""
+    """Shortcut para usar Fal AI directamente."""
     return generar_imagen_para_creatividad(creatividad, proveedor="fal")

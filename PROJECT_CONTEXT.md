@@ -218,7 +218,8 @@ Plataforma de marketing digital con agentes de IA para pymes y empresas.
 
 | Commit | Decisión |
 |---|---|
-| 2026-06-05 v3 | Fal AI / Flux Pro integrado: fal-client==1.0.0, proveedor "fal" activo por defecto, NEXA_IMAGE_PROVIDER + NEXA_FAL_MODEL en settings. Botón "Generar imagen con Flux". FAL_KEY requerida en entorno. |
+| 2026-06-05 v4 | Motor interno por defecto: NEXA_IMAGE_PROVIDER=internal. InternalVisualProvider usa render_html/CSS. Botón "Renderizar creatividad". Fal/OpenAI/etc. como ★ Premium en sidebar. Errores de saldo → mensaje premium amigable. |
+| 2026-06-05 v3 | Fal AI / Flux Pro: fal-client==1.0.0, proveedor "fal" disponible como premium. FAL_KEY requerida solo si se usa Fal. |
 | 2026-06-05 v2 | Motor Visual IA Real (NIVEL 2): generador_imagenes.py con DALL-E 3 + stubs Flux/Ideogram/Gemini. Campos imagen_generada/proveedor_ia/fecha_generacion_imagen en CreatividadInstagram (migración 0010). Vista generar_imagen_ia_view. Template muestra imagen real sobre mockup HTML con toggle. |
 | 2026-06-05 | Biblioteca Visual Interna (visual_assets.py): 10 hero SVGs profesionales por categoría. Campo categoria_visual en CreatividadInstagram (migración 0009). Carrusel portada con zona visual 45% + hero grande. Biblioteca muestra categoría + regeneraciones. |
 | 2026-06-04 v5 | Fix renders POST: selector rastrea N-1 estilos + rotación determinística; _render_post_problema_solucion rediseñado como split izq/der; _render_post_estadistica con barras de progreso; _render_post_testimonio con tarjeta de resultado. Validado: 5 posts = 5 estilos distintos. |

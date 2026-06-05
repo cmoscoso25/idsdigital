@@ -6,13 +6,8 @@
   <a href="{% url 'nexa:creatividad_list' %}" class="nxa-btn nxa-btn--ghost">← Biblioteca</a>
   <form method="post" action="{% url 'nexa:regenerar_creatividad' creatividad.pk %}" style="display:inline;">
     {% csrf_token %}
-    <button type="submit" class="nxa-btn nxa-btn--ghost">↻ Regenerar</button>
-  </form>
-  <form method="post" action="{% url 'nexa:generar_imagen_ia' creatividad.pk %}" style="display:inline;">
-    {% csrf_token %}
-    <input type="hidden" name="proveedor" value="fal">
-    <button type="submit" class="nxa-btn nxa-btn--primary" title="Genera una imagen real con Flux Pro (Fal AI) usando el prompt visual de esta creatividad">
-      ✨ Generar imagen con Flux
+    <button type="submit" class="nxa-btn nxa-btn--primary" title="Regenera el render visual con el motor interno — sin costo, sin APIs externas">
+      ✦ Renderizar creatividad
     </button>
   </form>
 {% endblock %}
@@ -173,37 +168,61 @@
       </div>
     </div>
 
-    <!-- Imagen IA -->
-    {% if creatividad.imagen_generada %}
+    <!-- Motor de render -->
     <div class="nxa-card nxar-info-card">
       <div class="nxa-card-header">
-        <h2 class="nxa-card-title">Imagen IA</h2>
-        <span class="nxa-badge" style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.3);color:#10b981;">
-          ✓ Generada
+        <h2 class="nxa-card-title">Motor visual</h2>
+        <span class="nxa-badge" style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);color:#10b981;font-size:10px;">
+          ✓ Motor interno
         </span>
       </div>
       <div class="nxa-detail-list">
         <div class="nxa-detail-row">
           <span class="nxa-detail-label">Proveedor</span>
-          <span class="nxa-detail-value">{{ creatividad.proveedor_ia|upper }}</span>
+          <span class="nxa-detail-value" style="font-size:11px;">HTML/CSS/SVG propio</span>
         </div>
-        {% if creatividad.fecha_generacion_imagen %}
         <div class="nxa-detail-row">
-          <span class="nxa-detail-label">Generada</span>
-          <span class="nxa-detail-value nxa-text-muted">{{ creatividad.fecha_generacion_imagen|date:"d/m/Y H:i" }}</span>
+          <span class="nxa-detail-label">Costo</span>
+          <span class="nxa-detail-value" style="color:#10b981;font-size:11px;">Sin costo ✓</span>
         </div>
-        {% endif %}
+        {% if creatividad.imagen_generada and creatividad.proveedor_ia != "internal" %}
         <div class="nxa-detail-row">
-          <span class="nxa-detail-label">Archivo</span>
+          <span class="nxa-detail-label">Imagen IA</span>
           <span class="nxa-detail-value">
             <a href="{{ creatividad.imagen_generada.url }}" target="_blank" class="nxa-link" style="font-size:11px;">
-              Descargar PNG ↗
+              Descargar ↗
             </a>
           </span>
         </div>
+        {% endif %}
       </div>
     </div>
-    {% endif %}
+
+    <!-- IA Externa — Premium -->
+    <div class="nxa-card nxar-info-card" style="border-color:rgba(251,191,36,0.2);">
+      <div class="nxa-card-header">
+        <h2 class="nxa-card-title" style="color:rgba(255,255,255,0.5);">IA Externa</h2>
+        <span class="nxa-badge" style="background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);color:#fbbf24;font-size:10px;">
+          ★ Premium
+        </span>
+      </div>
+      <div style="padding:10px 16px 14px;">
+        <p style="font-size:11px;color:rgba(255,255,255,0.35);line-height:1.5;margin:0 0 10px;">
+          Genera imágenes reales con Flux&nbsp;Pro, DALL-E&nbsp;3, Ideogram o Gemini usando el prompt&nbsp;IA de esta creatividad.
+        </p>
+        <form method="post" action="{% url 'nexa:generar_imagen_ia' creatividad.pk %}">
+          {% csrf_token %}
+          <input type="hidden" name="proveedor" value="fal">
+          <button type="submit" class="nxa-btn nxa-btn--ghost" style="width:100%;font-size:11px;opacity:0.6;border-color:rgba(251,191,36,0.3);color:#fbbf24;"
+            title="Requiere FAL_KEY configurada y saldo en fal.ai">
+            ✨ Generar con Flux Pro
+          </button>
+        </form>
+        <p style="font-size:10px;color:rgba(255,255,255,0.2);margin:8px 0 0;text-align:center;">
+          Requiere FAL_KEY + saldo en fal.ai
+        </p>
+      </div>
+    </div>
 
     <!-- Prompt visual IA -->
     <div class="nxa-card nxar-info-card">

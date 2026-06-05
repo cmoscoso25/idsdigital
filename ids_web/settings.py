@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 FAL_KEY = os.getenv("FAL_KEY", "")
-NEXA_IMAGE_PROVIDER = os.getenv("NEXA_IMAGE_PROVIDER", "fal")
+NEXA_IMAGE_PROVIDER = os.getenv("NEXA_IMAGE_PROVIDER", "internal")
 NEXA_FAL_MODEL = os.getenv("NEXA_FAL_MODEL", "fal-ai/flux-pro")
 
 # BASE

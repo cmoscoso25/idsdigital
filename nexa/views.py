@@ -364,16 +364,22 @@ def generar_imagen_ia_view(request, creatividad_pk):
     if request.method != "POST":
         return redirect("nexa:creatividad_detalle", pk=creatividad_pk)
 
+    from django.conf import settings as django_settings
     from .services.generador_imagenes import generar_imagen_para_creatividad
-    proveedor = request.POST.get("proveedor", "openai")
+    proveedor = request.POST.get("proveedor") or getattr(django_settings, "NEXA_IMAGE_PROVIDER", "internal")
     resultado = generar_imagen_para_creatividad(creatividad, proveedor=proveedor)
 
     if resultado["ok"]:
-        creatividad.imagen_generada = resultado["ruta"]
-        creatividad.proveedor_ia = resultado["proveedor"]
-        creatividad.fecha_generacion_imagen = timezone.now()
-        creatividad.save(update_fields=["imagen_generada", "proveedor_ia", "fecha_generacion_imagen"])
-        messages.success(request, "Imagen IA generada y guardada correctamente.")
+        if resultado.get("interno"):
+            # Motor interno: render_html ya existe, no hay archivo que guardar
+            messages.success(request, "Creatividad renderizada con el motor visual interno.")
+        else:
+            # Proveedor externo: guardar imagen generada
+            creatividad.imagen_generada = resultado["ruta"]
+            creatividad.proveedor_ia = resultado["proveedor"]
+            creatividad.fecha_generacion_imagen = timezone.now()
+            creatividad.save(update_fields=["imagen_generada", "proveedor_ia", "fecha_generacion_imagen"])
+            messages.success(request, "Imagen IA generada y guardada correctamente.")
     else:
         messages.error(request, f"Error al generar imagen: {resultado['error']}")
 
