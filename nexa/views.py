@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
+from django.utils import timezone
 
 from .models import EmpresaNexa, MemoriaMarca, ContenidoGenerado, EstrategiaMensual, CreatividadInstagram
 from .forms import EmpresaNexaForm, MemoriaMarcaForm, GenerarContenidoForm, GenerarEstrategiaForm
@@ -352,6 +353,30 @@ def regenerar_creatividad_view(request, creatividad_pk):
         "estilo", "estilo_nombre", "categoria_visual", "veces_regenerada",
     ])
     messages.success(request, f"Creatividad {creatividad.get_tipo_display()} regenerada correctamente.")
+    return redirect("nexa:creatividad_detalle", pk=creatividad_pk)
+
+
+@login_required
+def generar_imagen_ia_view(request, creatividad_pk):
+    creatividad = get_object_or_404(
+        CreatividadInstagram, pk=creatividad_pk, contenido__empresa__usuario=request.user
+    )
+    if request.method != "POST":
+        return redirect("nexa:creatividad_detalle", pk=creatividad_pk)
+
+    from .services.generador_imagenes import generar_imagen_para_creatividad
+    proveedor = request.POST.get("proveedor", "openai")
+    resultado = generar_imagen_para_creatividad(creatividad, proveedor=proveedor)
+
+    if resultado["ok"]:
+        creatividad.imagen_generada = resultado["ruta"]
+        creatividad.proveedor_ia = resultado["proveedor"]
+        creatividad.fecha_generacion_imagen = timezone.now()
+        creatividad.save(update_fields=["imagen_generada", "proveedor_ia", "fecha_generacion_imagen"])
+        messages.success(request, "Imagen IA generada y guardada correctamente.")
+    else:
+        messages.error(request, f"Error al generar imagen: {resultado['error']}")
+
     return redirect("nexa:creatividad_detalle", pk=creatividad_pk)
 
 

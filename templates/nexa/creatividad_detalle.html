@@ -8,6 +8,13 @@
     {% csrf_token %}
     <button type="submit" class="nxa-btn nxa-btn--ghost">↻ Regenerar</button>
   </form>
+  <form method="post" action="{% url 'nexa:generar_imagen_ia' creatividad.pk %}" style="display:inline;">
+    {% csrf_token %}
+    <input type="hidden" name="proveedor" value="openai">
+    <button type="submit" class="nxa-btn nxa-btn--primary" title="Genera una imagen real con DALL-E 3 usando el prompt visual de esta creatividad">
+      ✨ Generar Imagen IA
+    </button>
+  </form>
 {% endblock %}
 
 {% block content %}
@@ -15,7 +22,34 @@
 
   <!-- ══ RENDER CENTRAL ══ -->
   <div class="nxar-render-panel">
-    {% if creatividad.render_html %}
+    {% if creatividad.imagen_generada %}
+      <!-- Imagen real generada por IA — prioridad sobre el mockup HTML -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:16px;">
+        <img src="{{ creatividad.imagen_generada.url }}"
+             alt="Imagen IA · {{ creatividad.get_tipo_display }}"
+             style="max-width:100%;border-radius:12px;box-shadow:0 4px 32px rgba(0,0,0,0.5);">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;">
+          <span class="nxa-badge" style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.3);color:#10b981;font-size:10px;">
+            ✓ Imagen IA real
+          </span>
+          <span class="nxa-badge" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.4);font-size:10px;">
+            {{ creatividad.proveedor_ia|upper }}
+          </span>
+          {% if creatividad.fecha_generacion_imagen %}
+          <span class="nxa-badge" style="background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.3);font-size:10px;">
+            {{ creatividad.fecha_generacion_imagen|date:"d/m/Y H:i" }}
+          </span>
+          {% endif %}
+        </div>
+        <!-- Toggle para ver mockup HTML debajo -->
+        <details style="width:100%;margin-top:8px;">
+          <summary style="cursor:pointer;font-size:11px;color:rgba(255,255,255,0.3);padding:6px 0;user-select:none;">
+            Ver mockup HTML
+          </summary>
+          <div style="margin-top:8px;">{{ creatividad.render_html|safe }}</div>
+        </details>
+      </div>
+    {% elif creatividad.render_html %}
       {{ creatividad.render_html|safe }}
     {% else %}
       <div class="nxar-empty-render">
@@ -138,6 +172,38 @@
         </div>
       </div>
     </div>
+
+    <!-- Imagen IA -->
+    {% if creatividad.imagen_generada %}
+    <div class="nxa-card nxar-info-card">
+      <div class="nxa-card-header">
+        <h2 class="nxa-card-title">Imagen IA</h2>
+        <span class="nxa-badge" style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.3);color:#10b981;">
+          ✓ Generada
+        </span>
+      </div>
+      <div class="nxa-detail-list">
+        <div class="nxa-detail-row">
+          <span class="nxa-detail-label">Proveedor</span>
+          <span class="nxa-detail-value">{{ creatividad.proveedor_ia|upper }}</span>
+        </div>
+        {% if creatividad.fecha_generacion_imagen %}
+        <div class="nxa-detail-row">
+          <span class="nxa-detail-label">Generada</span>
+          <span class="nxa-detail-value nxa-text-muted">{{ creatividad.fecha_generacion_imagen|date:"d/m/Y H:i" }}</span>
+        </div>
+        {% endif %}
+        <div class="nxa-detail-row">
+          <span class="nxa-detail-label">Archivo</span>
+          <span class="nxa-detail-value">
+            <a href="{{ creatividad.imagen_generada.url }}" target="_blank" class="nxa-link" style="font-size:11px;">
+              Descargar PNG ↗
+            </a>
+          </span>
+        </div>
+      </div>
+    </div>
+    {% endif %}
 
     <!-- Prompt visual IA -->
     <div class="nxa-card nxar-info-card">

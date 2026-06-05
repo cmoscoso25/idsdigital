@@ -90,6 +90,7 @@ request autenticado desde la sesión (`current_workspace_id`).
 | `/nexa/app/contenidos/<id>/creatividad/` | `nexa.generar_creatividad` | Generar creatividad desde contenido (POST); redirige a existente si ya hay una |
 | `/nexa/app/creatividades/<id>/` | `nexa.creatividad_detalle` | Detalle con mockup visual + prompt IA |
 | `/nexa/app/creatividades/<id>/regenerar/` | `nexa.regenerar_creatividad` | Regenerar creatividad existente in-place (POST) — sin crear duplicado |
+| `/nexa/app/creatividades/<id>/imagen/` | `nexa.generar_imagen_ia` | Generar imagen real con IA (POST) — guarda PNG en MEDIA, requiere OPENAI_API_KEY |
 | `/admin/` | Django Admin | Administración interna |
 | `/sitemap.xml` | Django Sitemaps | SEO |
 | `/robots.txt` | `public.robots_txt` | SEO |
@@ -116,7 +117,7 @@ request autenticado desde la sesión (`current_workspace_id`).
 - **EmpresaNexa** — Empresa registrada por un usuario en Nexa AI: nombre, rubro, descripción, público objetivo, tono de marca, objetivo principal, instagram, sitio_web, logo (ImageField), colores hex, fecha_creacion. FK a `accounts.User`.
 - **MemoriaMarca** — OneToOne con EmpresaNexa: propuesta_valor, servicios_principales, palabras_clave, estilo_comunicacion, evitar_mencionar, instrucciones_ia, resumen_marca. Contexto para agentes IA.
 - **ContenidoGenerado** — Contenido generado por IA: tipo (carrusel/historia/post/reel/campaña), titulo, copy, hashtags, cta, estructura_json, estado (borrador/aprobado/programado/publicado), fecha_programada, fecha_creacion. FK opcional a `EstrategiaMensual`.
-- **CreatividadInstagram** — Creatividad visual derivada de un `ContenidoGenerado`: tipo (post/historia/carrusel/reel), prompt_visual (API-ready para OpenAI/Flux/Ideogram/Gemini), estructura_visual_json (capas, slides, pantallas, escenas), estado (generada/aprobada/publicada), `veces_regenerada` int (default 0), `estilo` + `estilo_nombre` (estilo creativo del Director Creativo), `categoria_visual` (categoría temática detectada: software/ia/automatizacion/marketing/etc.).
+- **CreatividadInstagram** — Creatividad visual derivada de un `ContenidoGenerado`: tipo (post/historia/carrusel/reel), prompt_visual (API-ready para OpenAI/Flux/Ideogram/Gemini), estructura_visual_json (capas, slides, pantallas, escenas), estado (generada/aprobada/publicada), `veces_regenerada` int (default 0), `estilo` + `estilo_nombre` (estilo creativo del Director Creativo), `categoria_visual` (categoría temática detectada: software/ia/automatizacion/marketing/etc.), `imagen_generada` (ImageField — PNG real generado por IA, migración 0010), `proveedor_ia` (openai/flux/ideogram/gemini), `fecha_generacion_imagen`.
 - **EstrategiaMensual** — Estrategia mensual generada por el Agente Estratega: objetivo, pilares_contenido, frecuencia_publicacion, publico_objetivo, calendario_json (4 semanas), fecha_creacion. FK a EmpresaNexa.
 
 ### `agente_ia`
@@ -217,6 +218,7 @@ Plataforma de marketing digital con agentes de IA para pymes y empresas.
 
 | Commit | Decisión |
 |---|---|
+| 2026-06-05 v2 | Motor Visual IA Real (NIVEL 2): generador_imagenes.py con DALL-E 3 + stubs Flux/Ideogram/Gemini. Campos imagen_generada/proveedor_ia/fecha_generacion_imagen en CreatividadInstagram (migración 0010). Vista generar_imagen_ia_view. Template muestra imagen real sobre mockup HTML con toggle. |
 | 2026-06-05 | Biblioteca Visual Interna (visual_assets.py): 10 hero SVGs profesionales por categoría. Campo categoria_visual en CreatividadInstagram (migración 0009). Carrusel portada con zona visual 45% + hero grande. Biblioteca muestra categoría + regeneraciones. |
 | 2026-06-04 v5 | Fix renders POST: selector rastrea N-1 estilos + rotación determinística; _render_post_problema_solucion rediseñado como split izq/der; _render_post_estadistica con barras de progreso; _render_post_testimonio con tarjeta de resultado. Validado: 5 posts = 5 estilos distintos. |
 | 2026-06-04 v4 | Director Creativo: `director_creativo.py` con 20 estilos (5/formato), selección por afinidad + anti-repetición. 5 renders POST distintos. Variantes visuales en historia/carrusel/reel. Campos estilo+estilo_nombre en modelo (migración 0007). Badge en UI. |

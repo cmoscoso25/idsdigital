@@ -195,6 +195,19 @@ class CreatividadInstagram(models.Model):
         max_length=30, blank=True, default="",
         help_text="Categoría temática detectada: software, ia, automatizacion, marketing, etc.",
     )
+    imagen_generada = models.ImageField(
+        upload_to="nexa/creatividades/",
+        blank=True, null=True,
+        help_text="Imagen real generada por IA (OpenAI DALL-E, Flux, Ideogram, Gemini). Si existe, reemplaza el mockup HTML.",
+    )
+    proveedor_ia = models.CharField(
+        max_length=30, blank=True, default="",
+        help_text="Proveedor usado para generar la imagen: openai, flux, ideogram, gemini",
+    )
+    fecha_generacion_imagen = models.DateTimeField(
+        null=True, blank=True,
+        help_text="Fecha y hora en que se generó la imagen IA",
+    )
     fecha_creacion = models.DateTimeField(auto_now_add=True)
 
     class Meta:

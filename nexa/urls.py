@@ -20,4 +20,5 @@ urlpatterns = [
     path("app/contenidos/<int:contenido_pk>/creatividad/", views.generar_creatividad_view, name="generar_creatividad"),
     path("app/creatividades/<int:pk>/", views.creatividad_detalle, name="creatividad_detalle"),
     path("app/creatividades/<int:creatividad_pk>/regenerar/", views.regenerar_creatividad_view, name="regenerar_creatividad"),
+    path("app/creatividades/<int:creatividad_pk>/imagen/", views.generar_imagen_ia_view, name="generar_imagen_ia"),
 ]

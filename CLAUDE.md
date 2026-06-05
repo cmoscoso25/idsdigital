@@ -151,6 +151,7 @@ no están instalados en el entorno MCP. Usar siempre el CLI como fallback.
 - **Carrusel Pro portada** (2026-06-05): slide portada usa zona visual grande (45%) con hero SVG de `visual_assets.py` — mismo patrón que post corporate_kpi. Slides intermedios mantienen composiciones diferenciadas con `_slide_body()`.
 - **Biblioteca mejorada** (2026-06-05): cards muestran tipo, estado, estilo 🎨, categoría visual ◈ y contador de regeneraciones ↻. Miniatura con gradiente real de colores de marca.
 - Próximo paso crítico: conectar agentes con Claude API (Anthropic SDK en requirements).
+- **Motor Visual IA Real** (2026-06-05 — NIVEL 2): `CreatividadInstagram` tiene 3 nuevos campos: `imagen_generada` (ImageField), `proveedor_ia`, `fecha_generacion_imagen`. Servicio `nexa/services/generador_imagenes.py` con integración OpenAI DALL-E 3 + stubs para Flux/Ideogram/Gemini. Vista `generar_imagen_ia_view` (POST `/nexa/app/creatividades/<pk>/imagen/`). Template `creatividad_detalle.html` muestra imagen real si existe, con toggle para ver mockup HTML debajo. Botón "✨ Generar Imagen IA" en topbar. Migración 0010 aplicada. Requiere `OPENAI_API_KEY` en entorno.
 
 ## Gestión de contexto — archivos de referencia
 
