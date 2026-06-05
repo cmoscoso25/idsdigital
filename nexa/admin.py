@@ -60,9 +60,11 @@ def _regenerar_action(modeladmin, request, queryset):
             cr.estado                 = "generada"
             cr.estilo                 = r.get("estilo", "")
             cr.estilo_nombre          = r.get("estilo_nombre", "")
+            cr.categoria_visual       = r.get("categoria_visual", "")
             cr.save(update_fields=[
                 "prompt_visual", "estructura_visual_json",
-                "render_html", "render_css", "estado", "estilo", "estilo_nombre",
+                "render_html", "render_css", "estado",
+                "estilo", "estilo_nombre", "categoria_visual",
             ])
             ok += 1
         except Exception as exc:
@@ -76,8 +78,8 @@ _regenerar_action.short_description = "🔄 Regenerar con nuevos estilos visuale
 
 @admin.register(CreatividadInstagram)
 class CreatividadInstagramAdmin(admin.ModelAdmin):
-    list_display  = ["__str__", "tipo", "estilo_nombre", "estado", "veces_regenerada", "fecha_creacion"]
-    list_filter   = ["tipo", "estado", "estilo", "fecha_creacion"]
+    list_display  = ["__str__", "tipo", "estilo_nombre", "categoria_visual", "estado", "veces_regenerada", "fecha_creacion"]
+    list_filter   = ["tipo", "estado", "estilo", "categoria_visual", "fecha_creacion"]
     search_fields = ["contenido__titulo", "contenido__empresa__nombre_empresa", "prompt_visual", "estilo_nombre"]
     readonly_fields = ["fecha_creacion", "veces_regenerada"]
     list_editable = ["estado"]

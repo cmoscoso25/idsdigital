@@ -30,6 +30,16 @@ Motor de Estilos Creativos: cada pieza usa un estilo diferente según el Directo
 
 
 from nexa.services.agentes.director_creativo import seleccionar_estilo  # noqa: E402
+from nexa.services.visual_assets import get_visual_pack, get_slide_visual  # noqa: E402
+
+
+def _tw(text: str, max_words: int, maxlen: int = 100) -> str:
+    """Trunca texto a max_words palabras (regla Instagram: títulos breves)."""
+    words = str(text or "").split()
+    out = " ".join(words[:max_words])
+    if len(words) > max_words:
+        out += "..."
+    return _s(out, maxlen)
 
 
 def generar_creatividad(empresa, memoria_marca, contenido) -> dict:
@@ -103,6 +113,7 @@ def _creatividad_post(empresa, memoria_marca, contenido) -> dict:
         "logo_empresa": bool(empresa.logo),
     }
 
+    categoria = _detectar_categoria(contenido, empresa)
     estilo = seleccionar_estilo("post", empresa, contenido)
     estructura["estilo_creativo"] = {"id": estilo["id"], "nombre": estilo["nombre"]}
 
@@ -113,6 +124,7 @@ def _creatividad_post(empresa, memoria_marca, contenido) -> dict:
         "render_css": "",
         "estilo": estilo["id"],
         "estilo_nombre": estilo["nombre"],
+        "categoria_visual": categoria,
         "motivo_seleccion": estilo.get("motivo_seleccion", ""),
     }
 
@@ -169,6 +181,7 @@ def _creatividad_historia(empresa, memoria_marca, contenido) -> dict:
         "tipografia": "Inter",
     }
 
+    categoria = _detectar_categoria(contenido, empresa)
     estilo = seleccionar_estilo("historia", empresa, contenido)
     estructura["estilo_creativo"] = {"id": estilo["id"], "nombre": estilo["nombre"]}
 
@@ -179,6 +192,7 @@ def _creatividad_historia(empresa, memoria_marca, contenido) -> dict:
         "render_css": "",
         "estilo": estilo["id"],
         "estilo_nombre": estilo["nombre"],
+        "categoria_visual": categoria,
         "motivo_seleccion": estilo.get("motivo_seleccion", ""),
     }
 
@@ -246,6 +260,7 @@ def _creatividad_carrusel(empresa, memoria_marca, contenido) -> dict:
         "tipografia": "Inter",
     }
 
+    categoria = _detectar_categoria(contenido, empresa)
     estilo = seleccionar_estilo("carrusel", empresa, contenido)
     estructura["estilo_creativo"] = {"id": estilo["id"], "nombre": estilo["nombre"]}
 
@@ -256,6 +271,7 @@ def _creatividad_carrusel(empresa, memoria_marca, contenido) -> dict:
         "render_css": "",
         "estilo": estilo["id"],
         "estilo_nombre": estilo["nombre"],
+        "categoria_visual": categoria,
         "motivo_seleccion": estilo.get("motivo_seleccion", ""),
     }
 
@@ -322,6 +338,7 @@ def _creatividad_reel(empresa, memoria_marca, contenido) -> dict:
         "tipografia": "Inter",
     }
 
+    categoria = _detectar_categoria(contenido, empresa)
     estilo = seleccionar_estilo("reel", empresa, contenido)
     estructura["estilo_creativo"] = {"id": estilo["id"], "nombre": estilo["nombre"]}
 
@@ -332,6 +349,7 @@ def _creatividad_reel(empresa, memoria_marca, contenido) -> dict:
         "render_css": "",
         "estilo": estilo["id"],
         "estilo_nombre": estilo["nombre"],
+        "categoria_visual": categoria,
         "motivo_seleccion": estilo.get("motivo_seleccion", ""),
     }
 
@@ -968,17 +986,16 @@ def _render_post(empresa, contenido, estructura, estilo=None) -> str:
 
 
 def _render_post_corporate_kpi(empresa, contenido, estructura) -> str:
+    """Ilustración hero grande (55%) + KPI cards + texto breve (45%). Layout B2B premium."""
     c1 = empresa.color_principal
     c2 = empresa.color_secundario
     nombre = empresa.nombre_empresa
     initial = nombre[0].upper()
     ig_user = "@" + nombre.lower().replace(" ", "_")
-    titulo = _s(contenido.titulo, 70)
-    copy1 = _s(contenido.copy.split("\n")[0], 110)
-    cta = _s(contenido.cta or "Contáctanos →", 50)
-
+    titulo = _tw(contenido.titulo, 8)
+    cta = _s(contenido.cta or "Ver más →", 40)
     categoria = _detectar_categoria(contenido, empresa)
-    vis = _bloque_visual(categoria, c1, c2)
+    vpack = get_visual_pack(categoria, c1, c2)
 
     return f"""
 <div class="nxar-stage nxar-post-stage">
@@ -991,44 +1008,37 @@ def _render_post_corporate_kpi(empresa, contenido, estructura) -> str:
       </div>
       <span class="nxar-ig-dots">⋯</span>
     </div>
-    <div class="nxar-post-frame" style="background:linear-gradient(145deg,{c1} 0%,{c2} 100%)">
-      <!-- Patrón de fondo -->
-      {vis['pattern']}
-      <!-- Elemento geométrico -->
-      <div class="nxar-geo nxar-geo--circle1" style="background:rgba(255,255,255,0.06)"></div>
-      <div class="nxar-geo nxar-geo--circle2" style="background:rgba(255,255,255,0.04)"></div>
-      <!-- Hero SVG de categoría -->
-      {vis['hero']}
-      <!-- Contenido editorial -->
-      <div class="nxar-post-content">
-        <div class="nxar-post-top">
-          <div class="nxar-post-cat-badge">{vis['icon']} {vis['label']}</div>
-          <div class="nxar-logo-chip">{_s(nombre, 14)}</div>
-        </div>
-        <div class="nxar-post-chip-row">
-          {vis['chip']}
-        </div>
-        <div class="nxar-post-body">
-          <div style="width:36px;height:3px;background:linear-gradient(90deg,{c1},{c2});border-radius:2px;margin-bottom:6px"></div>
-          <h2 class="nxar-post-titulo">{titulo}</h2>
-          <p class="nxar-post-copy">{copy1}</p>
+    <div class="nxar-post-frame" style="background:#04060e;position:relative;overflow:hidden;aspect-ratio:1/1;display:flex;flex-direction:column">
+      <!-- ZONA VISUAL (58%) -->
+      <div style="flex:0 0 58%;position:relative;overflow:hidden;background:linear-gradient(160deg,#06080f,#080c18)">
+        {vpack['hero']}
+        <!-- Overlay gradiente al pie de la zona visual -->
+        <div style="position:absolute;bottom:0;left:0;right:0;height:40%;background:linear-gradient(transparent,#04060e)"></div>
+        <!-- Badge categoría flotante -->
+        <div style="position:absolute;top:10px;left:12px;font-size:8px;font-weight:700;letter-spacing:0.12em;color:{c1};background:{c1}18;border:1px solid {c1}44;border-radius:4px;padding:3px 8px">{_s(categoria.upper(),20)}</div>
+        <!-- Logo chip -->
+        <div style="position:absolute;top:10px;right:12px;font-size:9px;font-weight:700;color:rgba(255,255,255,0.7);background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:3px 9px">{_s(nombre,14)}</div>
+      </div>
+      <!-- ZONA TEXTO (42%) -->
+      <div style="flex:1;padding:12px 16px;display:flex;flex-direction:column;justify-content:space-between;background:#04060e">
+        <div>
+          <div style="width:28px;height:2px;background:linear-gradient(90deg,{c1},{c2});border-radius:1px;margin-bottom:6px"></div>
+          <h2 style="font-size:clamp(15px,3.2vw,20px);font-weight:900;color:#fff;line-height:1.15;letter-spacing:-0.03em;margin:0 0 4px">{titulo}</h2>
           {_kpi_cards(categoria, c1)}
         </div>
-        <div class="nxar-post-bottom">
-          <div class="nxar-post-cta" style="background:rgba(255,255,255,0.92);color:{c1};text-shadow:none;font-weight:800">{cta}</div>
-          <div class="nxar-post-cta-arrow" style="color:rgba(255,255,255,0.6)">→</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+          <div style="background:rgba(255,255,255,0.9);color:{c1};border-radius:18px;padding:5px 14px;font-size:10px;font-weight:800">{cta}</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.3);font-weight:600">{_s(nombre,12)}</div>
         </div>
       </div>
     </div>
     <div class="nxar-ig-footer">
       <div class="nxar-ig-actions">
-        <span class="nxar-ig-action">♡</span>
-        <span class="nxar-ig-action">💬</span>
-        <span class="nxar-ig-action">↗</span>
-        <span class="nxar-ig-action nxar-ig-action--right">🔖</span>
+        <span class="nxar-ig-action">♡</span><span class="nxar-ig-action">💬</span>
+        <span class="nxar-ig-action">↗</span><span class="nxar-ig-action nxar-ig-action--right">🔖</span>
       </div>
       <div class="nxar-ig-likes">3,241 Me gusta</div>
-      <div class="nxar-ig-caption"><b>{ig_user}</b> {copy1[:60]}...</div>
+      <div class="nxar-ig-caption"><b>{ig_user}</b> {titulo[:55]}...</div>
     </div>
   </div>
 </div>"""
@@ -1037,16 +1047,17 @@ def _render_post_corporate_kpi(empresa, contenido, estructura) -> str:
 # ── POST: 4 estilos adicionales ───────────────────────────────────────────────
 
 def _render_post_minimalista(empresa, contenido, estructura) -> str:
+    """Visual hero izquierda (45%) + tipografía masiva derecha (55%). Layout editorial premium."""
     c1 = empresa.color_principal
     c2 = empresa.color_secundario
     nombre = empresa.nombre_empresa
     initial = nombre[0].upper()
     ig_user = "@" + nombre.lower().replace(" ", "_")
-    titulo = _s(contenido.titulo, 80)
-    copy1 = _s(contenido.copy.split("\n")[0], 100)
-    cta = _s(contenido.cta or "Más información →", 50)
+    titulo = _tw(contenido.titulo, 8)
+    subtitulo = _tw(contenido.copy.split("\n")[0], 14)
+    cta = _s(contenido.cta or "Descubrir →", 35)
     categoria = _detectar_categoria(contenido, empresa)
-    vis = _bloque_visual(categoria, c1, c2)
+    vpack = get_visual_pack(categoria, c1, c2)
 
     return f"""
 <div class="nxar-stage nxar-post-stage">
@@ -1059,22 +1070,24 @@ def _render_post_minimalista(empresa, contenido, estructura) -> str:
       </div>
       <span class="nxar-ig-dots">⋯</span>
     </div>
-    <div class="nxar-post-frame" style="background:#0a0a0f;position:relative;overflow:hidden;aspect-ratio:1/1">
-      {vis['pattern']}
-      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(180deg,{c1},{c2})"></div>
-      <div style="position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:24px 24px 24px 32px">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <span style="font-size:9px;font-weight:700;color:{c1};letter-spacing:0.15em;text-transform:uppercase">{vis['icon']} {vis['label']}</span>
-          <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.2);letter-spacing:0.1em">{_s(nombre,12)}</span>
+    <div class="nxar-post-frame" style="background:#070508;position:relative;overflow:hidden;aspect-ratio:1/1;display:flex;flex-direction:row">
+      <!-- COLUMNA VISUAL (45%) -->
+      <div style="width:45%;position:relative;overflow:hidden;background:linear-gradient(160deg,#050308,#090710)">
+        {vpack['hero']}
+        <div style="position:absolute;inset:0;background:linear-gradient(to right,transparent 60%,#070508)"></div>
+        <div style="position:absolute;bottom:16px;left:12px;font-size:8px;font-weight:700;letter-spacing:0.14em;color:{c1};background:{c1}18;border:1px solid {c1}33;border-radius:4px;padding:2px 7px">{_s(categoria.upper(),18)}</div>
+      </div>
+      <!-- COLUMNA TEXTO (55%) -->
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:space-between;padding:18px 16px 16px 12px">
+        <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.25);letter-spacing:0.1em">{_s(nombre,14)}</div>
+        <div>
+          <div style="width:24px;height:2px;background:{c1};border-radius:1px;margin-bottom:10px"></div>
+          <h2 style="font-size:clamp(18px,3.8vw,26px);font-weight:900;color:#fff;line-height:1.1;letter-spacing:-0.04em;margin:0 0 8px">{titulo}</h2>
+          <p style="font-size:10px;color:rgba(255,255,255,0.5);line-height:1.5;margin:0">{subtitulo}</p>
         </div>
-        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:12px;padding:20px 0">
-          <div style="width:32px;height:2px;background:{c1};border-radius:1px"></div>
-          <h2 style="font-size:clamp(22px,4.5vw,36px);font-weight:900;color:#ffffff;line-height:1.1;letter-spacing:-0.04em;margin:0">{titulo}</h2>
-          <p style="font-size:11px;color:rgba(255,255,255,0.45);line-height:1.5;margin:0;max-width:85%">{copy1}</p>
-        </div>
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <span style="font-size:11px;color:rgba(255,255,255,0.35);font-style:italic">{cta}</span>
-          <span style="font-size:10px;color:{c1};font-weight:700;letter-spacing:0.08em">→</span>
+        <div>
+          <div style="width:100%;height:1px;background:rgba(255,255,255,0.07);margin-bottom:10px"></div>
+          <div style="font-size:10px;font-weight:700;color:{c1};letter-spacing:0.06em">{cta} →</div>
         </div>
       </div>
     </div>
@@ -1084,7 +1097,7 @@ def _render_post_minimalista(empresa, contenido, estructura) -> str:
         <span class="nxar-ig-action">↗</span><span class="nxar-ig-action nxar-ig-action--right">🔖</span>
       </div>
       <div class="nxar-ig-likes">2,817 Me gusta</div>
-      <div class="nxar-ig-caption"><b>{ig_user}</b> {copy1[:60]}...</div>
+      <div class="nxar-ig-caption"><b>{ig_user}</b> {titulo[:55]}...</div>
     </div>
   </div>
 </div>"""
@@ -1469,6 +1482,7 @@ def _render_carrusel(empresa, contenido, estructura, estilo=None) -> str:
 
     categoria = _detectar_categoria(contenido, empresa)
     vis = _bloque_visual(categoria, c1, c2)
+    vpack = get_visual_pack(categoria, c1, c2)
     accents = vis["slide_accent"]
 
     tipo_bg = {
@@ -1537,15 +1551,39 @@ def _render_carrusel(empresa, contenido, estructura, estilo=None) -> str:
         accent_html = accents.get(tipo, "")
         estilo_extra = _estilo_slide_extra(i, tipo)
 
-        # Slide portada recibe el hero SVG de la categoría
-        hero_html = vis["hero"] if tipo == "portada" else ""
         pattern_html = vis["pattern"] if tipo in ("portada", "cta") else _pattern_grid()
 
-        slides_html += f"""
+        if tipo == "portada":
+            # Zona visual grande (45%) + zona texto (55%) — igual al layout del post
+            hero_zone = (
+                f'<div style="height:45%;position:relative;overflow:hidden;background:linear-gradient(160deg,#06080f,#080c18)">'
+                f'{vpack["hero"]}'
+                f'<div style="position:absolute;inset:0;background:linear-gradient(transparent 65%,{bg_default})"></div>'
+                f'<div style="position:absolute;top:8px;left:10px;font-size:7px;font-weight:700;letter-spacing:0.12em;color:{c1};background:{c1}18;border:1px solid {c1}44;border-radius:3px;padding:2px 6px">{_s(categoria.upper(),16)}</div>'
+                f'<div style="position:absolute;top:8px;right:10px;font-size:8px;font-weight:700;color:rgba(255,255,255,0.6);background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:2px 7px">{_s(nombre,12)}</div>'
+                f'</div>'
+            )
+            slides_html += f"""
+    <div class="nxar-slide {active}" data-slide="{i}" style="background:{bg};display:flex;flex-direction:column;overflow:hidden">
+      {hero_zone}
+      <div class="nxar-slide-content" style="flex:1;display:flex;flex-direction:column;justify-content:space-between;padding:10px 14px">
+        <div>
+          <div style="width:24px;height:2px;background:linear-gradient(90deg,{c1},{c2});border-radius:1px;margin-bottom:6px"></div>
+          <h2 class="nxar-slide-titulo" style="font-size:clamp(16px,3.2vw,22px);margin:0 0 4px">{_s(s.get('titulo', ''), 80)}</h2>
+          {f'<p class="nxar-slide-sub" style="font-size:10px;opacity:0.55;margin:0">{_s(s.get("subtitulo",""),60)}</p>' if s.get("subtitulo") else ''}
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:7px;font-weight:700;color:{c1};letter-spacing:0.1em">{vis["icon"]} {vis["label"]}</div>
+          <div style="font-size:8px;color:rgba(255,255,255,0.3)">{i+1}/{total} ›</div>
+        </div>
+        {_slide_body(tipo, s, vis, c1, c2)}
+      </div>
+    </div>"""
+        else:
+            slides_html += f"""
     <div class="nxar-slide {active}" data-slide="{i}" style="background:{bg}">
       {pattern_html}
       <div class="nxar-geo nxar-geo--circle1" style="background:rgba(255,255,255,0.04)"></div>
-      {hero_html}
       {accent_html}
       <div class="nxar-slide-content">
         <div class="nxar-slide-header">
@@ -1553,13 +1591,12 @@ def _render_carrusel(empresa, contenido, estructura, estilo=None) -> str:
           <div class="nxar-slide-counter">{i+1}/{total}</div>
         </div>
         {estilo_extra}
-        <div class="nxar-slide-icon" style="color:{c1};font-size:{'40px' if tipo=='portada' else '28px'}">{icon}</div>
-        <h2 class="nxar-slide-titulo" style="font-size:{'clamp(18px,3.5vw,26px)' if tipo=='portada' else 'clamp(15px,3vw,22px)'}">{_s(s.get('titulo', ''), 80)}</h2>
+        <div class="nxar-slide-icon" style="color:{c1};font-size:28px">{icon}</div>
+        <h2 class="nxar-slide-titulo" style="font-size:clamp(15px,3vw,22px)">{_s(s.get('titulo', ''), 80)}</h2>
         {f'<p class="nxar-slide-sub">{_s(s.get("subtitulo",""),70)}</p>' if s.get("subtitulo") else ''}
-        {f'<div class="nxar-slide-chip" style="border-color:{c1}33;color:{c1}">{vis["label"]}</div>' if tipo == "portada" else ''}
         {_slide_body(tipo, s, vis, c1, c2)}
       </div>
-      {f'<div class="nxar-slide-logo" style="color:rgba(255,255,255,0.25)">{_s(nombre,14)}</div>' if i == 0 or i == total-1 else ''}
+      {f'<div class="nxar-slide-logo" style="color:rgba(255,255,255,0.25)">{_s(nombre,14)}</div>' if i == total-1 else ''}
     </div>"""
 
     dots_html = "".join(

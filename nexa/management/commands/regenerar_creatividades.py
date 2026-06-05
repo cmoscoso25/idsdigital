@@ -57,10 +57,11 @@ class Command(BaseCommand):
                 cr.estado                 = "generada"
                 cr.estilo                 = r.get("estilo", "")
                 cr.estilo_nombre          = r.get("estilo_nombre", "")
+                cr.categoria_visual       = r.get("categoria_visual", "")
                 cr.save(update_fields=[
                     "prompt_visual", "estructura_visual_json",
                     "render_html", "render_css", "estado",
-                    "estilo", "estilo_nombre", "fecha_actualizacion",
+                    "estilo", "estilo_nombre", "categoria_visual", "fecha_actualizacion",
                 ])
 
                 estilo_tag = f" [{cr.estilo_nombre}]" if cr.estilo_nombre else ""

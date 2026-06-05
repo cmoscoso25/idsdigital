@@ -45,14 +45,17 @@
   <div class="nxa-creatividades-grid">
     {% for cr in creatividades %}
       <a href="{% url 'nexa:creatividad_detalle' cr.pk %}" class="nxa-creatividad-card">
-        <!-- Miniatura mockup -->
+        <!-- Miniatura mockup con colores reales de marca -->
         <div class="nxa-creatividad-thumb nxa-creatividad-thumb--{{ cr.tipo }}"
-             style="--c1:{{ cr.contenido.empresa.color_principal }};--c2:{{ cr.contenido.empresa.color_secundario }}">
+             style="background:linear-gradient(145deg,{{ cr.contenido.empresa.color_principal }},{{ cr.contenido.empresa.color_secundario }});--c1:{{ cr.contenido.empresa.color_principal }};--c2:{{ cr.contenido.empresa.color_secundario }}">
           <div class="nxa-creatividad-thumb-inner">
             <span class="nxa-creatividad-tipo-icon">
               {% if cr.tipo == "post" %}🖼{% elif cr.tipo == "historia" %}📱{% elif cr.tipo == "carrusel" %}▦{% else %}🎬{% endif %}
             </span>
-            <p class="nxa-creatividad-thumb-titulo">{{ cr.contenido.titulo|truncatechars:40 }}</p>
+            {% if cr.categoria_visual %}
+              <span style="font-size:9px;font-weight:700;letter-spacing:0.08em;color:rgba(255,255,255,0.7);background:rgba(0,0,0,0.25);border-radius:3px;padding:1px 5px">{{ cr.categoria_visual|upper }}</span>
+            {% endif %}
+            <p class="nxa-creatividad-thumb-titulo">{{ cr.contenido.titulo|truncatechars:38 }}</p>
           </div>
           <div class="nxa-creatividad-thumb-overlay"></div>
         </div>
@@ -61,7 +64,11 @@
           <div class="nxa-creatividad-card-header">
             <span class="nxa-badge nxa-badge--tipo">{{ cr.get_tipo_display }}</span>
             <span class="nxa-badge nxa-badge--estado nxa-estado--{{ cr.estado }}">{{ cr.get_estado_display }}</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;margin:5px 0">
             {% if cr.estilo_nombre %}<span class="nxa-badge nxar-badge--estilo" title="{{ cr.estilo }}">🎨 {{ cr.estilo_nombre }}</span>{% endif %}
+            {% if cr.categoria_visual %}<span class="nxa-badge" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.5);font-size:9px">◈ {{ cr.categoria_visual }}</span>{% endif %}
+            {% if cr.veces_regenerada %}<span class="nxa-badge" style="background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.35);font-size:9px">↻ {{ cr.veces_regenerada }}x</span>{% endif %}
           </div>
           <p class="nxa-creatividad-empresa">{{ cr.contenido.empresa.nombre_empresa }}</p>
           <p class="nxa-creatividad-fecha nxa-text-muted">{{ cr.fecha_creacion|date:"d/m/Y" }}</p>

@@ -191,6 +191,10 @@ class CreatividadInstagram(models.Model):
         max_length=100, blank=True, default="",
         help_text="Nombre legible del estilo creativo",
     )
+    categoria_visual = models.CharField(
+        max_length=30, blank=True, default="",
+        help_text="Categoría temática detectada: software, ia, automatizacion, marketing, etc.",
+    )
     fecha_creacion = models.DateTimeField(auto_now_add=True)
 
     class Meta:
