@@ -10,9 +10,9 @@
   </form>
   <form method="post" action="{% url 'nexa:generar_imagen_ia' creatividad.pk %}" style="display:inline;">
     {% csrf_token %}
-    <input type="hidden" name="proveedor" value="openai">
-    <button type="submit" class="nxa-btn nxa-btn--primary" title="Genera una imagen real con DALL-E 3 usando el prompt visual de esta creatividad">
-      ✨ Generar Imagen IA
+    <input type="hidden" name="proveedor" value="fal">
+    <button type="submit" class="nxa-btn nxa-btn--primary" title="Genera una imagen real con Flux Pro (Fal AI) usando el prompt visual de esta creatividad">
+      ✨ Generar imagen con Flux
     </button>
   </form>
 {% endblock %}
@@ -33,7 +33,7 @@
             ✓ Imagen IA real
           </span>
           <span class="nxa-badge" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.4);font-size:10px;">
-            {{ creatividad.proveedor_ia|upper }}
+            {% if creatividad.proveedor_ia == "fal" %}Flux Pro (Fal AI){% else %}{{ creatividad.proveedor_ia|upper }}{% endif %}
           </span>
           {% if creatividad.fecha_generacion_imagen %}
           <span class="nxa-badge" style="background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.3);font-size:10px;">

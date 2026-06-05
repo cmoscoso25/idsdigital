@@ -2,6 +2,11 @@ from pathlib import Path
 import os
 import resend
 import dj_database_url
+import os
+
+FAL_KEY = os.getenv("FAL_KEY", "")
+NEXA_IMAGE_PROVIDER = os.getenv("NEXA_IMAGE_PROVIDER", "fal")
+NEXA_FAL_MODEL = os.getenv("NEXA_FAL_MODEL", "fal-ai/flux-pro")
 
 # BASE
 BASE_DIR = Path(__file__).resolve().parent.parent

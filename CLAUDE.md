@@ -152,6 +152,7 @@ no están instalados en el entorno MCP. Usar siempre el CLI como fallback.
 - **Biblioteca mejorada** (2026-06-05): cards muestran tipo, estado, estilo 🎨, categoría visual ◈ y contador de regeneraciones ↻. Miniatura con gradiente real de colores de marca.
 - Próximo paso crítico: conectar agentes con Claude API (Anthropic SDK en requirements).
 - **Motor Visual IA Real** (2026-06-05 — NIVEL 2): `CreatividadInstagram` tiene 3 nuevos campos: `imagen_generada` (ImageField), `proveedor_ia`, `fecha_generacion_imagen`. Servicio `nexa/services/generador_imagenes.py` con integración OpenAI DALL-E 3 + stubs para Flux/Ideogram/Gemini. Vista `generar_imagen_ia_view` (POST `/nexa/app/creatividades/<pk>/imagen/`). Template `creatividad_detalle.html` muestra imagen real si existe, con toggle para ver mockup HTML debajo. Botón "✨ Generar Imagen IA" en topbar. Migración 0010 aplicada. Requiere `OPENAI_API_KEY` en entorno.
+- **Fal AI / Flux Pro** (2026-06-05): `generador_imagenes.py` actualizado — proveedor `fal` activo con `fal-client==1.0.0`. Botón "✨ Generar imagen con Flux". Variables de entorno: `FAL_KEY` (requerida), `NEXA_IMAGE_PROVIDER=fal` (default), `NEXA_FAL_MODEL=fal-ai/flux-pro` (default). Modelo configurable. `generar_imagen_fal(creatividad)` disponible como shortcut. Claves nunca en código.
 
 ## Gestión de contexto — archivos de referencia
 
