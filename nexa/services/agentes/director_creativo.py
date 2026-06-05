@@ -176,7 +176,7 @@ def seleccionar_estilo(tipo: str, empresa, contenido) -> dict:
         CreatividadInstagram.objects
         .filter(contenido__empresa=empresa, tipo=tipo)
         .exclude(estilo="")
-        .order_by("-fecha_creacion")
+        .order_by("-fecha_actualizacion", "-pk")
         .values_list("estilo", flat=True)
         .first()
     )
