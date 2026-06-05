@@ -46,15 +46,21 @@ def _imagen_size_fal(tipo: str) -> str:
 def _generar_con_fal(prompt: str, tipo: str) -> str:
     """
     Llama a Fal AI (Flux Pro) y devuelve la URL de la imagen generada.
-    Requiere FAL_KEY en entorno o settings.FAL_KEY.
+    Requiere settings.FAL_KEY (cargado desde variable de entorno FAL_KEY al iniciar el servidor).
     """
     import fal_client
 
-    fal_key = getattr(settings, "FAL_KEY", "") or os.environ.get("FAL_KEY", "")
+    fal_key = getattr(settings, "FAL_KEY", "")
+
+    # Debug seguro: nunca imprime el valor de la key
+    import logging
+    log = logging.getLogger(__name__)
+    log.debug("FAL_KEY presente en settings: %s", bool(fal_key))
+
     if not fal_key:
         raise ValueError(
-            "FAL_KEY no está configurada. "
-            "Agrega la variable de entorno FAL_KEY para usar Flux."
+            "FAL_KEY no está configurada en settings. "
+            "Reinicia el servidor con la variable de entorno FAL_KEY establecida."
         )
 
     os.environ["FAL_KEY"] = fal_key  # fal_client la lee del entorno
