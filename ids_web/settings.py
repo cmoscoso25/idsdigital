@@ -2,7 +2,10 @@ from pathlib import Path
 import os
 import resend
 import dj_database_url
-import os
+from dotenv import load_dotenv
+
+# Carga variables desde .env en desarrollo (sin efecto en producción si no existe el archivo)
+load_dotenv()
 
 FAL_KEY = os.getenv("FAL_KEY", "")
 NEXA_IMAGE_PROVIDER = os.getenv("NEXA_IMAGE_PROVIDER", "fal")
