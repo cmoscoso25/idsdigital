@@ -261,13 +261,9 @@ def seleccionar_estilo(tipo: str, empresa, contenido, offset: int = 0) -> dict:
 
     max_score = max(s[0] for s in scored)
 
-    if max_score == 0:
-        # Sin afinidad: selección aleatoria real entre candidatos disponibles
-        selected = random.choice(candidatos)
-    else:
-        # Con afinidad: mejor score; empate → aleatorio entre los mejores
-        top = [s for s in scored if s[0] == max_score]
-        selected = random.choice(top)[2]
+    # Selección aleatoria pura: la anti-repetición ya garantiza diversidad.
+    # No filtrar solo por max_score — causa oscilación entre los 2-3 más afines.
+    selected = random.choice(candidatos)
 
     ultimo = recientes_ids_uniq[0] if recientes_ids_uniq else None
     motivo = _construir_motivo(selected, ultimo, texto_ref)
