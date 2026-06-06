@@ -4,6 +4,11 @@ Selecciona el estilo visual óptimo para cada pieza Instagram.
 Garantiza variedad: nunca repite el mismo estilo consecutivo para la misma empresa.
 """
 
+import logging
+import random
+
+logger = logging.getLogger("nexa.director_creativo")
+
 # ── Catálogo completo de estilos por formato ──────────────────────────────────
 
 ESTILOS_INSTAGRAM = {
@@ -195,12 +200,13 @@ ESTILOS_INSTAGRAM = {
 
 # ── Selección inteligente ─────────────────────────────────────────────────────
 
-def seleccionar_estilo(tipo: str, empresa, contenido) -> dict:
+def seleccionar_estilo(tipo: str, empresa, contenido, offset: int = 0) -> dict:
     """
-    Selecciona el estilo visual óptimo garantizando rotación completa.
-    - Excluye los últimos (N-1) estilos usados → fuerza ciclo por todos los N estilos.
+    Selecciona el estilo visual garantizando rotación real entre todos los estilos.
+    - Excluye estilos usados recientemente (últimas N-1 creatividades de la empresa).
     - Prioriza afinidad con el objetivo/tema del contenido.
-    - Cuando scores son iguales, usa rotación determinística para garantizar variedad.
+    - Desempate: random.choice() — garantiza variedad real aunque haya una sola creatividad.
+    - `offset` (ej: veces_regenerada) desplaza la semilla aleatoria para mayor variedad.
     Retorna el dict del estilo con campo adicional 'motivo_seleccion'.
     """
     from nexa.models import CreatividadInstagram
@@ -208,7 +214,8 @@ def seleccionar_estilo(tipo: str, empresa, contenido) -> dict:
     estilos = ESTILOS_INSTAGRAM.get(tipo, ESTILOS_INSTAGRAM["post"])
     n = len(estilos)
 
-    # Rastrear los últimos (n-1) estilos usados para forzar el ciclo completo
+    # Últimos (n-1) estilos distintos usados por la empresa en este tipo
+    # Se consultan TODAS las creatividades para rastrear historia real de estilos
     recientes_ids = list(
         CreatividadInstagram.objects
         .filter(contenido__empresa=empresa, tipo=tipo)
@@ -216,18 +223,20 @@ def seleccionar_estilo(tipo: str, empresa, contenido) -> dict:
         .order_by("-fecha_actualizacion", "-pk")
         .values_list("estilo", flat=True)[: n - 1]
     )
+    # Deduplicar manteniendo orden (puede haber repetidos en la lista)
+    vistos = set()
+    recientes_ids_uniq = []
+    for s in recientes_ids:
+        if s not in vistos:
+            vistos.add(s)
+            recientes_ids_uniq.append(s)
 
-    candidatos = [e for e in estilos if e["id"] not in recientes_ids]
+    candidatos = [e for e in estilos if e["id"] not in recientes_ids_uniq]
     if not candidatos:
-        # Todos usados recientemente — excluir solo el más reciente
-        candidatos = [e for e in estilos if e["id"] != recientes_ids[0]] if recientes_ids else list(estilos)
+        # Todos bloqueados — excluir solo el más reciente y liberar el resto
+        candidatos = [e for e in estilos if e["id"] != recientes_ids_uniq[0]] if recientes_ids_uniq else list(estilos)
     if not candidatos:
         candidatos = list(estilos)
-
-    # Total de creatividades existentes → offset para rotación determinística
-    total_existentes = CreatividadInstagram.objects.filter(
-        contenido__empresa=empresa, tipo=tipo
-    ).count()
 
     # Texto de referencia para scoring
     texto_ref = " ".join(filter(None, [
@@ -253,17 +262,24 @@ def seleccionar_estilo(tipo: str, empresa, contenido) -> dict:
     max_score = max(s[0] for s in scored)
 
     if max_score == 0:
-        # Sin afinidad: rotación determinística por total de existentes
-        idx = total_existentes % len(candidatos)
-        selected = candidatos[idx]
+        # Sin afinidad: selección aleatoria real entre candidatos disponibles
+        selected = random.choice(candidatos)
     else:
-        # Con afinidad: el de mayor score; empate → rotación determinística
+        # Con afinidad: mejor score; empate → aleatorio entre los mejores
         top = [s for s in scored if s[0] == max_score]
-        idx = total_existentes % len(top)
-        selected = top[idx][2]
+        selected = random.choice(top)[2]
 
-    ultimo = recientes_ids[0] if recientes_ids else None
+    ultimo = recientes_ids_uniq[0] if recientes_ids_uniq else None
     motivo = _construir_motivo(selected, ultimo, texto_ref)
+
+    logger.info(
+        "ESTILO SELECCIONADO: %s (%s) | empresa=%s | tipo=%s | excluidos=%s | score=%s",
+        selected["id"], selected["nombre"],
+        empresa.nombre_empresa, tipo,
+        recientes_ids_uniq[:3],
+        max_score,
+    )
+
     return {**selected, "motivo_seleccion": motivo}
 
 

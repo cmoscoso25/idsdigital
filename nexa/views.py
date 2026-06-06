@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
-from .models import EmpresaNexa, MemoriaMarca, ContenidoGenerado, EstrategiaMensual, CreatividadInstagram
+from .models import EmpresaNexa, MemoriaMarca, ContenidoGenerado, EstrategiaMensual, CreatividadInstagram, EstiloVisualInstagram
 from .forms import EmpresaNexaForm, MemoriaMarcaForm, GenerarContenidoForm, GenerarEstrategiaForm
 from .services.generador_contenido import generar_contenido
 from .services.agentes.estratega import generar_estrategia
@@ -398,3 +398,56 @@ def creatividad_detalle(request, pk):
             creatividad.save(update_fields=["estado"])
         return redirect("nexa:creatividad_detalle", pk=pk)
     return render(request, "nexa/creatividad_detalle.html", {"creatividad": creatividad})
+
+
+@login_required
+def debug_estilos_view(request):
+    """
+    Vista temporal de diagnóstico del motor de estilos.
+    Muestra catálogo completo, uso por estilo y permite verificar rotación.
+    Solo accesible para usuarios autenticados.
+    """
+    from django.db.models import Count
+    from nexa.services.agentes.director_creativo import ESTILOS_INSTAGRAM
+
+    # Estadísticas de uso por estilo (creatividades guardadas)
+    uso_raw = (
+        CreatividadInstagram.objects
+        .filter(contenido__empresa__usuario=request.user)
+        .exclude(estilo="")
+        .values("estilo", "tipo")
+        .annotate(total=Count("id"))
+        .order_by("tipo", "estilo")
+    )
+    uso_map = {f"{r['tipo']}:{r['estilo']}": r["total"] for r in uso_raw}
+
+    # Historial reciente (últimas 30 creatividades del usuario)
+    historial = (
+        CreatividadInstagram.objects
+        .filter(contenido__empresa__usuario=request.user)
+        .exclude(estilo="")
+        .order_by("-fecha_actualizacion")
+        .values("estilo", "estilo_nombre", "tipo", "fecha_actualizacion",
+                "veces_regenerada", "contenido__empresa__nombre_empresa")[:30]
+    )
+
+    # Catálogo de estilos DB
+    estilos_db = EstiloVisualInstagram.objects.all().order_by("categoria", "nombre")
+
+    # Catálogo in-memory con uso
+    catalogo = {}
+    for formato, estilos in ESTILOS_INSTAGRAM.items():
+        catalogo[formato] = [
+            {**e, "usos": uso_map.get(f"{formato}:{e['id']}", 0)}
+            for e in estilos
+        ]
+
+    ctx = {
+        "catalogo":    catalogo,
+        "historial":   list(historial),
+        "estilos_db":  estilos_db,
+        "total_db":    estilos_db.count(),
+        "total_activos": estilos_db.filter(activo=True).count(),
+        "total_usos":  sum(uso_map.values()),
+    }
+    return render(request, "nexa/debug_estilos.html", ctx)

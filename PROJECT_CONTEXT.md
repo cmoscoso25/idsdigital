@@ -218,7 +218,8 @@ Plataforma de marketing digital con agentes de IA para pymes y empresas.
 
 | Commit | Decisión |
 |---|---|
-| 2026-06-06 | Nexa Designer v2: EstiloVisualInstagram (modelo DB + migración 0011 + admin). seed_estilos command (25 estilos × 4 formatos). director_creativo.py ampliado a 10 estilos POST (+ startup_saas, tech_futurista, ia_neural, dashboard_analytics, modern_gradient). 5 nuevos renderers POST en agente_diseno_instagram.py. Dispatcher actualizado. Validado: 10 posts = 10 diseños distintos garantizados. |
+| 2026-06-06 v2 | fix(nexa): Rotación real de estilos — Bug crítico: total_existentes%len siempre devolvía índice 1 con 1 sola creatividad → solo 2 estilos. Corregido con random.choice(candidatos). Logging en nexa.director_creativo. Vista debug /nexa/app/debug-estilos/. Validado: 8+/10 estilos distintos en 10 regeneraciones. |
+| 2026-06-06 | Nexa Designer v2: EstiloVisualInstagram (modelo DB + migración 0011 + admin). seed_estilos command (25 estilos × 4 formatos). director_creativo.py ampliado a 10 estilos POST. 5 nuevos renderers POST en agente_diseno_instagram.py. Dispatcher actualizado. |
 | 2026-06-05 v4 | Motor interno por defecto: NEXA_IMAGE_PROVIDER=internal. InternalVisualProvider usa render_html/CSS. Botón "Renderizar creatividad". Fal/OpenAI/etc. como ★ Premium en sidebar. Errores de saldo → mensaje premium amigable. |
 | 2026-06-05 v3 | Fal AI / Flux Pro: fal-client==1.0.0, proveedor "fal" disponible como premium. FAL_KEY requerida solo si se usa Fal. |
 | 2026-06-05 v2 | Motor Visual IA Real (NIVEL 2): generador_imagenes.py con DALL-E 3 + stubs Flux/Ideogram/Gemini. Campos imagen_generada/proveedor_ia/fecha_generacion_imagen en CreatividadInstagram (migración 0010). Vista generar_imagen_ia_view. Template muestra imagen real sobre mockup HTML con toggle. |

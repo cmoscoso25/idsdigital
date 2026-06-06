@@ -132,20 +132,17 @@ no están instalados en el entorno MCP. Usar siempre el CLI como fallback.
   - `_escena_visual(tipo, vis, c1, c2, num)` → frames numerados estilo CapCut para reel.
   - Post: accent bar + KPI cards + CTA premium (fondo blanco con color de marca).
   - Historia: hero SVG de categoría en pantalla 0, progress bar + chip en pantalla 1, CTA button en pantalla 2.
-- **Motor de Estilos Creativos** (2026-06-04 v5 — completo): `nexa/services/agentes/director_creativo.py` — Director Creativo con catálogo de 20 estilos (5 por formato) y selección inteligente anti-repetición.
-  - POST: Corporate KPI / Minimalista Premium / Problema-Solución / Estadística / Testimonio
-  - Historia: Encuesta / Quiz / Antes-Después / CTA Urgente / Detrás de Cámaras
-  - Carrusel: Problema-Solución / Lista Numerada / Caso de Éxito / Tutorial Pasos / Mitos vs Realidad
-  - Reel: Hook+Solución / Caso de Éxito / Tutorial Rápido / Error Común / Tendencia Educativa
-  - `seleccionar_estilo()` — rastrea últimos N-1 estilos (4/5), rotación determinística cuando scores son 0. 5 posts consecutivos producen 5 estilos distintos garantizados.
-  - POST — 5 composiciones visuales completamente distintas:
-    - Corporate KPI: gradiente marca, SVG chip, KPI cards row (actual)
-    - Minimalista Premium: fondo negro, borde izquierdo de color, tipografía enorme (sin KPI)
-    - Problema/Solución: split izquierda/derecha (38%/62%), columna izq dark+rojo, columna der gradiente+verde
-    - Estadística: número hero gigante con glow, 3 barras de progreso con métricas por categoría
-    - Testimonio: tarjeta de resultado destacada (métrica auto-extraída), cita, atribución con avatar
+- **Motor de Estilos Creativos** (2026-06-06 v6 — rotación real corregida): `nexa/services/agentes/director_creativo.py` — Director Creativo con catálogo de **10 estilos POST** (5 formatos totales) y selección con `random.choice()`.
+  - **Bug corregido (2026-06-06):** La rotación determinística `total_existentes % len(candidatos)` producía solo 2 estilos al regenerar la misma creatividad (1%9=1 siempre). Reemplazada por `random.choice(candidatos)`.
+  - `seleccionar_estilo(tipo, empresa, contenido, offset=0)` — excluye recientes (N-1), prioriza afinidad, desempate con `random.choice()`. Logger `nexa.director_creativo` imprime `"ESTILO SELECCIONADO: xxx"` en cada llamada.
+  - POST (10 estilos): Corporate KPI / Minimalista Premium / Problema-Solución / Estadística / Testimonio / Startup SaaS / Tech Futurista / IA Neural / Dashboard Analytics / Modern Gradient
+  - Historia (5): Encuesta / Quiz / Antes-Después / CTA Urgente / Detrás de Cámaras
+  - Carrusel (5): Problema-Solución / Lista Numerada / Caso de Éxito / Tutorial Pasos / Mitos vs Realidad
+  - Reel (5): Hook+Solución / Caso de Éxito / Tutorial Rápido / Error Común / Tendencia Educativa
+  - Validado: 10 regeneraciones → 8+ estilos distintos (criterio: ≥8/10).
   - Campos `estilo` + `estilo_nombre` en `CreatividadInstagram` (migración 0007)
   - Badge `🎨 Estilo` visible en biblioteca y detalle
+- **Vista de diagnóstico** (2026-06-06): `/nexa/app/debug-estilos/` — muestra catálogo completo, usos por estilo, historial de rotación (últimas 30). Solo para usuarios autenticados.
 - **Biblioteca Visual Interna** (2026-06-05): `nexa/services/visual_assets.py` — 10 hero SVGs profesionales por categoría (software, ia, automatizacion, marketing, productividad, educacion, finanzas, salud, tecnologia, transformacion) + slide visuals para carrusel. API: `get_visual_pack(categoria, c1, c2)` y `get_slide_visual(tipo, categoria, c1, c2)`.
 - **Categoría Visual** (2026-06-05): campo `categoria_visual` en `CreatividadInstagram` (migración 0009). Detectada automáticamente por `_detectar_categoria()` y guardada en create/regenerate. Mostrada en biblioteca con badge `◈`.
 - **Carrusel Pro portada** (2026-06-05): slide portada usa zona visual grande (45%) con hero SVG de `visual_assets.py` — mismo patrón que post corporate_kpi. Slides intermedios mantienen composiciones diferenciadas con `_slide_body()`.

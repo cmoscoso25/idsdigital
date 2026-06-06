@@ -1,0 +1,122 @@
+{% extends "nexa/base_nexa.html" %}
+
+{% block title %}Debug · Motor de Estilos{% endblock %}
+{% block topbar_title %}🔬 Debug · Motor de Estilos Visuales{% endblock %}
+{% block topbar_actions %}
+  <a href="{% url 'nexa:creatividad_list' %}" class="nxa-btn nxa-btn--ghost">← Biblioteca</a>
+{% endblock %}
+
+{% block content %}
+<div style="max-width:1100px;margin:0 auto;padding:24px 20px">
+
+  <!-- KPIs -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px">
+    <div class="nxa-card" style="text-align:center;padding:18px 12px">
+      <div style="font-size:32px;font-weight:900;color:#fff">{{ total_db }}</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.4)">Estilos en DB</div>
+    </div>
+    <div class="nxa-card" style="text-align:center;padding:18px 12px">
+      <div style="font-size:32px;font-weight:900;color:#10b981">{{ total_activos }}</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.4)">Estilos activos</div>
+    </div>
+    <div class="nxa-card" style="text-align:center;padding:18px 12px">
+      <div style="font-size:32px;font-weight:900;color:#3b82f6">
+        {% with total_estilos_catalogo=catalogo.post|length %}{{ total_estilos_catalogo }}{% endwith %}
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.4)">Estilos POST en catálogo</div>
+    </div>
+    <div class="nxa-card" style="text-align:center;padding:18px 12px">
+      <div style="font-size:32px;font-weight:900;color:#a855f7">{{ total_usos }}</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.4)">Usos registrados</div>
+    </div>
+  </div>
+
+  <!-- Catálogo por formato -->
+  {% for formato, estilos in catalogo.items %}
+  <div class="nxa-card" style="margin-bottom:20px">
+    <div class="nxa-card-header">
+      <h2 class="nxa-card-title" style="text-transform:capitalize">{{ formato }}</h2>
+      <span class="nxa-badge" style="background:rgba(59,130,246,0.12);border-color:rgba(59,130,246,0.3);color:#3b82f6">
+        {{ estilos|length }} estilos
+      </span>
+    </div>
+    <div style="padding:0 16px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px">
+      {% for e in estilos %}
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:12px 14px;position:relative">
+        <!-- Badge de usos -->
+        <div style="position:absolute;top:10px;right:10px;font-size:9px;font-weight:700;
+          {% if e.usos > 0 %}background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);color:#10b981;
+          {% else %}background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.3);{% endif %}
+          border-radius:10px;padding:2px 7px">
+          {{ e.usos }} uso{% if e.usos != 1 %}s{% endif %}
+        </div>
+        <div style="font-size:10px;font-weight:700;color:#fff;margin-bottom:4px;padding-right:50px">{{ e.nombre }}</div>
+        <div style="font-family:monospace;font-size:9px;color:rgba(255,255,255,0.3);margin-bottom:6px">{{ e.id }}</div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.45);line-height:1.4">{{ e.descripcion }}</div>
+        {% if e.usos > 0 %}
+        <div style="margin-top:8px;width:100%;height:3px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden">
+          <div style="height:100%;background:linear-gradient(90deg,#10b981,#3b82f6);border-radius:2px;width:{% if total_usos > 0 %}{% widthratio e.usos total_usos 100 %}{% else %}0{% endif %}%"></div>
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+
+  <!-- Historial de rotación -->
+  <div class="nxa-card">
+    <div class="nxa-card-header">
+      <h2 class="nxa-card-title">Historial de rotación (últimas 30)</h2>
+      <span class="nxa-badge">{{ historial|length }} registros</span>
+    </div>
+    <div style="padding:0 16px 16px">
+      {% if historial %}
+      <table style="width:100%;border-collapse:collapse;font-size:11px">
+        <thead>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.08)">
+            <th style="text-align:left;padding:8px 10px;color:rgba(255,255,255,0.4);font-weight:600">#</th>
+            <th style="text-align:left;padding:8px 10px;color:rgba(255,255,255,0.4);font-weight:600">Empresa</th>
+            <th style="text-align:left;padding:8px 10px;color:rgba(255,255,255,0.4);font-weight:600">Tipo</th>
+            <th style="text-align:left;padding:8px 10px;color:rgba(255,255,255,0.4);font-weight:600">Estilo</th>
+            <th style="text-align:left;padding:8px 10px;color:rgba(255,255,255,0.4);font-weight:600">ID</th>
+            <th style="text-align:right;padding:8px 10px;color:rgba(255,255,255,0.4);font-weight:600">↻ Regen</th>
+            <th style="text-align:right;padding:8px 10px;color:rgba(255,255,255,0.4);font-weight:600">Actualizado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for h in historial %}
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.04)">
+            <td style="padding:7px 10px;color:rgba(255,255,255,0.3)">{{ forloop.counter }}</td>
+            <td style="padding:7px 10px;color:rgba(255,255,255,0.7)">{{ h.contenido__empresa__nombre_empresa|truncatechars:20 }}</td>
+            <td style="padding:7px 10px">
+              <span class="nxa-badge nxa-badge--tipo" style="font-size:9px">{{ h.tipo }}</span>
+            </td>
+            <td style="padding:7px 10px;color:#fff;font-weight:600">{{ h.estilo_nombre|default:h.estilo }}</td>
+            <td style="padding:7px 10px;font-family:monospace;font-size:9px;color:rgba(255,255,255,0.35)">{{ h.estilo }}</td>
+            <td style="padding:7px 10px;text-align:right;color:rgba(255,255,255,0.4)">{{ h.veces_regenerada }}</td>
+            <td style="padding:7px 10px;text-align:right;color:rgba(255,255,255,0.3)">{{ h.fecha_actualizacion|date:"d/m H:i" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div style="text-align:center;padding:30px;color:rgba(255,255,255,0.3)">
+        Sin creatividades con estilo registrado aún. Genera algunas primero.
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Nota técnica -->
+  <div style="margin-top:20px;padding:14px 18px;background:rgba(251,191,36,0.06);border:1px solid rgba(251,191,36,0.2);border-radius:8px">
+    <div style="font-size:11px;font-weight:700;color:#fbbf24;margin-bottom:6px">⚙ Motor de estilos — Estado técnico</div>
+    <div style="font-size:10px;color:rgba(255,255,255,0.5);line-height:1.7">
+      Selector usa <code style="color:#fbbf24">random.choice(candidatos)</code> — garantiza variedad real incluso con 1 sola creatividad.<br>
+      Anti-repetición: excluye los últimos <strong>N-1</strong> estilos usados (donde N = total de estilos del formato).<br>
+      Logging activo en <code style="color:#fbbf24">nexa.director_creativo</code> — buscar <em>"ESTILO SELECCIONADO:"</em> en la consola del servidor.
+    </div>
+  </div>
+
+</div>
+{% endblock %}
