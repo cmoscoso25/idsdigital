@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import EmpresaNexa, MemoriaMarca, ContenidoGenerado, CreatividadInstagram, EstrategiaMensual
+from .models import EmpresaNexa, MemoriaMarca, ContenidoGenerado, CreatividadInstagram, EstrategiaMensual, EstiloVisualInstagram
 
 
 @admin.register(EmpresaNexa)
@@ -85,3 +85,12 @@ class CreatividadInstagramAdmin(admin.ModelAdmin):
     list_editable = ["estado"]
     raw_id_fields = ["contenido"]
     actions       = [_regenerar_action]
+
+
+@admin.register(EstiloVisualInstagram)
+class EstiloVisualInstagramAdmin(admin.ModelAdmin):
+    list_display  = ["nombre", "codigo", "categoria", "activo"]
+    list_filter   = ["categoria", "activo"]
+    search_fields = ["nombre", "codigo", "descripcion"]
+    list_editable = ["activo"]
+    ordering      = ["categoria", "nombre"]

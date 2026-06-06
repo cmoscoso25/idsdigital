@@ -220,6 +220,32 @@ class CreatividadInstagram(models.Model):
         return f"[{self.get_tipo_display()}] {self.contenido.titulo[:50]}"
 
 
+class EstiloVisualInstagram(models.Model):
+    """Catálogo de estilos visuales disponibles para creatividades Instagram."""
+    CATEGORIAS = [
+        ("corporativo",  "Corporativo"),
+        ("tech",         "Tecnología / IA"),
+        ("editorial",    "Editorial"),
+        ("educativo",    "Educativo"),
+        ("narrativo",    "Narrativo / Storytelling"),
+    ]
+
+    codigo      = models.CharField(max_length=50, unique=True, help_text="ID único del estilo, ej: corporate_kpi")
+    nombre      = models.CharField(max_length=100, help_text="Nombre legible para mostrar en UI")
+    descripcion = models.TextField(blank=True, help_text="Descripción breve del look & feel del estilo")
+    categoria   = models.CharField(max_length=30, choices=CATEGORIAS, default="corporativo")
+    activo      = models.BooleanField(default=True, help_text="Si está desactivado no se usa en la selección")
+
+    class Meta:
+        verbose_name = "Estilo Visual Instagram"
+        verbose_name_plural = "Estilos Visuales Instagram"
+        ordering = ["categoria", "nombre"]
+        indexes = [models.Index(fields=["activo", "categoria"])]
+
+    def __str__(self):
+        return f"{self.nombre} ({self.codigo})"
+
+
 class EstrategiaMensual(models.Model):
     empresa = models.ForeignKey(
         EmpresaNexa,

@@ -43,6 +43,41 @@ ESTILOS_INSTAGRAM = {
             "afinidad_objetivo": ["confianz", "comunidad"],
             "afinidad_tema": ["cliente", "testimon", "resultado", "caso", "experienci"],
         },
+        {
+            "id": "startup_saas",
+            "nombre": "Startup SaaS",
+            "descripcion": "Layout horizontal bicolor, headline gigante, badge flotante con métrica.",
+            "afinidad_objetivo": ["venta", "lead", "conver"],
+            "afinidad_tema": ["saas", "software", "app", "plataforma", "producto", "startup"],
+        },
+        {
+            "id": "tech_futurista",
+            "nombre": "Tech Futurista",
+            "descripcion": "Fondo oscuro con grid SVG, neon border, headline con efecto glitch.",
+            "afinidad_objetivo": ["reconocimient", "marca", "posicion"],
+            "afinidad_tema": ["tecno", "ia", "inteligencia", "automati", "digital", "futuro", "innovaci"],
+        },
+        {
+            "id": "ia_neural",
+            "nombre": "IA Neural",
+            "descripcion": "Nodes SVG animados, gradiente cian-púrpura, headline IA centrado.",
+            "afinidad_objetivo": ["educa", "reconocimient"],
+            "afinidad_tema": ["ia", "inteligencia artificial", "neural", "machine learning", "algoritmo", "modelo"],
+        },
+        {
+            "id": "dashboard_analytics",
+            "nombre": "Dashboard Analytics",
+            "descripcion": "Mockup de panel con 4 KPI cards y mini sparkline SVG.",
+            "afinidad_objetivo": ["resultado", "eficienci", "roi"],
+            "afinidad_tema": ["analytic", "metric", "dashboard", "report", "performance", "datos"],
+        },
+        {
+            "id": "modern_gradient",
+            "nombre": "Modern Gradient",
+            "descripcion": "Gradiente diagonal vibrante, texto blanco en capas, patrón de puntos.",
+            "afinidad_objetivo": ["comunidad", "reconocimient"],
+            "afinidad_tema": ["valor", "propuesta", "filosofia", "mision", "vision", "proposit"],
+        },
     ],
     "historia": [
         {

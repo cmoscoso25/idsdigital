@@ -981,6 +981,11 @@ def _render_post(empresa, contenido, estructura, estilo=None) -> str:
         "problema_solucion":   _render_post_problema_solucion,
         "estadistica":         _render_post_estadistica,
         "testimonio":          _render_post_testimonio,
+        "startup_saas":        _render_post_startup_saas,
+        "tech_futurista":      _render_post_tech_futurista,
+        "ia_neural":           _render_post_ia_neural,
+        "dashboard_analytics": _render_post_dashboard_analytics,
+        "modern_gradient":     _render_post_modern_gradient,
     }
     return _dispatch.get(estilo_id, _render_post_corporate_kpi)(empresa, contenido, estructura)
 
@@ -1331,6 +1336,365 @@ def _render_post_testimonio(empresa, contenido, estructura) -> str:
       </div>
       <div class="nxar-ig-likes">3,760 Me gusta</div>
       <div class="nxar-ig-caption"><b>{ig_user}</b> {copy1[:60]}...</div>
+    </div>
+  </div>
+</div>"""
+
+
+def _render_post_startup_saas(empresa, contenido, estructura) -> str:
+    """Layout vertical: banda superior de color + área texto + badge flotante con métrica."""
+    c1 = empresa.color_principal
+    c2 = empresa.color_secundario
+    nombre = empresa.nombre_empresa
+    initial = nombre[0].upper()
+    ig_user = "@" + nombre.lower().replace(" ", "_")
+    titulo = _tw(contenido.titulo, 7)
+    subtitulo = _s(contenido.copy.split("\n")[0], 80)
+    cta = _s(contenido.cta or "Probar gratis →", 35)
+    secciones = estructura.get("secciones", [])
+    prueba = next((s["texto"] for s in secciones if s.get("tipo") == "prueba"), "")
+    import re as _re2
+    m = _re2.search(r'(\d+[\d.,]*\s*[%xX×kdm]?)', prueba or titulo)
+    badge_num = m.group(1) if m else "10x"
+
+    return f"""
+<div class="nxar-stage nxar-post-stage">
+  <div class="nxar-chrome-wrap">
+    <div class="nxar-ig-header">
+      <div class="nxar-ig-avatar" style="background:linear-gradient(135deg,{c1},{c2})">{initial}</div>
+      <div class="nxar-ig-account">
+        <span class="nxar-ig-username">{ig_user}</span>
+        <span class="nxar-ig-badge">Publicidad</span>
+      </div>
+      <span class="nxar-ig-dots">⋯</span>
+    </div>
+    <div class="nxar-post-frame" style="background:#0a0a10;position:relative;overflow:hidden;aspect-ratio:1/1;display:flex;flex-direction:column">
+      <!-- BANDA SUPERIOR DE COLOR (35%) -->
+      <div style="flex:0 0 35%;background:linear-gradient(125deg,{c1},{c2});position:relative;overflow:hidden">
+        <!-- Patrón de puntos -->
+        <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.15" xmlns="http://www.w3.org/2000/svg">
+          <defs><pattern id="ss_dots" x="0" y="0" width="18" height="18" patternUnits="userSpaceOnUse">
+            <circle cx="2" cy="2" r="1.5" fill="#fff"/>
+          </pattern></defs>
+          <rect width="100%" height="100%" fill="url(#ss_dots)"/>
+        </svg>
+        <!-- Badge flotante -->
+        <div style="position:absolute;top:14px;right:16px;background:rgba(0,0,0,0.35);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:5px 12px;display:flex;align-items:center;gap:6px">
+          <div style="font-size:18px;font-weight:900;color:#fff;line-height:1">{badge_num}</div>
+          <div style="font-size:7px;font-weight:700;color:rgba(255,255,255,0.8);line-height:1.2">más<br>rápido</div>
+        </div>
+        <!-- Wordmark -->
+        <div style="position:absolute;bottom:12px;left:14px;font-size:11px;font-weight:800;color:rgba(255,255,255,0.9);letter-spacing:-0.02em">{_s(nombre,16)}</div>
+      </div>
+      <!-- ÁREA TEXTO (65%) -->
+      <div style="flex:1;padding:16px 18px 14px;display:flex;flex-direction:column;justify-content:space-between">
+        <div>
+          <div style="font-size:8px;font-weight:700;letter-spacing:0.12em;color:{c1};margin-bottom:8px">✦ NUEVO</div>
+          <h2 style="font-size:clamp(16px,3.4vw,22px);font-weight:900;color:#fff;line-height:1.1;letter-spacing:-0.04em;margin:0 0 8px">{titulo}</h2>
+          <p style="font-size:10px;color:rgba(255,255,255,0.5);line-height:1.5;margin:0">{subtitulo}</p>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div style="background:linear-gradient(90deg,{c1},{c2});border-radius:20px;padding:6px 16px;font-size:10px;font-weight:800;color:#fff">{cta}</div>
+          <div style="font-size:8px;color:rgba(255,255,255,0.25);font-weight:600">{ig_user}</div>
+        </div>
+      </div>
+    </div>
+    <div class="nxar-ig-footer">
+      <div class="nxar-ig-actions">
+        <span class="nxar-ig-action">♡</span><span class="nxar-ig-action">💬</span>
+        <span class="nxar-ig-action">↗</span><span class="nxar-ig-action nxar-ig-action--right">🔖</span>
+      </div>
+      <div class="nxar-ig-likes">1,984 Me gusta</div>
+      <div class="nxar-ig-caption"><b>{ig_user}</b> {titulo[:55]}...</div>
+    </div>
+  </div>
+</div>"""
+
+
+def _render_post_tech_futurista(empresa, contenido, estructura) -> str:
+    """Fondo oscuro con grid SVG, neon border, headline en 3 bloques visuales."""
+    c1 = empresa.color_principal
+    c2 = empresa.color_secundario
+    nombre = empresa.nombre_empresa
+    initial = nombre[0].upper()
+    ig_user = "@" + nombre.lower().replace(" ", "_")
+    titulo = _tw(contenido.titulo, 8)
+    cta = _s(contenido.cta or "Explorar →", 35)
+    palabras = titulo.split()
+    w1 = " ".join(palabras[:2]) if len(palabras) >= 2 else titulo
+    w2 = " ".join(palabras[2:5]) if len(palabras) > 2 else ""
+    w3 = " ".join(palabras[5:]) if len(palabras) > 5 else ""
+    categoria = _detectar_categoria(contenido, empresa)
+
+    return f"""
+<div class="nxar-stage nxar-post-stage">
+  <div class="nxar-chrome-wrap">
+    <div class="nxar-ig-header">
+      <div class="nxar-ig-avatar" style="background:linear-gradient(135deg,{c1},{c2})">{initial}</div>
+      <div class="nxar-ig-account">
+        <span class="nxar-ig-username">{ig_user}</span>
+        <span class="nxar-ig-badge">Publicidad</span>
+      </div>
+      <span class="nxar-ig-dots">⋯</span>
+    </div>
+    <div class="nxar-post-frame" style="background:#020408;position:relative;overflow:hidden;aspect-ratio:1/1">
+      <!-- Grid de fondo -->
+      <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.18" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="tf_grid" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+            <path d="M 32 0 L 0 0 0 32" fill="none" stroke="{c1}" stroke-width="0.5"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#tf_grid)"/>
+      </svg>
+      <!-- Glow esquinas -->
+      <div style="position:absolute;top:-40px;left:-40px;width:180px;height:180px;background:radial-gradient({c1}30,transparent 65%);border-radius:50%"></div>
+      <div style="position:absolute;bottom:-40px;right:-40px;width:180px;height:180px;background:radial-gradient({c2}25,transparent 65%);border-radius:50%"></div>
+      <!-- Borde neon -->
+      <div style="position:absolute;inset:8px;border:1px solid {c1}55;border-radius:4px;pointer-events:none"></div>
+      <!-- Contenido centrado -->
+      <div style="position:relative;z-index:2;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px;text-align:center">
+        <div style="font-size:8px;font-weight:700;letter-spacing:0.25em;color:{c1};margin-bottom:18px;text-transform:uppercase">{_s(categoria,20)} · {_s(nombre,14)}</div>
+        <div style="font-size:clamp(28px,6vw,38px);font-weight:900;color:#fff;line-height:1.05;letter-spacing:-0.05em;margin:0 0 4px">{w1}</div>
+        {f'<div style="font-size:clamp(22px,5vw,30px);font-weight:900;color:{c1};line-height:1.05;letter-spacing:-0.04em;margin:0 0 4px">{w2}</div>' if w2 else ""}
+        {f'<div style="font-size:clamp(16px,3.5vw,22px);font-weight:700;color:rgba(255,255,255,0.6);line-height:1.1;letter-spacing:-0.02em;margin:0 0 16px">{w3}</div>' if w3 else '<div style="margin-bottom:16px"></div>'}
+        <!-- Línea divisora con gradiente -->
+        <div style="width:60px;height:1px;background:linear-gradient(90deg,transparent,{c1},{c2},transparent);margin:0 0 16px"></div>
+        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.7);border:1px solid {c1}88;border-radius:20px;padding:5px 16px">{cta}</div>
+      </div>
+    </div>
+    <div class="nxar-ig-footer">
+      <div class="nxar-ig-actions">
+        <span class="nxar-ig-action">♡</span><span class="nxar-ig-action">💬</span>
+        <span class="nxar-ig-action">↗</span><span class="nxar-ig-action nxar-ig-action--right">🔖</span>
+      </div>
+      <div class="nxar-ig-likes">2,458 Me gusta</div>
+      <div class="nxar-ig-caption"><b>{ig_user}</b> {titulo[:55]}...</div>
+    </div>
+  </div>
+</div>"""
+
+
+def _render_post_ia_neural(empresa, contenido, estructura) -> str:
+    """Nodos SVG interconectados como fondo + headline IA centrado con gradiente cian-púrpura."""
+    c1 = empresa.color_principal
+    c2 = empresa.color_secundario
+    nombre = empresa.nombre_empresa
+    initial = nombre[0].upper()
+    ig_user = "@" + nombre.lower().replace(" ", "_")
+    titulo = _tw(contenido.titulo, 7)
+    copy1 = _s(contenido.copy.split("\n")[0], 80)
+    cta = _s(contenido.cta or "Ver demo →", 35)
+
+    # Nodos SVG de red neural (posiciones fijas, colores de marca)
+    nodos_svg = f"""
+    <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.35" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+      <!-- Conexiones -->
+      <line x1="50" y1="80"  x2="140" y2="140" stroke="{c1}" stroke-width="0.8" opacity="0.6"/>
+      <line x1="140" y1="140" x2="230" y2="70"  stroke="{c1}" stroke-width="0.8" opacity="0.6"/>
+      <line x1="140" y1="140" x2="200" y2="220" stroke="{c2}" stroke-width="0.8" opacity="0.6"/>
+      <line x1="80"  y1="220" x2="140" y2="140" stroke="{c2}" stroke-width="0.8" opacity="0.6"/>
+      <line x1="230" y1="70"  x2="260" y2="180" stroke="{c1}" stroke-width="0.5" opacity="0.4"/>
+      <line x1="260" y1="180" x2="200" y2="220" stroke="{c2}" stroke-width="0.5" opacity="0.4"/>
+      <line x1="50"  y1="80"  x2="80"  y2="220" stroke="{c1}" stroke-width="0.4" opacity="0.3"/>
+      <!-- Nodos -->
+      <circle cx="140" cy="140" r="8"  fill="{c1}" opacity="0.9"/>
+      <circle cx="50"  cy="80"  r="5"  fill="{c2}" opacity="0.7"/>
+      <circle cx="230" cy="70"  r="5"  fill="{c1}" opacity="0.7"/>
+      <circle cx="200" cy="220" r="5"  fill="{c2}" opacity="0.7"/>
+      <circle cx="80"  cy="220" r="5"  fill="{c1}" opacity="0.7"/>
+      <circle cx="260" cy="180" r="4"  fill="{c2}" opacity="0.5"/>
+      <circle cx="140" cy="140" r="14" fill="{c1}" opacity="0.15"/>
+    </svg>"""
+
+    return f"""
+<div class="nxar-stage nxar-post-stage">
+  <div class="nxar-chrome-wrap">
+    <div class="nxar-ig-header">
+      <div class="nxar-ig-avatar" style="background:linear-gradient(135deg,{c1},{c2})">{initial}</div>
+      <div class="nxar-ig-account">
+        <span class="nxar-ig-username">{ig_user}</span>
+        <span class="nxar-ig-badge">Publicidad</span>
+      </div>
+      <span class="nxar-ig-dots">⋯</span>
+    </div>
+    <div class="nxar-post-frame" style="background:linear-gradient(150deg,#030810,#080412);position:relative;overflow:hidden;aspect-ratio:1/1">
+      {nodos_svg}
+      <!-- Overlay central -->
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 30%,#030810 80%)"></div>
+      <!-- Contenido -->
+      <div style="position:relative;z-index:2;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center">
+        <!-- Badge IA -->
+        <div style="font-size:7px;font-weight:900;letter-spacing:0.25em;color:{c1};background:{c1}18;border:1px solid {c1}44;border-radius:3px;padding:3px 10px;margin-bottom:14px">◈ INTELIGENCIA ARTIFICIAL</div>
+        <!-- Headline con gradiente -->
+        <h2 style="font-size:clamp(18px,3.8vw,24px);font-weight:900;line-height:1.1;letter-spacing:-0.04em;margin:0 0 10px;background:linear-gradient(135deg,#fff 30%,{c1},{c2});-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">{titulo}</h2>
+        <p style="font-size:10px;color:rgba(255,255,255,0.45);line-height:1.5;margin:0 0 18px;max-width:200px">{copy1}</p>
+        <!-- Línea divisora -->
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,{c1}66)"></div>
+          <div style="font-size:14px;color:{c1};opacity:0.6">◈</div>
+          <div style="flex:1;height:1px;background:linear-gradient(90deg,{c2}66,transparent)"></div>
+        </div>
+        <div style="background:linear-gradient(90deg,{c1},{c2});border-radius:20px;padding:6px 18px;font-size:10px;font-weight:800;color:#fff">{cta}</div>
+        <div style="margin-top:12px;font-size:8px;color:rgba(255,255,255,0.2)">{_s(nombre,16)}</div>
+      </div>
+    </div>
+    <div class="nxar-ig-footer">
+      <div class="nxar-ig-actions">
+        <span class="nxar-ig-action">♡</span><span class="nxar-ig-action">💬</span>
+        <span class="nxar-ig-action">↗</span><span class="nxar-ig-action nxar-ig-action--right">🔖</span>
+      </div>
+      <div class="nxar-ig-likes">2,103 Me gusta</div>
+      <div class="nxar-ig-caption"><b>{ig_user}</b> {titulo[:55]}...</div>
+    </div>
+  </div>
+</div>"""
+
+
+def _render_post_dashboard_analytics(empresa, contenido, estructura) -> str:
+    """Mockup de dashboard oscuro con 4 KPI tiles y sparkline SVG simulado."""
+    c1 = empresa.color_principal
+    c2 = empresa.color_secundario
+    nombre = empresa.nombre_empresa
+    initial = nombre[0].upper()
+    ig_user = "@" + nombre.lower().replace(" ", "_")
+    titulo = _tw(contenido.titulo, 8)
+    cta = _s(contenido.cta or "Ver reporte →", 35)
+    categoria = _detectar_categoria(contenido, empresa)
+
+    _kpi_data = {
+        "ia":            [("98%","Precisión","↑"),("4.2x","ROI","↑"),("73%","Tiempo ↓","↓"),("2.1k","Usuarios","↑")],
+        "software":      [("99.9%","Uptime","↑"),("0.3s","Latencia","↓"),("14k","Req/min","↑"),("4.8★","Rating","↑")],
+        "marketing":     [("6.8%","CTR","↑"),("2.4x","ROAS","↑"),("12k","Leads","↑"),("$18","CPA","↓")],
+        "automatizacion":[("87%","Ahorro","↑"),("5x","Velocidad","↑"),("0 err","Errores","✓"),("24/7","Operación","↑")],
+        "finanzas":      [("32%","Margen","↑"),("1.8x","Retorno","↑"),("$2.4M","Revenue","↑"),("A+","Rating","↑")],
+    }
+    kpis = _kpi_data.get(categoria, [("87%","Resultado","↑"),("3.2x","Crecimiento","↑"),("98%","Satisfacción","↑"),("4.9★","Valoración","↑")])
+
+    def kpi_tile(val, lbl, trend):
+        trend_col = "#10b981" if trend in ("↑","✓") else "#ef4444"
+        return (f'<div style="flex:1;background:#0e1628;border:1px solid rgba(255,255,255,0.07);border-radius:6px;padding:8px 6px;text-align:center">'
+                f'<div style="font-size:14px;font-weight:900;color:#fff;line-height:1">{val}</div>'
+                f'<div style="font-size:7px;color:rgba(255,255,255,0.4);margin:2px 0">{lbl}</div>'
+                f'<div style="font-size:8px;font-weight:700;color:{trend_col}">{trend}</div>'
+                f'</div>')
+
+    tiles_html = "".join(kpi_tile(*k) for k in kpis)
+
+    # Sparkline SVG simple (línea de tendencia ascendente)
+    sparkline = f"""<svg viewBox="0 0 120 30" style="width:100%;height:30px" xmlns="http://www.w3.org/2000/svg">
+      <polyline points="0,25 20,20 40,18 60,14 80,10 100,6 120,2" fill="none" stroke="{c1}" stroke-width="1.5"/>
+      <polyline points="0,25 20,20 40,18 60,14 80,10 100,6 120,2 120,30 0,30" fill="{c1}" opacity="0.08"/>
+    </svg>"""
+
+    return f"""
+<div class="nxar-stage nxar-post-stage">
+  <div class="nxar-chrome-wrap">
+    <div class="nxar-ig-header">
+      <div class="nxar-ig-avatar" style="background:linear-gradient(135deg,{c1},{c2})">{initial}</div>
+      <div class="nxar-ig-account">
+        <span class="nxar-ig-username">{ig_user}</span>
+        <span class="nxar-ig-badge">Publicidad</span>
+      </div>
+      <span class="nxar-ig-dots">⋯</span>
+    </div>
+    <div class="nxar-post-frame" style="background:#060d1a;position:relative;overflow:hidden;aspect-ratio:1/1;display:flex;flex-direction:column;padding:16px">
+      <!-- Header del dashboard -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div>
+          <div style="font-size:8px;font-weight:700;letter-spacing:0.12em;color:rgba(255,255,255,0.35);margin-bottom:2px">ANALYTICS · {_s(categoria.upper(),16)}</div>
+          <div style="font-size:13px;font-weight:800;color:#fff;letter-spacing:-0.02em">{_s(nombre,18)}</div>
+        </div>
+        <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,{c1},{c2});display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:13px">{initial}</div>
+      </div>
+      <!-- KPI tiles -->
+      <div style="display:flex;gap:6px;margin-bottom:12px">{tiles_html}</div>
+      <!-- Gráfica de tendencia -->
+      <div style="background:#0e1628;border:1px solid rgba(255,255,255,0.07);border-radius:6px;padding:8px 10px;flex:1;display:flex;flex-direction:column;justify-content:space-between">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+          <div style="font-size:8px;font-weight:600;color:rgba(255,255,255,0.4)">Tendencia — últimas semanas</div>
+          <div style="font-size:7px;color:{c1};font-weight:700">↑ Creciendo</div>
+        </div>
+        {sparkline}
+      </div>
+      <!-- CTA -->
+      <div style="margin-top:10px;display:flex;align-items:center;justify-content:space-between">
+        <h3 style="font-size:11px;font-weight:700;color:#fff;line-height:1.2;margin:0;max-width:65%">{titulo}</h3>
+        <div style="background:linear-gradient(90deg,{c1},{c2});border-radius:16px;padding:5px 12px;font-size:9px;font-weight:800;color:#fff;white-space:nowrap">{cta}</div>
+      </div>
+    </div>
+    <div class="nxar-ig-footer">
+      <div class="nxar-ig-actions">
+        <span class="nxar-ig-action">♡</span><span class="nxar-ig-action">💬</span>
+        <span class="nxar-ig-action">↗</span><span class="nxar-ig-action nxar-ig-action--right">🔖</span>
+      </div>
+      <div class="nxar-ig-likes">1,672 Me gusta</div>
+      <div class="nxar-ig-caption"><b>{ig_user}</b> {titulo[:55]}...</div>
+    </div>
+  </div>
+</div>"""
+
+
+def _render_post_modern_gradient(empresa, contenido, estructura) -> str:
+    """Gradiente diagonal vibrante de pantalla completa, texto en capas, patrón de puntos."""
+    c1 = empresa.color_principal
+    c2 = empresa.color_secundario
+    nombre = empresa.nombre_empresa
+    initial = nombre[0].upper()
+    ig_user = "@" + nombre.lower().replace(" ", "_")
+    titulo = _tw(contenido.titulo, 8)
+    copy1 = _s(contenido.copy.split("\n")[0], 80)
+    cta = _s(contenido.cta or "Saber más →", 35)
+    secciones = estructura.get("secciones", [])
+    beneficio = next((s["texto"] for s in secciones if s.get("tipo") == "beneficio"), copy1)
+
+    return f"""
+<div class="nxar-stage nxar-post-stage">
+  <div class="nxar-chrome-wrap">
+    <div class="nxar-ig-header">
+      <div class="nxar-ig-avatar" style="background:linear-gradient(135deg,{c1},{c2})">{initial}</div>
+      <div class="nxar-ig-account">
+        <span class="nxar-ig-username">{ig_user}</span>
+        <span class="nxar-ig-badge">Publicidad</span>
+      </div>
+      <span class="nxar-ig-dots">⋯</span>
+    </div>
+    <div class="nxar-post-frame" style="background:linear-gradient(135deg,{c1} 0%,{c2} 55%,#1a0a2e 100%);position:relative;overflow:hidden;aspect-ratio:1/1">
+      <!-- Patrón de puntos superpuesto -->
+      <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.1" xmlns="http://www.w3.org/2000/svg">
+        <defs><pattern id="mg_dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+          <circle cx="1.5" cy="1.5" r="1.5" fill="#fff"/>
+        </pattern></defs>
+        <rect width="100%" height="100%" fill="url(#mg_dots)"/>
+      </svg>
+      <!-- Círculos de fondo decorativos -->
+      <div style="position:absolute;top:-30px;right:-30px;width:160px;height:160px;border:40px solid rgba(255,255,255,0.06);border-radius:50%"></div>
+      <div style="position:absolute;bottom:-50px;left:-50px;width:200px;height:200px;border:50px solid rgba(255,255,255,0.04);border-radius:50%"></div>
+      <!-- Contenido -->
+      <div style="position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:22px 20px">
+        <!-- Top row -->
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:9px;font-weight:800;color:rgba(255,255,255,0.9);letter-spacing:0.06em">{_s(nombre,16)}</div>
+          <div style="width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.15);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:13px">{initial}</div>
+        </div>
+        <!-- Headline central -->
+        <div style="text-align:center">
+          <h2 style="font-size:clamp(20px,4.5vw,28px);font-weight:900;color:#fff;line-height:1.1;letter-spacing:-0.04em;margin:0 0 10px;text-shadow:0 2px 12px rgba(0,0,0,0.3)">{titulo}</h2>
+          <p style="font-size:11px;color:rgba(255,255,255,0.75);line-height:1.5;margin:0 auto;max-width:210px">{_s(beneficio,75)}</p>
+        </div>
+        <!-- CTA bottom -->
+        <div style="display:flex;align-items:center;justify-content:center">
+          <div style="background:rgba(255,255,255,0.95);border-radius:24px;padding:8px 22px;font-size:10px;font-weight:900;color:{c1};box-shadow:0 4px 20px rgba(0,0,0,0.25)">{cta}</div>
+        </div>
+      </div>
+    </div>
+    <div class="nxar-ig-footer">
+      <div class="nxar-ig-actions">
+        <span class="nxar-ig-action">♡</span><span class="nxar-ig-action">💬</span>
+        <span class="nxar-ig-action">↗</span><span class="nxar-ig-action nxar-ig-action--right">🔖</span>
+      </div>
+      <div class="nxar-ig-likes">3,047 Me gusta</div>
+      <div class="nxar-ig-caption"><b>{ig_user}</b> {titulo[:55]}...</div>
     </div>
   </div>
 </div>"""
