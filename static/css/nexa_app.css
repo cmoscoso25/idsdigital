@@ -2504,6 +2504,84 @@
 .nxa-link:hover { text-decoration: underline; }
 
 /* ══════════════════════════════════════════
+   TIPOGRAFÍA ADAPTATIVA — ROBUSTEZ DE LAYOUT
+   Previene superposición y desbordamiento en todos los formatos.
+   No modifica colores, pesos ni espaciado — solo overflow y clamp.
+   ══════════════════════════════════════════ */
+
+/* Base: overflow protection universal */
+.nxar-post-titulo,
+.nxar-story-titulo,
+.nxar-slide-titulo,
+.nxar-slide-sub,
+.nxar-story-sub,
+.nxar-escena-texto,
+.nxar-post-copy {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* POST: h2 inline (renders POST no usan clase, cubiertos por selector hijo) */
+.nxar-post-frame h2 {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
+  min-width: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.nxar-post-frame p {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* HISTORIA: body contiene el desbordamiento; título y sub con clamp de líneas */
+.nxar-story-body {
+  overflow: hidden;
+}
+.nxar-story-titulo {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.nxar-story-sub {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* CARRUSEL: contenedor no desborda; título con clamp; subtítulo con clamp */
+.nxar-slide-content {
+  overflow: hidden;
+}
+.nxar-slide-titulo {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.nxar-slide-sub {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* REEL: texto de escena con clamp de líneas */
+.nxar-escena-texto {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ══════════════════════════════════════════
    RESPONSIVE
    ══════════════════════════════════════════ */
 @media (max-width: 900px) {

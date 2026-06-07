@@ -1,4 +1,4 @@
-"""
+﻿"""
 Agente Diseño Instagram — Nexa AI
 Genera creatividades visuales profesionales para Instagram.
 Motor de Estilos Creativos: cada pieza usa un estilo diferente según el Director Creativo.
@@ -40,6 +40,27 @@ def _tw(text: str, max_words: int, maxlen: int = 100) -> str:
     if len(words) > max_words:
         out += "..."
     return _s(out, maxlen)
+
+
+def _afs(text: str, fmt: str = "slide") -> str:
+    """Retorna un valor CSS font-size adaptado a la longitud del texto.
+
+    Reduce el tamaño progresivamente para que títulos largos no rompan el layout.
+    La CSS ya aplica overflow-wrap y line-clamp como segunda capa de seguridad.
+    """
+    n = len(str(text or ""))
+    _table = {
+        "post":  [(20, "clamp(17px,3.4vw,22px)"), (45, "clamp(14px,2.8vw,18px)"),
+                  (70, "clamp(12px,2.3vw,15px)"), (9999, "clamp(11px,2vw,13px)")],
+        "slide": [(20, "clamp(16px,3.2vw,22px)"), (45, "clamp(13px,2.5vw,18px)"),
+                  (70, "clamp(11px,2vw,14px)"),   (9999, "clamp(10px,1.8vw,12px)")],
+        "story": [(25, "14px"), (45, "13px"), (65, "12px"), (9999, "11px")],
+        "reel":  [(25, "12px"), (45, "11px"), (9999, "10px")],
+    }
+    for threshold, size in _table.get(fmt, _table["slide"]):
+        if n <= threshold:
+            return size
+    return _table.get(fmt, _table["slide"])[-1][1]
 
 
 def generar_creatividad(empresa, memoria_marca, contenido) -> dict:
@@ -1028,7 +1049,7 @@ def _render_post_corporate_kpi(empresa, contenido, estructura) -> str:
       <div style="flex:1;padding:12px 16px;display:flex;flex-direction:column;justify-content:space-between;background:#04060e">
         <div>
           <div style="width:28px;height:2px;background:linear-gradient(90deg,{c1},{c2});border-radius:1px;margin-bottom:6px"></div>
-          <h2 style="font-size:clamp(15px,3.2vw,20px);font-weight:900;color:#fff;line-height:1.15;letter-spacing:-0.03em;margin:0 0 4px">{titulo}</h2>
+          <h2 style="font-size:{_afs(titulo,'post')};font-weight:900;color:#fff;line-height:1.15;letter-spacing:-0.03em;margin:0 0 4px">{titulo}</h2>
           {_kpi_cards(categoria, c1)}
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
@@ -1087,7 +1108,7 @@ def _render_post_minimalista(empresa, contenido, estructura) -> str:
         <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.25);letter-spacing:0.1em">{_s(nombre,14)}</div>
         <div>
           <div style="width:24px;height:2px;background:{c1};border-radius:1px;margin-bottom:10px"></div>
-          <h2 style="font-size:clamp(18px,3.8vw,26px);font-weight:900;color:#fff;line-height:1.1;letter-spacing:-0.04em;margin:0 0 8px">{titulo}</h2>
+          <h2 style="font-size:{_afs(titulo,'post')};font-weight:900;color:#fff;line-height:1.1;letter-spacing:-0.04em;margin:0 0 8px">{titulo}</h2>
           <p style="font-size:10px;color:rgba(255,255,255,0.5);line-height:1.5;margin:0">{subtitulo}</p>
         </div>
         <div>
@@ -1390,7 +1411,7 @@ def _render_post_startup_saas(empresa, contenido, estructura) -> str:
       <div style="flex:1;padding:16px 18px 14px;display:flex;flex-direction:column;justify-content:space-between">
         <div>
           <div style="font-size:8px;font-weight:700;letter-spacing:0.12em;color:{c1};margin-bottom:8px">✦ NUEVO</div>
-          <h2 style="font-size:clamp(16px,3.4vw,22px);font-weight:900;color:#fff;line-height:1.1;letter-spacing:-0.04em;margin:0 0 8px">{titulo}</h2>
+          <h2 style="font-size:{_afs(titulo,'post')};font-weight:900;color:#fff;line-height:1.1;letter-spacing:-0.04em;margin:0 0 8px">{titulo}</h2>
           <p style="font-size:10px;color:rgba(255,255,255,0.5);line-height:1.5;margin:0">{subtitulo}</p>
         </div>
         <div style="display:flex;align-items:center;justify-content:space-between">
@@ -1527,7 +1548,7 @@ def _render_post_ia_neural(empresa, contenido, estructura) -> str:
         <!-- Badge IA -->
         <div style="font-size:7px;font-weight:900;letter-spacing:0.25em;color:{c1};background:{c1}18;border:1px solid {c1}44;border-radius:3px;padding:3px 10px;margin-bottom:14px">◈ INTELIGENCIA ARTIFICIAL</div>
         <!-- Headline con gradiente -->
-        <h2 style="font-size:clamp(18px,3.8vw,24px);font-weight:900;line-height:1.1;letter-spacing:-0.04em;margin:0 0 10px;background:linear-gradient(135deg,#fff 30%,{c1},{c2});-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">{titulo}</h2>
+        <h2 style="font-size:{_afs(titulo,'post')};font-weight:900;line-height:1.1;letter-spacing:-0.04em;margin:0 0 10px;background:linear-gradient(135deg,#fff 30%,{c1},{c2});-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">{titulo}</h2>
         <p style="font-size:10px;color:rgba(255,255,255,0.45);line-height:1.5;margin:0 0 18px;max-width:200px">{copy1}</p>
         <!-- Línea divisora -->
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
@@ -1679,7 +1700,7 @@ def _render_post_modern_gradient(empresa, contenido, estructura) -> str:
         </div>
         <!-- Headline central -->
         <div style="text-align:center">
-          <h2 style="font-size:clamp(20px,4.5vw,28px);font-weight:900;color:#fff;line-height:1.1;letter-spacing:-0.04em;margin:0 0 10px;text-shadow:0 2px 12px rgba(0,0,0,0.3)">{titulo}</h2>
+          <h2 style="font-size:{_afs(titulo,'post')};font-weight:900;color:#fff;line-height:1.1;letter-spacing:-0.04em;margin:0 0 10px;text-shadow:0 2px 12px rgba(0,0,0,0.3)">{titulo}</h2>
           <p style="font-size:11px;color:rgba(255,255,255,0.75);line-height:1.5;margin:0 auto;max-width:210px">{_s(beneficio,75)}</p>
         </div>
         <!-- CTA bottom -->
@@ -1727,13 +1748,14 @@ def _render_historia(empresa, contenido, estructura, estilo=None) -> str:
         titulo = _s(p.get("titulo", ""), 80)
         sub = _s(p.get("subtitulo", ""), 60)
         sub_html = f'<p class="nxar-story-sub">{sub}</p>' if sub else ""
+        fs = _afs(titulo, "story")
 
         # ── ENCUESTA ─────────────────────────────────────────────────────────
         if estilo_id == "encuesta":
             if i == 0:
                 return (
                     f'<div style="flex:0 0 38%;overflow:hidden;border-radius:8px;margin-bottom:8px;position:relative">{vpack["hero"]}</div>'
-                    f'<p class="nxar-story-titulo" style="text-align:center;font-size:13px">{titulo}</p>'
+                    f'<p class="nxar-story-titulo" style="text-align:center;font-size:{fs}">{titulo}</p>'
                     f'<div class="nxar-sticker nxar-sticker--encuesta"><span>¿Qué opinas?</span>'
                     f'<div class="nxar-encuesta-op" style="border-color:{c1};background:{c1}22">Sí 👍</div>'
                     f'<div class="nxar-encuesta-op">No 👎</div></div>'
@@ -1794,7 +1816,7 @@ def _render_historia(empresa, contenido, estructura, estilo=None) -> str:
                     f'background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.4);'
                     f'border-radius:6px;padding:5px 14px;display:inline-block;margin-bottom:10px">📌 ANTES</div>'
                     f'<div style="font-size:42px;text-align:center;margin-bottom:6px">😰</div>'
-                    f'<p class="nxar-story-titulo" style="text-align:center;color:#fca5a5">{titulo}</p>{sub_html}'
+                    f'<p class="nxar-story-titulo" style="text-align:center;color:#fca5a5;font-size:{fs}">{titulo}</p>{sub_html}'
                 )
             if i == 1:
                 return (
@@ -1813,7 +1835,7 @@ def _render_historia(empresa, contenido, estructura, estilo=None) -> str:
                 f'background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.35);'
                 f'border-radius:6px;padding:5px 14px;display:inline-block;margin-bottom:10px">✨ DESPUÉS</div>'
                 f'<div style="font-size:42px;text-align:center;margin-bottom:6px">🎯</div>'
-                f'<p class="nxar-story-titulo" style="text-align:center;color:#86efac">{titulo}</p>{sub_html}'
+                f'<p class="nxar-story-titulo" style="text-align:center;color:#86efac;font-size:{fs}">{titulo}</p>{sub_html}'
                 f'<div style="background:linear-gradient(90deg,#22c55e,{c1});border-radius:24px;'
                 f'padding:9px 20px;font-size:11px;font-weight:800;color:#fff;display:inline-block;margin-top:8px">'
                 f'Quiero este resultado →</div>'
@@ -1832,7 +1854,7 @@ def _render_historia(empresa, contenido, estructura, estilo=None) -> str:
                     f'<div style="font-size:9px;font-weight:900;letter-spacing:0.15em;color:#fbbf24;'
                     f'background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.35);'
                     f'border-radius:6px;padding:5px 12px;display:inline-block;margin-bottom:8px">⚡ OFERTA LIMITADA</div>'
-                    f'<p class="nxar-story-titulo" style="text-align:center">{titulo}</p>'
+                    f'<p class="nxar-story-titulo" style="text-align:center;font-size:{fs}">{titulo}</p>'
                     f'<div style="display:flex;align-items:center;justify-content:center;gap:2px;margin-top:8px">{digits_html}</div>'
                     f'<div style="font-size:8px;color:rgba(255,255,255,0.3);margin-top:4px;text-align:center">HH : MM</div>'
                 )
@@ -1850,7 +1872,7 @@ def _render_historia(empresa, contenido, estructura, estilo=None) -> str:
                     f'letter-spacing:0.08em">🔒 ACCESO LIMITADO</div>'
                 )
             return (
-                f'<p class="nxar-story-titulo" style="text-align:center">{titulo}</p>'
+                f'<p class="nxar-story-titulo" style="text-align:center;font-size:{fs}">{titulo}</p>'
                 f'<div style="background:linear-gradient(90deg,{c1},{c2});border-radius:24px;'
                 f'padding:12px 26px;font-size:13px;font-weight:900;color:#fff;display:inline-block;'
                 f'margin:10px auto 0;box-shadow:0 6px 20px {c1}55;letter-spacing:0.04em">ACCESO AHORA →</div>'
@@ -2031,7 +2053,7 @@ def _render_carrusel(empresa, contenido, estructura, estilo=None) -> str:
       <div class="nxar-slide-content" style="flex:1;display:flex;flex-direction:column;justify-content:space-between;padding:10px 14px">
         <div>
           <div style="width:24px;height:2px;background:linear-gradient(90deg,{c1},{c2});border-radius:1px;margin-bottom:6px"></div>
-          <h2 class="nxar-slide-titulo" style="font-size:clamp(16px,3.2vw,22px);margin:0 0 4px">{_s(s.get('titulo', ''), 80)}</h2>
+          <h2 class="nxar-slide-titulo" style="font-size:{_afs(_s(s.get('titulo',''),80),'slide')};margin:0 0 4px">{_s(s.get('titulo', ''), 80)}</h2>
           {f'<p class="nxar-slide-sub" style="font-size:10px;opacity:0.55;margin:0">{_s(s.get("subtitulo",""),60)}</p>' if s.get("subtitulo") else ''}
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center">
@@ -2054,7 +2076,7 @@ def _render_carrusel(empresa, contenido, estructura, estilo=None) -> str:
         </div>
         {estilo_extra}
         <div class="nxar-slide-icon" style="color:{c1};font-size:28px">{icon}</div>
-        <h2 class="nxar-slide-titulo" style="font-size:clamp(15px,3vw,22px)">{_s(s.get('titulo', ''), 80)}</h2>
+        <h2 class="nxar-slide-titulo" style="font-size:{_afs(_s(s.get('titulo',''),80),'slide')}">{_s(s.get('titulo', ''), 80)}</h2>
         {f'<p class="nxar-slide-sub">{_s(s.get("subtitulo",""),70)}</p>' if s.get("subtitulo") else ''}
         {_slide_body(tipo, s, vis, c1, c2)}
       </div>
