@@ -2064,23 +2064,173 @@ def _render_carrusel(empresa, contenido, estructura, estilo=None) -> str:
       </div>
     </div>"""
         else:
-            slides_html += f"""
-    <div class="nxar-slide {active}" data-slide="{i}" style="background:{bg}">
+            # Variables pre-computadas para evitar expresiones complejas en f-strings (Python 3.11)
+            tit = _s(s.get("titulo", ""), 80)
+            sub_txt = _s(s.get("subtitulo", ""), 70)
+            sub_p = f'<p class="nxar-slide-sub" style="margin:4px 0 0">{sub_txt}</p>' if sub_txt else ""
+            sub_p_center = f'<p class="nxar-slide-sub" style="text-align:center;margin:4px 0 0">{sub_txt}</p>' if sub_txt else ""
+            sub_p_muted = f'<p class="nxar-slide-sub" style="margin:0;font-size:10px;color:rgba(255,255,255,0.6)">{sub_txt}</p>' if sub_txt else ""
+            sub_p_default = f'<p class="nxar-slide-sub">{sub_txt}</p>' if sub_txt else ""
+            logo_html = f'<div class="nxar-slide-logo" style="color:rgba(255,255,255,0.25)">{_s(nombre, 14)}</div>' if i == total - 1 else ""
+            is_cta = tipo in ("cta", "cierre")
+            tpl_marker = (
+                f'<div style="position:absolute;bottom:3px;left:50%;transform:translateX(-50%);'
+                f'font-size:7px;font-weight:700;color:rgba(255,255,255,0.35);background:rgba(0,0,0,0.55);'
+                f'border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:2px 8px;'
+                f'white-space:nowrap;z-index:10;letter-spacing:0.08em">TEMPLATE: {estilo_id}</div>'
+            )
+
+            # ── LISTA NUMERADA: layout magazine — número gigante izquierda + contenido derecha ──
+            if estilo_id == "lista_numerada" and not is_cta:
+                num_str = str(i).zfill(2)
+                lbl = vis["label"][:14]
+                slides_html += f"""
+    <div class="nxar-slide {active}" data-slide="{i}" style="background:{bg};position:relative;overflow:hidden">
+      {pattern_html}
+      <div class="nxar-slide-content" style="display:flex;flex-direction:column;padding:12px 14px;height:100%">
+        <div style="display:flex;align-items:stretch;gap:10px;flex:1;min-height:0">
+          <div style="width:48px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative">
+            <div style="font-size:58px;font-weight:900;color:{c1};opacity:0.14;line-height:1;position:absolute;top:50%;transform:translateY(-50%)">{num_str}</div>
+            <div style="font-size:8px;font-weight:700;color:{c1};letter-spacing:0.15em;writing-mode:vertical-rl;transform:rotate(180deg)"># {num_str}</div>
+          </div>
+          <div style="flex:1;border-left:2px solid {c1}44;padding-left:10px;display:flex;flex-direction:column;justify-content:center;gap:6px;overflow:hidden">
+            <div style="font-size:7px;font-weight:700;color:rgba(255,255,255,0.3);letter-spacing:0.12em">{tipo.upper()}</div>
+            <h2 class="nxar-slide-titulo" style="font-size:{_afs(tit,'slide')};margin:0">{tit}</h2>
+            {sub_p}
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.08)">
+          <div style="font-size:7px;font-weight:700;color:{c1};letter-spacing:0.1em">TOP {total - 2} · {lbl}</div>
+          <div style="font-size:8px;color:rgba(255,255,255,0.3)">{i + 1}/{total}</div>
+        </div>
+      </div>
+      {tpl_marker}
+    </div>"""
+
+            # ── MITOS VS REALIDAD: veredicto centrado — ❌ MITO / ✅ REALIDAD dominante ──
+            elif estilo_id == "mitos_realidad" and not is_cta:
+                is_mito = i % 2 != 0
+                v_icon = "❌" if is_mito else "✅"
+                v_text = "MITO" if is_mito else "REALIDAD"
+                v_color = "#ef4444" if is_mito else "#22c55e"
+                dots_mr = "".join(
+                    f'<div style="width:14px;height:3px;border-radius:2px;background:rgba(255,255,255,{0.7 if j == i else 0.2})"></div>'
+                    for j in range(min(total, 8))
+                )
+                slides_html += f"""
+    <div class="nxar-slide {active}" data-slide="{i}" style="background:{bg};position:relative;overflow:hidden">
+      {pattern_html}
+      <div class="nxar-slide-content" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:10px 14px;height:100%;justify-content:space-between">
+        <div style="display:flex;justify-content:space-between;width:100%;align-items:center">
+          <div style="font-size:8px;font-weight:700;color:rgba(255,255,255,0.3);letter-spacing:0.1em">{tipo.upper()}</div>
+          <div style="font-size:8px;color:rgba(255,255,255,0.3)">{i + 1}/{total}</div>
+        </div>
+        <div style="text-align:center;padding:6px 0">
+          <div style="font-size:50px;line-height:1;margin-bottom:6px">{v_icon}</div>
+          <div style="font-size:11px;font-weight:900;color:{v_color};letter-spacing:0.2em;background:{v_color}1a;border:1px solid {v_color}44;border-radius:6px;padding:4px 14px;display:inline-block">{v_text}</div>
+        </div>
+        <div style="overflow:hidden;max-width:100%">
+          <h2 class="nxar-slide-titulo" style="font-size:{_afs(tit,'slide')};text-align:center;margin:0">{tit}</h2>
+          {sub_p_center}
+        </div>
+        <div style="display:flex;gap:3px;align-items:center">{dots_mr}</div>
+      </div>
+      {tpl_marker}
+    </div>"""
+
+            # ── CASO DE ÉXITO: fases en timeline superior + tarjeta de contenido ──
+            elif estilo_id == "caso_exito" and not is_cta:
+                phase_idx = min(i, len(_caso_labels) - 1)
+                phase_label = _caso_labels[phase_idx]
+                _ce_colors = {
+                    "PORTADA": c1, "CLIENTE": "#8b5cf6",
+                    "DESAFÍO": "#ef4444", "PROCESO": "#f59e0b",
+                    "RESULTADO": "#22c55e", "CTA": c2,
+                }
+                active_col = _ce_colors.get(phase_label, "#8b5cf6")
+                phases_html = ""
+                for pl in [p for p in _caso_labels if p not in ("PORTADA", "CTA")]:
+                    ph_c = _ce_colors.get(pl, "#8b5cf6")
+                    is_ph = pl == phase_label
+                    ph_bg = ph_c + "28" if is_ph else "transparent"
+                    ph_bd = ph_c + "55" if is_ph else ph_c + "20"
+                    ph_tx = ph_c if is_ph else "rgba(255,255,255,0.2)"
+                    phases_html += (
+                        f'<div style="font-size:7px;font-weight:700;padding:2px 7px;'
+                        f'border-radius:10px;letter-spacing:0.06em;background:{ph_bg};'
+                        f'color:{ph_tx};border:1px solid {ph_bd}">{pl}</div>'
+                    )
+                slides_html += f"""
+    <div class="nxar-slide {active}" data-slide="{i}" style="background:{bg};position:relative;overflow:hidden">
+      {pattern_html}
+      <div class="nxar-slide-content" style="display:flex;flex-direction:column;padding:10px 12px;height:100%">
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;padding-bottom:7px;border-bottom:1px solid rgba(255,255,255,0.08)">{phases_html}</div>
+        <div style="background:{active_col}12;border:1px solid {active_col}33;border-radius:8px;padding:8px 10px;flex:1;display:flex;flex-direction:column;justify-content:center;gap:6px;overflow:hidden">
+          <div style="font-size:9px;font-weight:800;color:{active_col};letter-spacing:0.12em">{phase_label}</div>
+          <h2 class="nxar-slide-titulo" style="font-size:{_afs(tit,'slide')};margin:0;color:#fff">{tit}</h2>
+          {sub_p_muted}
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
+          <div style="font-size:7px;font-weight:700;color:{active_col};letter-spacing:0.1em">{vis["icon"]} CASO REAL</div>
+          <div style="font-size:8px;color:rgba(255,255,255,0.3)">{i + 1}/{total}</div>
+        </div>
+      </div>
+      {tpl_marker}
+    </div>"""
+
+            # ── TUTORIAL PASO A PASO: barra de progreso + número de paso grande ──
+            elif estilo_id == "tutorial_pasos" and not is_cta:
+                step_label = _tutorial_labels[i] if i < len(_tutorial_labels) else f"PASO {i:02d}"
+                progress_pct = int((i / max(total - 1, 1)) * 100)
+                num_big = str(max(i, 1)).zfill(2)
+                lbl_t = vis["label"][:14]
+                slides_html += f"""
+    <div class="nxar-slide {active}" data-slide="{i}" style="background:{bg};position:relative;overflow:hidden">
+      {pattern_html}
+      <div class="nxar-slide-content" style="display:flex;flex-direction:column;padding:10px 14px;height:100%">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <div style="font-size:9px;font-weight:800;letter-spacing:0.15em;color:#f97316;background:rgba(249,115,22,0.12);border:1px solid rgba(249,115,22,0.35);border-radius:4px;padding:3px 9px">{step_label}</div>
+          <div style="font-size:8px;color:rgba(255,255,255,0.3)">{i + 1}/{total}</div>
+        </div>
+        <div style="width:100%;height:3px;background:rgba(255,255,255,0.08);border-radius:2px;margin-bottom:8px;overflow:hidden">
+          <div style="height:100%;width:{progress_pct}%;background:linear-gradient(90deg,#f97316,#ea580c);border-radius:2px"></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:8px;flex:1;overflow:hidden">
+          <div style="font-size:46px;font-weight:900;color:#f97316;opacity:0.2;line-height:1;flex-shrink:0;min-width:36px">{num_big}</div>
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:4px;overflow:hidden">
+            <h2 class="nxar-slide-titulo" style="font-size:{_afs(tit,'slide')};margin:0">{tit}</h2>
+            {sub_p}
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.08)">
+          <div style="font-size:7px;font-weight:700;color:#f97316;letter-spacing:0.1em">TUTORIAL · {lbl_t}</div>
+          <div style="font-size:7px;color:rgba(255,255,255,0.3)">{progress_pct}% COMPLETADO</div>
+        </div>
+      </div>
+      {tpl_marker}
+    </div>"""
+
+            else:
+                # ── PROBLEMA → SOLUCIÓN (default) + slides CTA de todos los estilos ──
+                tpl_m = tpl_marker if not is_cta else ""
+                slides_html += f"""
+    <div class="nxar-slide {active}" data-slide="{i}" style="background:{bg};position:relative">
       {pattern_html}
       <div class="nxar-geo nxar-geo--circle1" style="background:rgba(255,255,255,0.04)"></div>
       {accent_html}
       <div class="nxar-slide-content">
         <div class="nxar-slide-header">
           <div class="nxar-slide-tipo-badge">{tipo.upper()}</div>
-          <div class="nxar-slide-counter">{i+1}/{total}</div>
+          <div class="nxar-slide-counter">{i + 1}/{total}</div>
         </div>
         {estilo_extra}
         <div class="nxar-slide-icon" style="color:{c1};font-size:28px">{icon}</div>
-        <h2 class="nxar-slide-titulo" style="font-size:{_afs(_s(s.get('titulo',''),80),'slide')}">{_s(s.get('titulo', ''), 80)}</h2>
-        {f'<p class="nxar-slide-sub">{_s(s.get("subtitulo",""),70)}</p>' if s.get("subtitulo") else ''}
+        <h2 class="nxar-slide-titulo" style="font-size:{_afs(tit,'slide')}">{tit}</h2>
+        {sub_p_default}
         {_slide_body(tipo, s, vis, c1, c2)}
+        {tpl_m}
       </div>
-      {f'<div class="nxar-slide-logo" style="color:rgba(255,255,255,0.25)">{_s(nombre,14)}</div>' if i == total-1 else ''}
+      {logo_html}
     </div>"""
 
     dots_html = "".join(

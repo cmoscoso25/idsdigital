@@ -132,14 +132,16 @@ no están instalados en el entorno MCP. Usar siempre el CLI como fallback.
   - `_escena_visual(tipo, vis, c1, c2, num)` → frames numerados estilo CapCut para reel.
   - Post: accent bar + KPI cards + CTA premium (fondo blanco con color de marca).
   - Historia: hero SVG de categoría en pantalla 0, progress bar + chip en pantalla 1, CTA button en pantalla 2.
-- **Motor de Estilos Creativos** (2026-06-06 v6 — rotación real corregida): `nexa/services/agentes/director_creativo.py` — Director Creativo con catálogo de **10 estilos POST** (5 formatos totales) y selección con `random.choice()`.
-  - **Bug corregido (2026-06-06):** La rotación determinística `total_existentes % len(candidatos)` producía solo 2 estilos al regenerar la misma creatividad (1%9=1 siempre). Reemplazada por `random.choice(candidatos)`.
+- **Motor de Estilos Creativos** (2026-06-06 v7 — renders carrusel sincronizados): `nexa/services/agentes/director_creativo.py` — Director Creativo con catálogo de **10 estilos POST** (5 formatos totales) y selección con `random.choice()`.
+  - **Bug corregido (2026-06-06 v6):** La rotación determinística `total_existentes % len(candidatos)` producía solo 2 estilos. Reemplazada por `random.choice(candidatos)`.
+  - **Bug corregido (2026-06-06 v7 — carrusel):** El `else:` block en `_render_carrusel()` usaba UN SOLO template para los 5 estilos — solo diferenciaban bg-color y un badge pequeño. Fix: 5 templates HTML estructuralmente distintos con layouts propios.
   - `seleccionar_estilo(tipo, empresa, contenido, offset=0)` — excluye recientes (N-1), prioriza afinidad, desempate con `random.choice()`. Logger `nexa.director_creativo` imprime `"ESTILO SELECCIONADO: xxx"` en cada llamada.
   - POST (10 estilos): Corporate KPI / Minimalista Premium / Problema-Solución / Estadística / Testimonio / Startup SaaS / Tech Futurista / IA Neural / Dashboard Analytics / Modern Gradient
   - Historia (5): Encuesta / Quiz / Antes-Después / CTA Urgente / Detrás de Cámaras
-  - Carrusel (5): Problema-Solución / Lista Numerada / Caso de Éxito / Tutorial Pasos / Mitos vs Realidad
+  - Carrusel (5 renders distintos): **Problema-Solución** (default: icon+title+_slide_body) / **Lista Numerada** (magazine: número gigante izq + contenido der con borde) / **Caso de Éxito** (timeline fases: CLIENTE→DESAFÍO→PROCESO→RESULTADO con colores + tarjeta activa) / **Tutorial Pasos** (barra progreso + número 46px + porcentaje completado) / **Mitos vs Realidad** (veredicto: ❌/✅ 50px + badge MITO/REALIDAD dominante + dots)
   - Reel (5): Hook+Solución / Caso de Éxito / Tutorial Rápido / Error Común / Tendencia Educativa
-  - Validado: 10 regeneraciones → 8+ estilos distintos (criterio: ≥8/10).
+  - Marcadores debug `TEMPLATE: estilo_id` visibles en slides no-portada (bottom, semitransparente)
+  - Validado: 5 renders carrusel × todos distintos en HTML, marcadores presentes, django check 0 issues.
   - Campos `estilo` + `estilo_nombre` en `CreatividadInstagram` (migración 0007)
   - Badge `🎨 Estilo` visible en biblioteca y detalle
 - **Vista de diagnóstico** (2026-06-06): `/nexa/app/debug-estilos/` — muestra catálogo completo, usos por estilo, historial de rotación (últimas 30). Solo para usuarios autenticados.
