@@ -2827,40 +2827,40 @@
 .nxa-plan-card:hover { transform: translateY(-2px); }
 
 /* Tier accent colors — fondos de gradiente completos */
-.nxa-plan-card--starter::before { background: linear-gradient(90deg, #93c5fd, #60a5fa, #38bdf8); }
+.nxa-plan-card--starter::before { background: linear-gradient(90deg, #bfdbfe, #60a5fa, #22d3ee); }
 .nxa-plan-card--starter {
-  background: linear-gradient(145deg, #0f2460 0%, #1e40af 45%, #0369a1 100%);
-  border-color: rgba(96,165,250,0.45);
-  box-shadow: 0 8px 36px rgba(59,130,246,.3);
+  background: linear-gradient(150deg, #1d4ed8 0%, #0284c7 45%, #0891b2 80%, #06b6d4 100%);
+  border-color: rgba(56,189,248,0.55);
+  box-shadow: 0 10px 40px rgba(14,165,233,.4);
 }
 .nxa-plan-card--starter:hover {
-  border-color: rgba(96,165,250,.65);
-  box-shadow: 0 14px 48px rgba(59,130,246,.45);
-  transform: translateY(-4px);
+  border-color: rgba(56,189,248,.8);
+  box-shadow: 0 16px 56px rgba(14,165,233,.6);
+  transform: translateY(-5px);
 }
 
-.nxa-plan-card--pro::before { background: linear-gradient(90deg, #f0abfc, #a855f7, #818cf8, #f472b6); }
+.nxa-plan-card--pro::before { background: linear-gradient(90deg, #e879f9, #a855f7, #818cf8, #fb7185); }
 .nxa-plan-card--pro {
-  background: linear-gradient(145deg, #3b0764 0%, #7e22ce 35%, #c026d3 68%, #db2777 100%);
-  border-color: rgba(192,38,211,.55);
-  box-shadow: 0 14px 52px rgba(168,85,247,.45);
+  background: linear-gradient(150deg, #7c3aed 0%, #9333ea 30%, #d946ef 60%, #f43f5e 90%, #fb923c 100%);
+  border-color: rgba(217,70,239,.65);
+  box-shadow: 0 16px 60px rgba(168,85,247,.55);
   transform: translateY(-8px);
 }
 .nxa-plan-card--pro:hover {
-  transform: translateY(-12px);
-  box-shadow: 0 20px 64px rgba(168,85,247,.6);
+  transform: translateY(-13px);
+  box-shadow: 0 24px 72px rgba(168,85,247,.7);
 }
 
-.nxa-plan-card--agency::before { background: linear-gradient(90deg, #fcd34d, #f59e0b, #ea580c); }
+.nxa-plan-card--agency::before { background: linear-gradient(90deg, #fef08a, #fbbf24, #f97316, #ef4444); }
 .nxa-plan-card--agency {
-  background: linear-gradient(145deg, #431407 0%, #c2410c 45%, #d97706 100%);
-  border-color: rgba(251,146,60,.5);
-  box-shadow: 0 8px 36px rgba(245,158,11,.28);
+  background: linear-gradient(150deg, #d97706 0%, #f59e0b 35%, #f97316 70%, #fb923c 100%);
+  border-color: rgba(251,146,60,.6);
+  box-shadow: 0 10px 40px rgba(249,115,22,.4);
 }
 .nxa-plan-card--agency:hover {
-  border-color: rgba(251,146,60,.7);
-  box-shadow: 0 14px 48px rgba(245,158,11,.42);
-  transform: translateY(-4px);
+  border-color: rgba(251,146,60,.85);
+  box-shadow: 0 16px 56px rgba(249,115,22,.6);
+  transform: translateY(-5px);
 }
 
 /* Active plan */
