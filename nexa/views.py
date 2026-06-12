@@ -3,6 +3,19 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
+from billing.models import Subscription
+
+
+def _subscription(user):
+    sub, _ = Subscription.objects.get_or_create(
+        usuario=user,
+        defaults={
+            "estado": Subscription.TRIAL,
+            "trial_fin": timezone.now() + timezone.timedelta(days=14),
+        },
+    )
+    return sub
+
 from .models import EmpresaNexa, MemoriaMarca, ContenidoGenerado, EstrategiaMensual, CreatividadInstagram, EstiloVisualInstagram
 from .forms import EmpresaNexaForm, MemoriaMarcaForm, GenerarContenidoForm, GenerarEstrategiaForm
 from .services.generador_contenido import generar_contenido
@@ -16,6 +29,7 @@ def dashboard(request):
     qs_empresas   = EmpresaNexa.objects.filter(usuario=request.user)
     qs_contenidos = ContenidoGenerado.objects.filter(empresa__usuario=request.user)
     qs_creatividades = CreatividadInstagram.objects.filter(contenido__empresa__usuario=request.user)
+    sub = _subscription(request.user)
     return render(request, "nexa/dashboard.html", {
         "total_empresas":       qs_empresas.count(),
         "total_contenidos":     qs_contenidos.count(),
@@ -28,6 +42,7 @@ def dashboard(request):
         "creatividades_reel":   qs_creatividades.filter(tipo="reel").count(),
         "contenidos_recientes": qs_contenidos.select_related("empresa")[:6],
         "empresas":             qs_empresas[:6],
+        "subscription":         sub,
     })
 
 
@@ -87,7 +102,17 @@ def memoria_editar(request, pk):
 def generar(request, pk):
     empresa = get_object_or_404(EmpresaNexa, pk=pk, usuario=request.user)
     memoria = getattr(empresa, "memoria_marca", None)
+    sub = _subscription(request.user)
+
     if request.method == "POST":
+        if not sub.puede_generar:
+            messages.error(
+                request,
+                f"Alcanzaste el límite de {sub._limite_posts()} posts este mes. "
+                "Actualiza tu plan para continuar generando contenido.",
+            )
+            return redirect("billing:dashboard")
+
         form = GenerarContenidoForm(request.POST)
         if form.is_valid():
             resultado = generar_contenido(
@@ -107,6 +132,7 @@ def generar(request, pk):
                 estructura_json=resultado["estructura_json"],
                 estado="borrador",
             )
+            sub.registrar_generacion()
             return redirect("nexa:contenido_detalle", pk=contenido.pk)
     else:
         form = GenerarContenidoForm()
@@ -114,6 +140,7 @@ def generar(request, pk):
         "form": form,
         "empresa": empresa,
         "memoria": memoria,
+        "subscription": sub,
     })
 
 
@@ -212,42 +239,58 @@ def estrategia_detalle(request, pk):
 
 @login_required
 def generar_contenido_mes(request, pk):
-    """Genera automáticamente todos los contenidos del calendario mensual."""
     estrategia = get_object_or_404(
         EstrategiaMensual, pk=pk, empresa__usuario=request.user
     )
     if request.method != "POST":
         return redirect("nexa:estrategia_detalle", pk=pk)
 
+    sub = _subscription(request.user)
+
     empresa = estrategia.empresa
     memoria = getattr(empresa, "memoria_marca", None)
     cal = estrategia.calendario_json
-    creados = 0
 
-    for semana in cal.get("semanas", []):
-        for pub in semana.get("publicaciones", []):
-            resultado = generar_contenido_completo(
-                empresa=empresa,
-                memoria_marca=memoria,
-                tipo_contenido=pub["tipo"],
-                pilar=pub["pilar"],
-                objetivo=pub.get("objetivo_pieza", pub.get("descripcion", pub["pilar"])),
-                semana=semana["semana"],
-                tema=pub.get("tema", pub["pilar"]),
-                enfoque=pub.get("enfoque", ""),
-            )
-            ContenidoGenerado.objects.create(
-                empresa=empresa,
-                estrategia=estrategia,
-                tipo_contenido=pub["tipo"],
-                titulo=resultado["titulo"],
-                copy=resultado["copy"],
-                hashtags=resultado["hashtags"],
-                cta=resultado["cta"],
-                estructura_json=resultado["estructura_json"],
-                estado="borrador",
-            )
-            creados += 1
+    publicaciones = [
+        (semana, pub)
+        for semana in cal.get("semanas", [])
+        for pub in semana.get("publicaciones", [])
+    ]
+    total_a_generar = len(publicaciones)
+
+    if sub.posts_disponibles < total_a_generar:
+        messages.error(
+            request,
+            f"Necesitas {total_a_generar} posts pero solo tienes {sub.posts_disponibles} disponibles "
+            f"este mes. Actualiza tu plan o espera al próximo ciclo.",
+        )
+        return redirect("billing:dashboard")
+
+    creados = 0
+    for semana, pub in publicaciones:
+        resultado = generar_contenido_completo(
+            empresa=empresa,
+            memoria_marca=memoria,
+            tipo_contenido=pub["tipo"],
+            pilar=pub["pilar"],
+            objetivo=pub.get("objetivo_pieza", pub.get("descripcion", pub["pilar"])),
+            semana=semana["semana"],
+            tema=pub.get("tema", pub["pilar"]),
+            enfoque=pub.get("enfoque", ""),
+        )
+        ContenidoGenerado.objects.create(
+            empresa=empresa,
+            estrategia=estrategia,
+            tipo_contenido=pub["tipo"],
+            titulo=resultado["titulo"],
+            copy=resultado["copy"],
+            hashtags=resultado["hashtags"],
+            cta=resultado["cta"],
+            estructura_json=resultado["estructura_json"],
+            estado="borrador",
+        )
+        sub.registrar_generacion()
+        creados += 1
 
     mes = cal.get("mes", "este mes")
     messages.success(request, f"Se generaron {creados} contenidos para {mes}.")

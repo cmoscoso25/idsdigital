@@ -27,6 +27,19 @@
   </div>
 </div>
 
+<!-- Banner de cuota si está cerca del límite o agotada -->
+{% if not subscription.puede_generar %}
+<div class="nxa-alert nxa-alert--warning" style="margin-bottom:1rem;">
+  <strong>Sin posts disponibles este mes.</strong>
+  <a href="{% url 'billing:dashboard' %}" style="margin-left:.5rem;">Actualiza tu plan →</a>
+</div>
+{% elif subscription.posts_disponibles <= 3 %}
+<div class="nxa-alert nxa-alert--warning" style="margin-bottom:1rem;">
+  Solo te quedan <strong>{{ subscription.posts_disponibles }} posts</strong> este mes.
+  <a href="{% url 'billing:dashboard' %}" style="margin-left:.5rem;">Ver planes →</a>
+</div>
+{% endif %}
+
 <!-- KPIs creatividades fila 2 -->
 <div class="nxa-kpi-row nxa-kpi-row--creatividades">
   <div class="nxa-kpi nxa-kpi--creatividad">
