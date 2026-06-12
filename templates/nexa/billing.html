@@ -84,9 +84,10 @@
         </div>
 
         <div class="nxa-plan-price">
-          <span class="nxa-plan-amount">${{ plan.precio_usd|floatformat:0 }}</span>
+          <span class="nxa-plan-currency nxa-plan-currency--prefix">$</span>
+          <span class="nxa-plan-amount">{{ plan.precio_clp_fmt }}</span>
           <div class="nxa-plan-price-right">
-            <span class="nxa-plan-currency">USD</span>
+            <span class="nxa-plan-currency">CLP</span>
             <span class="nxa-plan-period">/mes</span>
           </div>
         </div>

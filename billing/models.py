@@ -16,6 +16,7 @@ class Plan(models.Model):
     tier = models.CharField(max_length=20, choices=TIER_CHOICES, unique=True)
     nombre = models.CharField(max_length=60)
     precio_usd = models.DecimalField(max_digits=6, decimal_places=2)
+    precio_clp = models.PositiveIntegerField(default=0, help_text="Precio en pesos chilenos (CLP) para mostrar en la interfaz")
     posts_por_mes = models.PositiveIntegerField(help_text="Límite de contenidos generados por mes")
     stripe_price_id = models.CharField(max_length=100, blank=True, help_text="price_xxx de Stripe")
     activo = models.BooleanField(default=True)
@@ -25,6 +26,11 @@ class Plan(models.Model):
         ordering = ["orden"]
         verbose_name = "Plan"
         verbose_name_plural = "Planes"
+
+    @property
+    def precio_clp_fmt(self):
+        """Precio formateado con puntos como separador de miles (formato chileno)."""
+        return f"{self.precio_clp:,}".replace(",", ".")
 
     def __str__(self):
         return f"{self.nombre} (${self.precio_usd}/mes)"

@@ -4,8 +4,8 @@ from billing.models import Plan, Subscription
 
 @admin.register(Plan)
 class PlanAdmin(admin.ModelAdmin):
-    list_display = ["nombre", "tier", "precio_usd", "posts_por_mes", "stripe_price_id", "activo", "orden"]
-    list_editable = ["activo", "orden", "stripe_price_id"]
+    list_display = ["nombre", "tier", "precio_clp", "precio_usd", "posts_por_mes", "stripe_price_id", "activo", "orden"]
+    list_editable = ["precio_clp", "activo", "orden", "stripe_price_id"]
     ordering = ["orden"]
 
 
