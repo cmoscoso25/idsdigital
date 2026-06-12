@@ -2639,3 +2639,18 @@
 .nxa-badge--activo { background: rgba(52,211,153,.15); color: #34d399; border: 1px solid rgba(52,211,153,.3); }
 .nxa-badge--cancelado, .nxa-badge--vencido { background: rgba(248,113,113,.15); color: #f87171; border: 1px solid rgba(248,113,113,.3); }
 .nxa-badge--pago_fallido { background: rgba(251,146,60,.15); color: #fb923c; border: 1px solid rgba(251,146,60,.3); }
+
+/* ══════════════════════════════════════════
+   QUOTA WIDGET — sidebar footer
+   ══════════════════════════════════════════ */
+.nxa-quota-widget { margin-bottom: 1rem; padding: .875rem; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); border-radius: 10px; display: flex; flex-direction: column; gap: .5rem; }
+.nxa-quota-top { display: flex; align-items: center; justify-content: space-between; }
+.nxa-quota-label { font-size: .75rem; font-weight: 600; color: var(--nxa-text); }
+.nxa-quota-bar-wrap { display: flex; flex-direction: column; gap: .3rem; }
+.nxa-quota-bar { height: 5px; background: rgba(255,255,255,.1); border-radius: 3px; overflow: hidden; }
+.nxa-quota-fill { height: 100%; background: var(--nxa-accent); border-radius: 3px; transition: width .4s ease; }
+.nxa-quota-fill--warn { background: #fbbf24; }
+.nxa-quota-fill--danger { background: #f87171; }
+.nxa-quota-text { font-size: .7rem; color: var(--nxa-text-muted); }
+.nxa-btn-upgrade { display: block; text-align: center; background: linear-gradient(135deg, var(--nxa-accent), #7c3aed); color: #fff; font-size: .75rem; font-weight: 700; padding: .45rem .75rem; border-radius: 7px; text-decoration: none; margin-top: .25rem; transition: opacity .2s; }
+.nxa-btn-upgrade:hover { opacity: .85; }

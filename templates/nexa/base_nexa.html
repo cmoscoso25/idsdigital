@@ -45,6 +45,33 @@
     </nav>
 
     <div class="nxa-sidebar-footer">
+      {% if subscription %}
+      <div class="nxa-quota-widget">
+        <div class="nxa-quota-top">
+          <span class="nxa-quota-label">
+            {% if subscription.estado == 'trial' %}Trial gratuito{% elif subscription.plan %}{{ subscription.plan.nombre }}{% else %}Sin plan{% endif %}
+          </span>
+          <span class="nxa-badge nxa-badge--{{ subscription.estado }}" style="font-size:.65rem; padding:1px 7px;">{{ subscription.get_estado_display }}</span>
+        </div>
+        <div class="nxa-quota-bar-wrap">
+          {% with limite=subscription._limite_posts usados=subscription.posts_generados_mes %}
+          {% if limite > 0 %}
+          <div class="nxa-quota-bar">
+            <div class="nxa-quota-fill {% if subscription.posts_disponibles == 0 %}nxa-quota-fill--danger{% elif subscription.posts_disponibles <= 3 %}nxa-quota-fill--warn{% endif %}"
+                 style="width:{% widthratio usados limite 100 %}%"></div>
+          </div>
+          <span class="nxa-quota-text">{{ subscription.posts_disponibles }} / {{ limite }} posts disponibles</span>
+          {% else %}
+          <span class="nxa-quota-text" style="color:#f87171;">Sin cuota activa</span>
+          {% endif %}
+          {% endwith %}
+        </div>
+        {% if subscription.estado == 'trial' or not subscription.puede_generar %}
+        <a href="{% url 'billing:dashboard' %}" class="nxa-btn-upgrade">⚡ Actualizar plan</a>
+        {% endif %}
+      </div>
+      {% endif %}
+
       <div class="nxa-user-info">
         <span class="nxa-user-avatar">{{ request.user.email|first|upper }}</span>
         <span class="nxa-user-email">{{ request.user.email }}</span>
