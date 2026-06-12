@@ -1,5 +1,14 @@
 # CLAUDE.md — Inteligencia Digital (IDS Digital)
 
+# CLAUDE.md — Nexa AI
+
+## Instrucciones de inicio de sesión
+Al comenzar cualquier sesión en este proyecto:
+1. Activa la skill nexa-ai y prompt-master
+2. Lee PROJECT_CONTEXT.md, DESIGN_SYSTEM.md y FRONTEND.md
+3. Reporta la fase actual y el siguiente paso
+4. Al terminar, haz commit y push
+
 ## Reglas permanentes
 
 - No modificar código funcional sin aprobación explícita del usuario.

@@ -8,40 +8,58 @@
 
   <!-- Estado actual -->
   <section class="nxa-billing-status">
-    <div class="nxa-card">
+    <div class="nxa-card nxa-billing-card">
       <div class="nxa-card-header">
-        <h2 class="nxa-card-title">Plan actual</h2>
+        <div>
+          <h2 class="nxa-card-title">Plan actual</h2>
+          <p class="nxa-card-subtitle">Resumen de tu suscripción</p>
+        </div>
         <span class="nxa-badge nxa-badge--{{ subscription.estado }}">{{ subscription.get_estado_display }}</span>
       </div>
       <div class="nxa-billing-current">
+
         <div class="nxa-billing-stat">
           <span class="nxa-billing-stat-label">Plan</span>
-          <span class="nxa-billing-stat-value">{% if subscription.plan %}{{ subscription.plan.nombre }}{% else %}Trial gratuito{% endif %}</span>
+          <span class="nxa-billing-stat-value">
+            {% if subscription.plan %}{{ subscription.plan.nombre }}{% else %}Trial gratuito{% endif %}
+          </span>
         </div>
+
         <div class="nxa-billing-stat">
           <span class="nxa-billing-stat-label">Posts disponibles este mes</span>
-          <span class="nxa-billing-stat-value {% if subscription.posts_disponibles == 0 %}nxa-text-danger{% endif %}">
+          <span class="nxa-billing-stat-value {% if subscription.posts_disponibles == 0 %}nxa-text-danger{% elif subscription.posts_disponibles <= 3 %}nxa-text-warn{% endif %}">
             {{ subscription.posts_disponibles }}
             <span class="nxa-billing-stat-sub">/ {% if subscription.estado == 'trial' %}10{% elif subscription.plan %}{{ subscription.plan.posts_por_mes }}{% else %}0{% endif %}</span>
           </span>
+          {% with limite=subscription.limite_posts usados=subscription.posts_generados_mes %}
+          {% if limite > 0 %}
+          <div class="nxa-status-bar">
+            <div class="nxa-status-bar-fill {% if subscription.posts_disponibles == 0 %}nxa-status-bar-fill--danger{% elif subscription.posts_disponibles <= 3 %}nxa-status-bar-fill--warn{% endif %}"
+                 style="width:{% widthratio usados limite 100 %}%"></div>
+          </div>
+          {% endif %}
+          {% endwith %}
         </div>
+
         {% if subscription.estado == 'trial' and subscription.trial_fin %}
         <div class="nxa-billing-stat">
           <span class="nxa-billing-stat-label">Trial vence</span>
           <span class="nxa-billing-stat-value">{{ subscription.trial_fin|date:"d/m/Y" }}</span>
         </div>
         {% endif %}
+
         {% if subscription.periodo_actual_fin %}
         <div class="nxa-billing-stat">
           <span class="nxa-billing-stat-label">Próxima renovación</span>
           <span class="nxa-billing-stat-value">{{ subscription.periodo_actual_fin|date:"d/m/Y" }}</span>
         </div>
         {% endif %}
+
       </div>
 
       {% if subscription.posts_disponibles == 0 %}
-      <div class="nxa-alert nxa-alert--warning" style="margin-top:1rem;">
-        Alcanzaste el límite de posts de este mes. Actualiza tu plan para seguir generando contenido.
+      <div class="nxa-alert nxa-alert--warning" style="margin-top:1.25rem;">
+        ⚠ Alcanzaste el límite de posts este mes. Actualiza tu plan para seguir generando contenido.
       </div>
       {% endif %}
     </div>
@@ -52,42 +70,63 @@
     <h2 class="nxa-section-title">Elige tu plan</h2>
     <div class="nxa-plans-grid">
       {% for plan in planes %}
-      <div class="nxa-plan-card {% if subscription.plan == plan %}nxa-plan-card--active{% endif %}">
-        {% if plan.tier == 'pro' %}<div class="nxa-plan-badge">Más popular</div>{% endif %}
-        <div class="nxa-plan-name">{{ plan.nombre }}</div>
-        <div class="nxa-plan-price">
-          <span class="nxa-plan-amount">${{ plan.precio_usd }}</span>
-          <span class="nxa-plan-period">USD/mes</span>
+      <div class="nxa-plan-card nxa-plan-card--{{ plan.tier }} {% if subscription.plan == plan %}nxa-plan-card--active{% endif %}">
+
+        {% if plan.tier == 'pro' %}
+        <div class="nxa-plan-badge">⚡ Más popular</div>
+        {% endif %}
+
+        <div class="nxa-plan-header">
+          <span class="nxa-plan-icon">
+            {% if plan.tier == 'starter' %}◈{% elif plan.tier == 'pro' %}⚡{% else %}★{% endif %}
+          </span>
+          <div class="nxa-plan-name">{{ plan.nombre }}</div>
         </div>
+
+        <div class="nxa-plan-price">
+          <span class="nxa-plan-amount">${{ plan.precio_usd|floatformat:0 }}</span>
+          <div class="nxa-plan-price-right">
+            <span class="nxa-plan-currency">USD</span>
+            <span class="nxa-plan-period">/mes</span>
+          </div>
+        </div>
+
+        <div class="nxa-plan-divider"></div>
+
         <ul class="nxa-plan-features">
-          <li>✓ {{ plan.posts_por_mes }} posts por mes</li>
-          <li>✓ Todos los formatos Instagram</li>
-          <li>✓ Motor de estilos creativos</li>
+          <li><span class="nxa-check">✓</span> <strong>{{ plan.posts_por_mes }} posts</strong> por mes</li>
+          <li><span class="nxa-check">✓</span> Todos los formatos Instagram</li>
+          <li><span class="nxa-check">✓</span> Motor de estilos creativos</li>
           {% if plan.tier == 'pro' or plan.tier == 'agency' %}
-          <li>✓ Estrategia mensual automática</li>
+          <li><span class="nxa-check">✓</span> Estrategia mensual automática</li>
           {% endif %}
           {% if plan.tier == 'agency' %}
-          <li>✓ Hasta 5 empresas gestionadas</li>
+          <li><span class="nxa-check">✓</span> Hasta 5 empresas gestionadas</li>
+          <li><span class="nxa-check">✓</span> Copywriter con IA Claude</li>
           {% endif %}
         </ul>
 
-        {% if subscription.plan == plan %}
-          <div class="nxa-plan-current-label">Plan actual</div>
-        {% elif plan.stripe_price_id %}
-          <a href="{% url 'billing:checkout' plan.id %}" class="nxa-btn nxa-btn--{% if plan.tier == 'pro' %}primary{% else %}secondary{% endif %} nxa-btn--full">
-            Suscribirme
-          </a>
-        {% else %}
-          <button class="nxa-btn nxa-btn--secondary nxa-btn--full" disabled>Próximamente</button>
-        {% endif %}
+        <div class="nxa-plan-cta">
+          {% if subscription.plan == plan %}
+            <div class="nxa-plan-current-label">✓ Plan actual</div>
+          {% elif plan.stripe_price_id %}
+            <a href="{% url 'billing:checkout' plan.id %}"
+               class="nxa-btn nxa-btn--{% if plan.tier == 'pro' %}primary{% else %}secondary{% endif %} nxa-btn--full">
+              Suscribirme →
+            </a>
+          {% else %}
+            <button class="nxa-btn nxa-btn--ghost nxa-btn--full" disabled>Próximamente</button>
+          {% endif %}
+        </div>
+
       </div>
       {% endfor %}
     </div>
   </section>
 
   <p class="nxa-billing-note">
-    Todos los planes incluyen 14 días de prueba gratuita. Sin permanencia — cancela cuando quieras.
-    Pagos procesados de forma segura por <strong>Stripe</strong>.
+    🔒 Todos los planes incluyen 14 días de prueba gratuita · Sin permanencia · Cancela cuando quieras
+    · Pagos seguros con <strong>Stripe</strong>
   </p>
 
 </div>

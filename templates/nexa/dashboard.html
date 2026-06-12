@@ -1,74 +1,106 @@
 {% extends "nexa/base_nexa.html" %}
 
 {% block title %}Dashboard{% endblock %}
-{% block topbar_title %}Dashboard{% endblock %}
+{% block topbar_title %}
+  <span class="nxa-page-title">Dashboard</span>
+{% endblock %}
 {% block topbar_actions %}
-  <a href="{% url 'nexa:empresa_nueva' %}" class="nxa-btn nxa-btn--primary">+ Nueva empresa</a>
+  <a href="{% url 'nexa:empresa_nueva' %}" class="nxa-btn nxa-btn--primary">
+    <i class="ti ti-plus"></i> Nueva empresa
+  </a>
 {% endblock %}
 
 {% block content %}
-<!-- KPIs fila 1 -->
-<div class="nxa-kpi-row">
-  <div class="nxa-kpi">
-    <span class="nxa-kpi-value">{{ total_empresas }}</span>
-    <span class="nxa-kpi-label">Empresas</span>
-  </div>
-  <div class="nxa-kpi">
-    <span class="nxa-kpi-value">{{ total_contenidos }}</span>
-    <span class="nxa-kpi-label">Contenidos</span>
-  </div>
-  <div class="nxa-kpi nxa-kpi--warning">
-    <span class="nxa-kpi-value">{{ borradores }}</span>
-    <span class="nxa-kpi-label">Borradores</span>
-  </div>
-  <div class="nxa-kpi nxa-kpi--success">
-    <span class="nxa-kpi-value">{{ aprobados }}</span>
-    <span class="nxa-kpi-label">Aprobados</span>
-  </div>
-</div>
 
-<!-- Banner de cuota si está cerca del límite o agotada -->
+<!-- Alertas de cuota -->
 {% if not subscription.puede_generar %}
-<div class="nxa-alert nxa-alert--warning" style="margin-bottom:1rem;">
-  <strong>Sin posts disponibles este mes.</strong>
-  <a href="{% url 'billing:dashboard' %}" style="margin-left:.5rem;">Actualiza tu plan →</a>
+<div class="nxa-alert nxa-alert--danger nxa-alert--banner">
+  <i class="ti ti-alert-circle"></i>
+  <span><strong>Sin posts disponibles.</strong> Alcanzaste el límite del mes.</span>
+  <a href="{% url 'billing:dashboard' %}" class="nxa-alert-cta">Actualizar plan →</a>
 </div>
 {% elif subscription.posts_disponibles <= 3 %}
-<div class="nxa-alert nxa-alert--warning" style="margin-bottom:1rem;">
-  Solo te quedan <strong>{{ subscription.posts_disponibles }} posts</strong> este mes.
-  <a href="{% url 'billing:dashboard' %}" style="margin-left:.5rem;">Ver planes →</a>
+<div class="nxa-alert nxa-alert--warning nxa-alert--banner">
+  <i class="ti ti-alert-triangle"></i>
+  <span>Solo quedan <strong>{{ subscription.posts_disponibles }} posts</strong> este mes.</span>
+  <a href="{% url 'billing:dashboard' %}" class="nxa-alert-cta">Ver planes →</a>
 </div>
 {% endif %}
 
-<!-- KPIs creatividades fila 2 -->
-<div class="nxa-kpi-row nxa-kpi-row--creatividades">
-  <div class="nxa-kpi nxa-kpi--creatividad">
-    <span class="nxa-kpi-value">{{ total_creatividades }}</span>
-    <span class="nxa-kpi-label">🎨 Creatividades</span>
+<!-- KPIs principales -->
+<div class="nxa-kpi-row nxa-kpi-row--main">
+  <div class="nxa-kpi nxa-kpi--blue">
+    <div class="nxa-kpi-icon"><i class="ti ti-building"></i></div>
+    <div class="nxa-kpi-body">
+      <span class="nxa-kpi-value">{{ total_empresas }}</span>
+      <span class="nxa-kpi-label">Empresas</span>
+    </div>
   </div>
-  <div class="nxa-kpi">
-    <span class="nxa-kpi-value nxa-kpi-value--sm">{{ creatividades_post }}</span>
-    <span class="nxa-kpi-label">Posts</span>
+  <div class="nxa-kpi nxa-kpi--violet">
+    <div class="nxa-kpi-icon"><i class="ti ti-file-text"></i></div>
+    <div class="nxa-kpi-body">
+      <span class="nxa-kpi-value">{{ total_contenidos }}</span>
+      <span class="nxa-kpi-label">Contenidos</span>
+    </div>
   </div>
-  <div class="nxa-kpi">
-    <span class="nxa-kpi-value nxa-kpi-value--sm">{{ creatividades_historia }}</span>
-    <span class="nxa-kpi-label">Historias</span>
+  <div class="nxa-kpi nxa-kpi--yellow">
+    <div class="nxa-kpi-icon"><i class="ti ti-pencil"></i></div>
+    <div class="nxa-kpi-body">
+      <span class="nxa-kpi-value">{{ borradores }}</span>
+      <span class="nxa-kpi-label">Borradores</span>
+    </div>
   </div>
-  <div class="nxa-kpi">
-    <span class="nxa-kpi-value nxa-kpi-value--sm">{{ creatividades_carrusel }}</span>
-    <span class="nxa-kpi-label">Carruseles</span>
-  </div>
-  <div class="nxa-kpi">
-    <span class="nxa-kpi-value nxa-kpi-value--sm">{{ creatividades_reel }}</span>
-    <span class="nxa-kpi-label">Reels</span>
+  <div class="nxa-kpi nxa-kpi--green">
+    <div class="nxa-kpi-icon"><i class="ti ti-circle-check"></i></div>
+    <div class="nxa-kpi-body">
+      <span class="nxa-kpi-value">{{ aprobados }}</span>
+      <span class="nxa-kpi-label">Aprobados</span>
+    </div>
   </div>
 </div>
 
+<!-- KPIs creatividades -->
+<div class="nxa-kpi-row nxa-kpi-row--secondary">
+  <div class="nxa-kpi nxa-kpi--accent nxa-kpi--wide">
+    <div class="nxa-kpi-icon"><i class="ti ti-palette"></i></div>
+    <div class="nxa-kpi-body">
+      <span class="nxa-kpi-value">{{ total_creatividades }}</span>
+      <span class="nxa-kpi-label">Creatividades totales</span>
+    </div>
+  </div>
+  <div class="nxa-kpi nxa-kpi--sm">
+    <div class="nxa-kpi-body">
+      <span class="nxa-kpi-value nxa-kpi-value--sm">{{ creatividades_post }}</span>
+      <span class="nxa-kpi-label">Posts</span>
+    </div>
+  </div>
+  <div class="nxa-kpi nxa-kpi--sm">
+    <div class="nxa-kpi-body">
+      <span class="nxa-kpi-value nxa-kpi-value--sm">{{ creatividades_historia }}</span>
+      <span class="nxa-kpi-label">Historias</span>
+    </div>
+  </div>
+  <div class="nxa-kpi nxa-kpi--sm">
+    <div class="nxa-kpi-body">
+      <span class="nxa-kpi-value nxa-kpi-value--sm">{{ creatividades_carrusel }}</span>
+      <span class="nxa-kpi-label">Carruseles</span>
+    </div>
+  </div>
+  <div class="nxa-kpi nxa-kpi--sm">
+    <div class="nxa-kpi-body">
+      <span class="nxa-kpi-value nxa-kpi-value--sm">{{ creatividades_reel }}</span>
+      <span class="nxa-kpi-label">Reels</span>
+    </div>
+  </div>
+</div>
+
+<!-- Grilla inferior -->
 <div class="nxa-grid-2">
-  <!-- Empresas recientes -->
+
+  <!-- Empresas -->
   <div class="nxa-card">
     <div class="nxa-card-header">
-      <h2 class="nxa-card-title">Empresas registradas</h2>
+      <h2 class="nxa-card-title"><i class="ti ti-building"></i> Empresas registradas</h2>
       <a href="{% url 'nexa:empresa_list' %}" class="nxa-link-small">Ver todas →</a>
     </div>
     {% if empresas %}
@@ -77,19 +109,23 @@
           <li class="nxa-list-item">
             <div class="nxa-list-item-dot" style="background:{{ emp.color_principal }}"></div>
             <div class="nxa-list-item-body">
-              <a href="{% url 'nexa:empresa_detalle' emp.pk %}" class="nxa-list-item-title">
-                {{ emp.nombre_empresa }}
-              </a>
+              <a href="{% url 'nexa:empresa_detalle' emp.pk %}" class="nxa-list-item-title">{{ emp.nombre_empresa }}</a>
               <span class="nxa-list-item-meta">{{ emp.rubro }}</span>
             </div>
-            <a href="{% url 'nexa:generar' emp.pk %}" class="nxa-btn nxa-btn--ghost nxa-btn--sm">Generar</a>
+            <a href="{% url 'nexa:generar' emp.pk %}" class="nxa-btn nxa-btn--ghost nxa-btn--sm">
+              <i class="ti ti-sparkles"></i> Generar
+            </a>
           </li>
         {% endfor %}
       </ul>
     {% else %}
       <div class="nxa-empty">
-        <p>Aún no tienes empresas registradas.</p>
-        <a href="{% url 'nexa:empresa_nueva' %}" class="nxa-btn nxa-btn--primary">Registrar primera empresa</a>
+        <i class="ti ti-building nxa-empty-icon"></i>
+        <p class="nxa-empty-title">Sin empresas aún</p>
+        <p class="nxa-empty-desc">Registra tu primera empresa para empezar a generar contenido.</p>
+        <a href="{% url 'nexa:empresa_nueva' %}" class="nxa-btn nxa-btn--primary">
+          <i class="ti ti-plus"></i> Registrar empresa
+        </a>
       </div>
     {% endif %}
   </div>
@@ -97,7 +133,7 @@
   <!-- Contenidos recientes -->
   <div class="nxa-card">
     <div class="nxa-card-header">
-      <h2 class="nxa-card-title">Contenidos recientes</h2>
+      <h2 class="nxa-card-title"><i class="ti ti-file-text"></i> Contenidos recientes</h2>
       <a href="{% url 'nexa:contenido_list' %}" class="nxa-link-small">Ver todos →</a>
     </div>
     {% if contenidos_recientes %}
@@ -111,17 +147,18 @@
               </a>
               <span class="nxa-list-item-meta">{{ c.empresa.nombre_empresa }}</span>
             </div>
-            <span class="nxa-badge nxa-badge--estado nxa-estado--{{ c.estado }}">
-              {{ c.get_estado_display }}
-            </span>
+            <span class="nxa-badge nxa-badge--estado nxa-estado--{{ c.estado }}">{{ c.get_estado_display }}</span>
           </li>
         {% endfor %}
       </ul>
     {% else %}
       <div class="nxa-empty">
-        <p>Aún no has generado contenidos.</p>
+        <i class="ti ti-file-text nxa-empty-icon"></i>
+        <p class="nxa-empty-title">Sin contenidos aún</p>
+        <p class="nxa-empty-desc">Cuando generes tu primer post aparecerá aquí.</p>
       </div>
     {% endif %}
   </div>
+
 </div>
 {% endblock %}

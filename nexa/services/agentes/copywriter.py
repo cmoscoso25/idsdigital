@@ -2,14 +2,268 @@
 Agente Copywriter — Nexa AI
 Genera contenido de marketing auténtico, diferenciado por tipo y tono de marca.
 
-# === PUNTO DE CONEXIÓN API ===
-# Para activar Claude/OpenAI, reemplazar `_generar_simulado` en cada función
-# _copy_*. La firma de `generar_contenido_completo` no debe cambiar.
-# === FIN PUNTO DE CONEXIÓN ===
+Usa Claude API (claude-haiku-4-5) cuando ANTHROPIC_API_KEY está configurada.
+Si no hay clave o falla la llamada, cae al generador algorítmico interno.
 """
 
+import json
+import logging
+import os
 import random
 
+logger = logging.getLogger("nexa.copywriter")
+
+# ── Integración Claude AI ─────────────────────────────────────────────────────
+
+try:
+    import anthropic as _anthropic_sdk
+    _HAS_ANTHROPIC = True
+except ImportError:
+    _HAS_ANTHROPIC = False
+
+_MODELO = os.environ.get("NEXA_COPYWRITER_MODEL", "claude-haiku-4-5")
+_SISTEMA = (
+    "Eres un copywriter experto en marketing digital para PYMEs latinoamericanas. "
+    "Creas contenido auténtico, diferenciado y orientado a conversión para Instagram. "
+    "Adaptas el tono de comunicación exactamente a las instrucciones del cliente. "
+    "Responde SIEMPRE con JSON válido, sin texto adicional, sin bloques markdown."
+)
+
+
+def _cliente_claude():
+    if not _HAS_ANTHROPIC:
+        return None
+    api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+    if not api_key:
+        return None
+    return _anthropic_sdk.Anthropic(api_key=api_key)
+
+
+def _llamar_claude(prompt_usuario: str) -> dict | None:
+    """Llama a Claude y retorna el JSON parseado, o None si falla."""
+    cliente = _cliente_claude()
+    if not cliente:
+        return None
+    try:
+        respuesta = cliente.messages.create(
+            model=_MODELO,
+            max_tokens=1024,
+            system=_SISTEMA,
+            messages=[{"role": "user", "content": prompt_usuario}],
+        )
+        texto = respuesta.content[0].text.strip()
+        if texto.startswith("```"):
+            lineas = texto.split("\n")
+            texto = "\n".join(lineas[1:-1] if lineas[-1].strip() == "```" else lineas[1:])
+        return json.loads(texto)
+    except Exception as exc:
+        logger.warning("Claude copywriter error (%s): %s — fallback algorítmico", _MODELO, exc)
+        return None
+
+
+# ── Prompts por formato ────────────────────────────────────────────────────────
+
+def _prompt_post(ctx: dict) -> str:
+    partes = [
+        f"Empresa: {ctx['nombre']} ({ctx['rubro']})",
+        f"Tono: {ctx['tono']}",
+        f"Pilar: {ctx['pilar']}",
+        f"Tema: {ctx['tema']}",
+        f"Propuesta de valor: {ctx['propuesta']}",
+        f"Público: {ctx['publico']}",
+        f"Servicios: {ctx['servicios'][:150]}",
+    ]
+    if ctx["instrucciones"]:
+        partes.append(f"Instrucciones especiales: {ctx['instrucciones']}")
+    if ctx["evitar"]:
+        partes.append(f"Evitar: {ctx['evitar']}")
+    partes += [
+        "",
+        "Genera un post de Instagram. Estructura: Hook → Beneficio → Prueba/dato → CTA.",
+        'Retorna SOLO este JSON: {"titulo":"...","hook":"...","beneficio":"...","prueba":"...","cta":"..."}',
+        "Límites: titulo≤80, hook≤100, beneficio≤150, prueba≤120, cta≤80 chars.",
+    ]
+    return "\n".join(partes)
+
+
+def _prompt_carrusel(ctx: dict) -> str:
+    partes = [
+        f"Empresa: {ctx['nombre']} ({ctx['rubro']})",
+        f"Tono: {ctx['tono']}",
+        f"Pilar: {ctx['pilar']}",
+        f"Tema: {ctx['tema']}",
+        f"Propuesta de valor: {ctx['propuesta']}",
+        f"Público: {ctx['publico']}",
+        f"Servicios: {ctx['servicios'][:150]}",
+    ]
+    if ctx["instrucciones"]:
+        partes.append(f"Instrucciones especiales: {ctx['instrucciones']}")
+    if ctx["evitar"]:
+        partes.append(f"Evitar: {ctx['evitar']}")
+    partes += [
+        "",
+        "Genera un carrusel de Instagram (6 slides). Estructura OBLIGATORIA: portada → problema → consecuencia → solucion → beneficio → cta.",
+        'Retorna SOLO este JSON: {"titulo":"...","copy_intro":"...","cta_principal":"...","slides":[{"numero":1,"tipo":"portada","texto":"...","subtexto":"..."},{"numero":2,"tipo":"problema","texto":"..."},{"numero":3,"tipo":"consecuencia","texto":"..."},{"numero":4,"tipo":"solucion","texto":"..."},{"numero":5,"tipo":"beneficio","texto":"..."},{"numero":6,"tipo":"cta","texto":"..."}]}',
+        "Límites: titulo≤80, copy_intro≤200, cta_principal≤80, texto de cada slide≤80 chars.",
+    ]
+    return "\n".join(partes)
+
+
+def _prompt_historia(ctx: dict) -> str:
+    partes = [
+        f"Empresa: {ctx['nombre']} ({ctx['rubro']})",
+        f"Tono: {ctx['tono']}",
+        f"Pilar: {ctx['pilar']}",
+        f"Tema: {ctx['tema']}",
+        f"Propuesta de valor: {ctx['propuesta']}",
+        f"Público: {ctx['publico']}",
+    ]
+    if ctx["instrucciones"]:
+        partes.append(f"Instrucciones especiales: {ctx['instrucciones']}")
+    if ctx["evitar"]:
+        partes.append(f"Evitar: {ctx['evitar']}")
+    partes += [
+        "",
+        "Genera una Historia de Instagram (3 pantallas). Estructura: problema → consecuencia → solucion+cta.",
+        'Retorna SOLO este JSON: {"titulo":"...","copy_corto":"...","pantallas":[{"numero":1,"duracion":"7s","rol":"problema","texto":"...","subtexto":"¿Te ha pasado? 👇","sticker":"encuesta"},{"numero":2,"duracion":"7s","rol":"consecuencia","texto":"...","subtexto":"El costo de no actuar","sticker":"deslizador"},{"numero":3,"duracion":"6s","rol":"solucion","texto":"...","subtexto":"...","sticker":"link"}]}',
+        "Límites: titulo≤60, copy_corto≤80, texto de cada pantalla≤70 chars.",
+    ]
+    return "\n".join(partes)
+
+
+def _prompt_reel(ctx: dict) -> str:
+    partes = [
+        f"Empresa: {ctx['nombre']} ({ctx['rubro']})",
+        f"Tono: {ctx['tono']}",
+        f"Pilar: {ctx['pilar']}",
+        f"Tema: {ctx['tema']}",
+        f"Propuesta de valor: {ctx['propuesta']}",
+        f"Público: {ctx['publico']}",
+    ]
+    if ctx["instrucciones"]:
+        partes.append(f"Instrucciones especiales: {ctx['instrucciones']}")
+    if ctx["evitar"]:
+        partes.append(f"Evitar: {ctx['evitar']}")
+    partes += [
+        "",
+        "Genera un Reel de Instagram (5 escenas, 30s). Estructura: hook(5s) → problema(5s) → solucion(10s) → beneficio(5s) → cta(5s).",
+        'Retorna SOLO este JSON: {"titulo":"...","copy":"...","escenas":[{"numero":1,"tipo":"hook","rango":"0-5s","duracion_seg":5,"texto":"...","texto_pantalla":"...","transicion":"corte"},{"numero":2,"tipo":"problema","rango":"5-10s","duracion_seg":5,"texto":"...","texto_pantalla":"...","transicion":"fundido"},{"numero":3,"tipo":"solucion","rango":"10-20s","duracion_seg":10,"texto":"...","texto_pantalla":"...","transicion":"corte"},{"numero":4,"tipo":"beneficio","rango":"20-25s","duracion_seg":5,"texto":"...","texto_pantalla":"...","transicion":"fundido"},{"numero":5,"tipo":"cta","rango":"25-30s","duracion_seg":5,"texto":"...","texto_pantalla":"...","transicion":"corte"}]}',
+        "Límites: titulo≤60, copy≤200, texto≤100, texto_pantalla≤60 chars.",
+    ]
+    return "\n".join(partes)
+
+
+# ── Ensambladores: Claude JSON → formato interno ──────────────────────────────
+
+def _ensamblar_post(ctx: dict, ia: dict) -> dict:
+    hook      = ia.get("hook", "")
+    beneficio = ia.get("beneficio", "")
+    prueba    = ia.get("prueba", "")
+    cta       = ia.get("cta", "")
+    titulo    = ia.get("titulo") or ctx["tema"][:80]
+    copy      = "\n\n".join(p for p in [hook, beneficio, prueba, cta] if p)
+    return {
+        "titulo": titulo,
+        "copy":   copy,
+        "hashtags": _hashtags(ctx, tipo="post"),
+        "cta":    cta,
+        "estructura_json": {
+            "formato": "post",
+            "pilar":   ctx["pilar"],
+            "ia_generado": True,
+            "secciones": [
+                {"tipo": "hook",      "texto": hook},
+                {"tipo": "beneficio", "texto": beneficio},
+                {"tipo": "prueba",    "texto": prueba},
+                {"tipo": "cta",       "texto": cta},
+            ],
+        },
+    }
+
+
+def _ensamblar_carrusel(ctx: dict, ia: dict) -> dict:
+    slides_ia = ia.get("slides", [])
+    tipos     = ["portada", "problema", "consecuencia", "solucion", "beneficio", "cta"]
+    slides    = []
+    for i, tipo in enumerate(tipos, 1):
+        s     = next((x for x in slides_ia if x.get("tipo") == tipo), {})
+        entry = {"numero": i, "tipo": tipo, "texto": s.get("texto", f"[{tipo}]")}
+        if tipo == "portada":
+            entry["subtexto"] = s.get("subtexto", f"Por {ctx['nombre']}")
+        slides.append(entry)
+    titulo = ia.get("titulo") or f"{ctx['tema'][:70]} [Carrusel]"
+    return {
+        "titulo":   titulo,
+        "copy":     ia.get("copy_intro", ""),
+        "hashtags": _hashtags(ctx, tipo="carrusel"),
+        "cta":      ia.get("cta_principal", ""),
+        "estructura_json": {
+            "formato": "carrusel",
+            "ia_generado": True,
+            "diapositivas": slides,
+        },
+    }
+
+
+def _ensamblar_historia(ctx: dict, ia: dict) -> dict:
+    pantallas_ia = ia.get("pantallas", [])
+    config       = [("problema", "7s", "encuesta"), ("consecuencia", "7s", "deslizador"), ("solucion", "6s", "link")]
+    pantallas    = []
+    for i, (rol, dur, sticker) in enumerate(config, 1):
+        p = next((x for x in pantallas_ia if x.get("rol") == rol), {})
+        pantallas.append({
+            "numero": i, "duracion": dur, "rol": rol,
+            "texto":    p.get("texto", ""),
+            "subtexto": p.get("subtexto", ""),
+            "sticker":  sticker,
+        })
+    titulo = ia.get("titulo") or f"Historia: {ctx['tema'][:60]}"
+    return {
+        "titulo":   titulo,
+        "copy":     ia.get("copy_corto", ""),
+        "hashtags": _hashtags(ctx, tipo="historia"),
+        "cta":      "Ver más → Link en bio",
+        "estructura_json": {"formato": "historia", "ia_generado": True, "pantallas": pantallas},
+    }
+
+
+def _ensamblar_reel(ctx: dict, ia: dict) -> dict:
+    escenas_ia = ia.get("escenas", [])
+    config     = [
+        ("hook",      "0-5s",   5,  "corte"),
+        ("problema",  "5-10s",  5,  "fundido"),
+        ("solucion",  "10-20s", 10, "corte"),
+        ("beneficio", "20-25s", 5,  "fundido"),
+        ("cta",       "25-30s", 5,  "corte"),
+    ]
+    escenas = []
+    for i, (tipo, rango, dur, trans) in enumerate(config, 1):
+        e     = next((x for x in escenas_ia if x.get("tipo") == tipo), {})
+        texto = e.get("texto", "")
+        escenas.append({
+            "numero": i, "tipo": tipo, "rango": rango, "duracion_seg": dur,
+            "texto":          texto,
+            "texto_pantalla": e.get("texto_pantalla") or texto[:60],
+            "transicion":     trans,
+        })
+    titulo = ia.get("titulo") or f"Reel: {ctx['tema'][:60]}"
+    return {
+        "titulo":   titulo,
+        "copy":     ia.get("copy", ""),
+        "hashtags": _hashtags(ctx, tipo="reel"),
+        "cta":      _cta_principal(ctx),
+        "estructura_json": {
+            "formato":            "reel",
+            "duracion":           "30s",
+            "duracion_total_seg": 30,
+            "hook":               escenas[0]["texto"] if escenas else "",
+            "ia_generado":        True,
+            "escenas":            escenas,
+        },
+    }
+
+
+# ── API pública ───────────────────────────────────────────────────────────────
 
 def generar_contenido_completo(
     empresa,
@@ -56,7 +310,6 @@ def _contexto(empresa, memoria_marca, pilar: str, objetivo: str, semana: int,
         "rubro":         empresa.rubro,
         "tono":          empresa.tono_marca,
         "pilar":         pilar,
-        # tema: asunto concreto del brief (más específico que el pilar)
         "tema":          (tema or pilar).strip(),
         "enfoque":       (enfoque or "").strip(),
         "objetivo":      objetivo,
@@ -77,6 +330,11 @@ def _contexto(empresa, memoria_marca, pilar: str, objetivo: str, semana: int,
 # ── CARRUSEL ──────────────────────────────────────────────────────────────────
 
 def _generar_carrusel(ctx: dict) -> dict:
+    ia = _llamar_claude(_prompt_carrusel(ctx))
+    if ia:
+        return _ensamblar_carrusel(ctx, ia)
+
+    # ── fallback algorítmico ──
     nombre    = ctx["nombre"]
     pilar     = ctx["pilar"]
     tema      = ctx["tema"]
@@ -84,7 +342,6 @@ def _generar_carrusel(ctx: dict) -> dict:
     servicios = ctx["servicios"]
     publico   = ctx["publico"]
 
-    # Estructura narrativa: Portada → Problema → Consecuencia → Solución → Beneficio → CTA
     hook         = tema if len(tema) > 20 else _hook_carrusel(pilar, nombre, propuesta)
     titulo       = f"{hook} [Carrusel]"
     problema     = _problema(pilar, publico)
@@ -120,6 +377,11 @@ def _generar_carrusel(ctx: dict) -> dict:
 # ── POST ──────────────────────────────────────────────────────────────────────
 
 def _generar_post(ctx: dict) -> dict:
+    ia = _llamar_claude(_prompt_post(ctx))
+    if ia:
+        return _ensamblar_post(ctx, ia)
+
+    # ── fallback algorítmico ──
     nombre    = ctx["nombre"]
     pilar     = ctx["pilar"]
     tema      = ctx["tema"]
@@ -128,7 +390,6 @@ def _generar_post(ctx: dict) -> dict:
     servicios = ctx["servicios"]
     tono      = ctx["tono"]
 
-    # Estructura narrativa: Hook → Beneficio → Prueba/dato → CTA
     hook      = tema if len(tema) > 20 else _gancho_post(pilar, nombre, tono)
     titulo    = tema[:80] if len(tema) > 20 else f"{pilar}: {_titular_post(pilar, nombre)}"
     beneficio = enfoque if enfoque else propuesta[:130]
@@ -158,6 +419,11 @@ def _generar_post(ctx: dict) -> dict:
 # ── HISTORIA ──────────────────────────────────────────────────────────────────
 
 def _generar_historia(ctx: dict) -> dict:
+    ia = _llamar_claude(_prompt_historia(ctx))
+    if ia:
+        return _ensamblar_historia(ctx, ia)
+
+    # ── fallback algorítmico ──
     nombre    = ctx["nombre"]
     pilar     = ctx["pilar"]
     tema      = ctx["tema"]
@@ -165,7 +431,6 @@ def _generar_historia(ctx: dict) -> dict:
     publico   = ctx["publico"]
     tono      = ctx["tono"]
 
-    # Estructura narrativa: Problema → Consecuencia → Solución + CTA
     problema_txt     = tema[:70] if len(tema) > 20 else _texto_problema_historia(pilar, publico)
     consecuencia_txt = _consecuencia_historia(pilar, nombre, publico)
     solucion_txt     = propuesta[:80]
@@ -208,6 +473,11 @@ def _generar_historia(ctx: dict) -> dict:
 # ── REEL ──────────────────────────────────────────────────────────────────────
 
 def _generar_reel(ctx: dict) -> dict:
+    ia = _llamar_claude(_prompt_reel(ctx))
+    if ia:
+        return _ensamblar_reel(ctx, ia)
+
+    # ── fallback algorítmico ──
     nombre    = ctx["nombre"]
     pilar     = ctx["pilar"]
     tema      = ctx["tema"]
@@ -216,7 +486,6 @@ def _generar_reel(ctx: dict) -> dict:
     tono      = ctx["tono"]
     publico   = ctx["publico"]
 
-    # Storyboard: Hook → Problema → Solución → Beneficio → CTA
     hook       = tema if len(tema) > 20 else _hook_reel(pilar, nombre)
     problema   = _problema_reel(pilar, publico)
     solucion   = _solucion_reel(pilar, propuesta[:80], nombre)
@@ -316,8 +585,6 @@ def _generar_campana(ctx: dict) -> dict:
 
 
 # ── Helpers de copy ──────────────────────────────────────────────────────────
-
-# ── Nuevos helpers de estructura por formato ─────────────────────────────────
 
 def _prueba_post(pilar: str, servicios: str, nombre: str) -> str:
     pilar_l = pilar.lower()

@@ -144,6 +144,10 @@ STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "")
 STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY", "")
 STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET", "")
 
+# ANTHROPIC — copywriter IA (claude-haiku-4-5 por defecto)
+ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
+NEXA_COPYWRITER_MODEL = os.environ.get("NEXA_COPYWRITER_MODEL", "claude-haiku-4-5")
+
 # SEGURIDAD COOKIES / HTTPS
 CSRF_COOKIE_SECURE = os.environ.get("CSRF_COOKIE_SECURE", "0") == "1"
 SESSION_COOKIE_SECURE = os.environ.get("SESSION_COOKIE_SECURE", "0") == "1"

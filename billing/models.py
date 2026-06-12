@@ -91,12 +91,16 @@ class Subscription(models.Model):
     def puede_generar(self):
         return self.esta_activa and self.posts_disponibles > 0
 
-    def _limite_posts(self):
+    @property
+    def limite_posts(self):
         if self.estado == self.TRIAL:
             return 10
         if self.plan:
             return self.plan.posts_por_mes
         return 0
+
+    def _limite_posts(self):
+        return self.limite_posts
 
     def registrar_generacion(self):
         """Incrementa el contador; resetea si el mes cambió."""

@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="{% static 'css/nexa_app.css' %}" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
   {% block extra_head %}{% endblock %}
 </head>
 <body class="nxa-app">
@@ -25,22 +26,22 @@
 
     <nav class="nxa-nav">
       <a href="{% url 'nexa:dashboard' %}" class="nxa-nav-item {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
-        <span class="nxa-nav-icon">◈</span> Dashboard
+        <i class="ti ti-layout-dashboard nxa-nav-icon"></i> Dashboard
       </a>
       <a href="{% url 'nexa:empresa_list' %}" class="nxa-nav-item {% if 'empresa' in request.resolver_match.url_name %}active{% endif %}">
-        <span class="nxa-nav-icon">⬡</span> Empresas
+        <i class="ti ti-building nxa-nav-icon"></i> Empresas
       </a>
       <a href="{% url 'nexa:contenido_list' %}" class="nxa-nav-item {% if 'contenido' in request.resolver_match.url_name %}active{% endif %}">
-        <span class="nxa-nav-icon">◻</span> Contenidos
+        <i class="ti ti-file-text nxa-nav-icon"></i> Contenidos
       </a>
       <a href="{% url 'nexa:estrategia_list' %}" class="nxa-nav-item {% if 'estrategia' in request.resolver_match.url_name %}active{% endif %}">
-        <span class="nxa-nav-icon">◈</span> Estrategias
+        <i class="ti ti-calendar-stats nxa-nav-icon"></i> Estrategias
       </a>
       <a href="{% url 'nexa:creatividad_list' %}" class="nxa-nav-item {% if 'creatividad' in request.resolver_match.url_name %}active{% endif %}">
-        <span class="nxa-nav-icon">🎨</span> Creatividades
+        <i class="ti ti-palette nxa-nav-icon"></i> Creatividades
       </a>
       <a href="{% url 'billing:dashboard' %}" class="nxa-nav-item {% if 'billing' in request.resolver_match.namespace %}active{% endif %}">
-        <span class="nxa-nav-icon">💳</span> Mi Plan
+        <i class="ti ti-credit-card nxa-nav-icon"></i> Mi Plan
       </a>
     </nav>
 
@@ -54,7 +55,7 @@
           <span class="nxa-badge nxa-badge--{{ subscription.estado }}" style="font-size:.65rem; padding:1px 7px;">{{ subscription.get_estado_display }}</span>
         </div>
         <div class="nxa-quota-bar-wrap">
-          {% with limite=subscription._limite_posts usados=subscription.posts_generados_mes %}
+          {% with limite=subscription.limite_posts usados=subscription.posts_generados_mes %}
           {% if limite > 0 %}
           <div class="nxa-quota-bar">
             <div class="nxa-quota-fill {% if subscription.posts_disponibles == 0 %}nxa-quota-fill--danger{% elif subscription.posts_disponibles <= 3 %}nxa-quota-fill--warn{% endif %}"
