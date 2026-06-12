@@ -123,20 +123,26 @@ def _normalize_demorequest_row(obj):
 # ==========================================
 @login_required
 def lead_list(request):
-    qs = Lead.objects.all().order_by("-fecha_creacion", "-id")
+    if not request.workspace:
+        return redirect("accounts:workspace_select")
+    qs = Lead.objects.filter(workspace=request.workspace).order_by("-fecha_creacion", "-id")
     return render(request, "crm/lead_list.html", {"leads": qs})
 
 
 @login_required
 def lead_detail(request, lead_id):
-    lead = get_object_or_404(Lead, id=lead_id)
+    if not request.workspace:
+        return redirect("accounts:workspace_select")
+    lead = get_object_or_404(Lead, id=lead_id, workspace=request.workspace)
     return render(request, "crm/lead_detail.html", {"lead": lead})
 
 
 @login_required
 @require_POST
 def lead_change_status(request, lead_id):
-    lead = get_object_or_404(Lead, id=lead_id)
+    if not request.workspace:
+        return redirect("accounts:workspace_select")
+    lead = get_object_or_404(Lead, id=lead_id, workspace=request.workspace)
     nuevo_estado = (request.POST.get("estado") or "").strip()
 
     estados_validos = {
@@ -290,14 +296,8 @@ def demorequest_convert(request, request_id):
     elif hasattr(lead, "created_by"):
         lead.created_by = request.user
 
-    user_workspace = None
-    if hasattr(request.user, "workspace"):
-        user_workspace = getattr(request.user, "workspace")
-    elif hasattr(request.user, "current_workspace"):
-        user_workspace = getattr(request.user, "current_workspace")
-
-    if user_workspace is not None and hasattr(lead, "workspace"):
-        lead.workspace = user_workspace
+    if request.workspace is not None and hasattr(lead, "workspace"):
+        lead.workspace = request.workspace
 
     if hasattr(lead, "telefono"):
         lead.telefono = telefono
