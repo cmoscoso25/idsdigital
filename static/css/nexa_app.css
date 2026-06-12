@@ -126,7 +126,33 @@
   box-shadow: 0 0 16px rgba(139,92,246,0.18), inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
-.nxa-nav-icon { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
+.nxa-nav-icon {
+  font-size: 15px;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(255,255,255,.06);
+  transition: all 0.3s ease;
+}
+
+/* Colores de ícono por sección */
+.nxa-nav-item:nth-child(1) .nxa-nav-icon { color: #f97316; background: rgba(249,115,22,.12); }
+.nxa-nav-item:nth-child(2) .nxa-nav-icon { color: #3b82f6; background: rgba(59,130,246,.12); }
+.nxa-nav-item:nth-child(3) .nxa-nav-icon { color: #8b5cf6; background: rgba(139,92,246,.12); }
+.nxa-nav-item:nth-child(4) .nxa-nav-icon { color: #22c55e; background: rgba(34,197,94,.12); }
+.nxa-nav-item:nth-child(5) .nxa-nav-icon { color: #ec4899; background: rgba(236,72,153,.12); }
+.nxa-nav-item:nth-child(6) .nxa-nav-icon { color: #06b6d4; background: rgba(6,182,212,.12); }
+
+/* Ícono activo resaltado */
+.nxa-nav-item.active .nxa-nav-icon {
+  background: rgba(139,92,246,.25) !important;
+  color: var(--nxa-violet-l) !important;
+  box-shadow: 0 0 10px rgba(139,92,246,.3);
+}
 
 /* Sidebar footer */
 .nxa-sidebar-footer {
@@ -280,6 +306,18 @@
   color: var(--nxa-violet-l);
 }
 
+.nxa-btn--secondary {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.35);
+  backdrop-filter: blur(8px);
+}
+.nxa-btn--secondary:hover {
+  background: rgba(255,255,255,0.25);
+  border-color: rgba(255,255,255,0.55);
+  box-shadow: 0 4px 18px rgba(255,255,255,0.15);
+  transform: translateY(-1px);
+}
 .nxa-btn--sm { padding: 5px 12px; font-size: 12px; }
 .nxa-btn--generate { padding: 10px 24px; font-size: 14px; }
 
@@ -2788,33 +2826,92 @@
 }
 .nxa-plan-card:hover { transform: translateY(-2px); }
 
-/* Tier accent colors */
-.nxa-plan-card--starter::before { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+/* Tier accent colors — fondos de gradiente completos */
+.nxa-plan-card--starter::before { background: linear-gradient(90deg, #93c5fd, #60a5fa, #38bdf8); }
+.nxa-plan-card--starter {
+  background: linear-gradient(145deg, #0f2460 0%, #1e40af 45%, #0369a1 100%);
+  border-color: rgba(96,165,250,0.45);
+  box-shadow: 0 8px 36px rgba(59,130,246,.3);
+}
 .nxa-plan-card--starter:hover {
-  border-color: rgba(59,130,246,.5);
-  box-shadow: 0 8px 32px rgba(59,130,246,.18), 0 0 0 1px rgba(59,130,246,.15) inset;
+  border-color: rgba(96,165,250,.65);
+  box-shadow: 0 14px 48px rgba(59,130,246,.45);
+  transform: translateY(-4px);
 }
 
-.nxa-plan-card--pro::before { background: linear-gradient(90deg, var(--nxa-violet), #7c3aed, var(--nxa-blue)); }
+.nxa-plan-card--pro::before { background: linear-gradient(90deg, #f0abfc, #a855f7, #818cf8, #f472b6); }
 .nxa-plan-card--pro {
-  border-color: rgba(139,92,246,.4);
-  box-shadow: 0 8px 40px rgba(139,92,246,.22), 0 0 0 1px rgba(139,92,246,.12) inset;
-  transform: translateY(-6px);
-  background: linear-gradient(160deg, rgba(15,10,35,0.97) 0%, rgba(139,92,246,0.07) 50%, rgba(8,12,24,0.98) 100%);
+  background: linear-gradient(145deg, #3b0764 0%, #7e22ce 35%, #c026d3 68%, #db2777 100%);
+  border-color: rgba(192,38,211,.55);
+  box-shadow: 0 14px 52px rgba(168,85,247,.45);
+  transform: translateY(-8px);
 }
 .nxa-plan-card--pro:hover {
-  transform: translateY(-9px);
-  box-shadow: 0 16px 56px rgba(139,92,246,.3), 0 0 0 1px rgba(139,92,246,.2) inset;
+  transform: translateY(-12px);
+  box-shadow: 0 20px 64px rgba(168,85,247,.6);
 }
 
-.nxa-plan-card--agency::before { background: linear-gradient(90deg, #f59e0b, #f97316, #ef4444); }
+.nxa-plan-card--agency::before { background: linear-gradient(90deg, #fcd34d, #f59e0b, #ea580c); }
+.nxa-plan-card--agency {
+  background: linear-gradient(145deg, #431407 0%, #c2410c 45%, #d97706 100%);
+  border-color: rgba(251,146,60,.5);
+  box-shadow: 0 8px 36px rgba(245,158,11,.28);
+}
 .nxa-plan-card--agency:hover {
-  border-color: rgba(245,158,11,.5);
-  box-shadow: 0 8px 32px rgba(245,158,11,.18), 0 0 0 1px rgba(245,158,11,.12) inset;
+  border-color: rgba(251,146,60,.7);
+  box-shadow: 0 14px 48px rgba(245,158,11,.42);
+  transform: translateY(-4px);
 }
 
 /* Active plan */
-.nxa-plan-card--active { border-color: rgba(139,92,246,.5) !important; }
+.nxa-plan-card--active { border-color: rgba(255,255,255,.5) !important; }
+
+/* Texto blanco en cards con fondo de color */
+.nxa-plan-card--starter .nxa-plan-name,
+.nxa-plan-card--pro .nxa-plan-name,
+.nxa-plan-card--agency .nxa-plan-name { color: #fff; }
+
+.nxa-plan-card--starter .nxa-plan-amount,
+.nxa-plan-card--pro .nxa-plan-amount,
+.nxa-plan-card--agency .nxa-plan-amount {
+  color: #fff;
+  background: none !important;
+  -webkit-text-fill-color: #fff !important;
+}
+
+.nxa-plan-card--starter .nxa-plan-currency,
+.nxa-plan-card--starter .nxa-plan-period,
+.nxa-plan-card--pro .nxa-plan-currency,
+.nxa-plan-card--pro .nxa-plan-period,
+.nxa-plan-card--agency .nxa-plan-currency,
+.nxa-plan-card--agency .nxa-plan-period { color: rgba(255,255,255,.7); }
+
+.nxa-plan-card--starter .nxa-plan-features li,
+.nxa-plan-card--pro .nxa-plan-features li,
+.nxa-plan-card--agency .nxa-plan-features li { color: rgba(255,255,255,.92); }
+
+.nxa-plan-card--starter .nxa-plan-divider,
+.nxa-plan-card--pro .nxa-plan-divider,
+.nxa-plan-card--agency .nxa-plan-divider { background: rgba(255,255,255,.2); }
+
+.nxa-plan-card--starter .nxa-check,
+.nxa-plan-card--pro .nxa-check,
+.nxa-plan-card--agency .nxa-check { background: rgba(255,255,255,.2); color: #fff; }
+
+.nxa-plan-card--starter .nxa-plan-current-label,
+.nxa-plan-card--pro .nxa-plan-current-label,
+.nxa-plan-card--agency .nxa-plan-current-label {
+  background: rgba(255,255,255,.15);
+  color: #fff;
+  border-color: rgba(255,255,255,.3);
+}
+
+.nxa-plan-card--starter .nxa-plan-icon,
+.nxa-plan-card--pro .nxa-plan-icon,
+.nxa-plan-card--agency .nxa-plan-icon {
+  background: rgba(255,255,255,.2);
+  color: #fff;
+}
 
 /* Popular badge */
 .nxa-plan-badge {
@@ -2849,12 +2946,6 @@
 /* Price */
 .nxa-plan-price { display: flex; align-items: flex-end; gap: .4rem; }
 .nxa-plan-amount { font-size: 2.6rem; font-weight: 900; color: var(--nxa-text); line-height: 1; letter-spacing: -.03em; }
-.nxa-plan-card--pro .nxa-plan-amount {
-  background: linear-gradient(135deg, var(--nxa-violet-l), var(--nxa-blue-l));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
 .nxa-plan-price-right { display: flex; flex-direction: column; padding-bottom: .2rem; }
 .nxa-plan-currency { font-size: .75rem; font-weight: 700; color: var(--nxa-text-muted); line-height: 1.2; }
 .nxa-plan-period { font-size: .75rem; color: var(--nxa-text-muted); line-height: 1.2; }
@@ -2880,12 +2971,13 @@
   border: 1px solid rgba(139,92,246,.25);
 }
 .nxa-btn--full { width: 100%; text-align: center; justify-content: center; }
-.nxa-btn--ghost {
-  background: transparent;
-  border: 1px solid var(--nxa-border);
-  color: var(--nxa-text-muted);
+/* Botón Próximamente (disabled) en plan cards */
+.nxa-plan-card .nxa-btn--ghost[disabled] {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.2);
+  color: rgba(255,255,255,.45);
   cursor: not-allowed;
-  opacity: .5;
+  opacity: .6;
   border-radius: 10px;
   padding: .65rem 1rem;
   font-size: .875rem;
