@@ -2603,3 +2603,39 @@
   .nxa-topbar { padding: 0 16px; }
   .nxa-detail-row { grid-template-columns: 1fr; gap: 4px; }
 }
+
+/* ══════════════════════════════════════════
+   BILLING — Mi Plan
+   ══════════════════════════════════════════ */
+.nxa-billing { display: flex; flex-direction: column; gap: 2rem; }
+.nxa-billing-status .nxa-card { background: var(--nxa-surface); border: 1px solid var(--nxa-border); border-radius: 12px; padding: 1.5rem; }
+.nxa-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+.nxa-card-title { font-size: 1rem; font-weight: 600; margin: 0; }
+.nxa-billing-current { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1.25rem; }
+.nxa-billing-stat { display: flex; flex-direction: column; gap: .25rem; }
+.nxa-billing-stat-label { font-size: .75rem; color: var(--nxa-text-muted); text-transform: uppercase; letter-spacing: .04em; }
+.nxa-billing-stat-value { font-size: 1.25rem; font-weight: 700; color: var(--nxa-text); }
+.nxa-billing-stat-sub { font-size: .85rem; font-weight: 400; color: var(--nxa-text-muted); }
+.nxa-text-danger { color: #f87171; }
+
+/* Plans grid */
+.nxa-section-title { font-size: 1.1rem; font-weight: 700; margin: 0 0 1.25rem; }
+.nxa-plans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; }
+.nxa-plan-card { position: relative; background: var(--nxa-surface); border: 1px solid var(--nxa-border); border-radius: 14px; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; transition: border-color .2s; }
+.nxa-plan-card--active { border-color: var(--nxa-accent); box-shadow: 0 0 0 1px var(--nxa-accent); }
+.nxa-plan-badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--nxa-accent); color: #fff; font-size: .7rem; font-weight: 700; padding: 2px 10px; border-radius: 20px; white-space: nowrap; }
+.nxa-plan-name { font-size: 1rem; font-weight: 700; }
+.nxa-plan-price { display: flex; align-items: baseline; gap: .35rem; }
+.nxa-plan-amount { font-size: 2rem; font-weight: 800; color: var(--nxa-text); }
+.nxa-plan-period { font-size: .8rem; color: var(--nxa-text-muted); }
+.nxa-plan-features { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .4rem; font-size: .875rem; color: var(--nxa-text-muted); flex-grow: 1; }
+.nxa-plan-features li { color: var(--nxa-text); }
+.nxa-plan-current-label { text-align: center; font-size: .8rem; color: var(--nxa-accent); font-weight: 600; padding: .5rem; border: 1px solid var(--nxa-accent); border-radius: 8px; }
+.nxa-btn--full { width: 100%; text-align: center; justify-content: center; }
+.nxa-billing-note { font-size: .8rem; color: var(--nxa-text-muted); text-align: center; margin: 0; }
+
+/* Badge estados */
+.nxa-badge--trial { background: rgba(251,191,36,.15); color: #fbbf24; border: 1px solid rgba(251,191,36,.3); }
+.nxa-badge--activo { background: rgba(52,211,153,.15); color: #34d399; border: 1px solid rgba(52,211,153,.3); }
+.nxa-badge--cancelado, .nxa-badge--vencido { background: rgba(248,113,113,.15); color: #f87171; border: 1px solid rgba(248,113,113,.3); }
+.nxa-badge--pago_fallido { background: rgba(251,146,60,.15); color: #fb923c; border: 1px solid rgba(251,146,60,.3); }

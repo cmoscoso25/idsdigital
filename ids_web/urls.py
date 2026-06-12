@@ -4,9 +4,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
 
+from billing.views import stripe_webhook
+from core.views import health_check
 from public import views as public_views
 from public.sitemaps import StaticViewSitemap
-from core.views import health_check
 
 sitemaps = {
     "static": StaticViewSitemap,
@@ -42,6 +43,8 @@ urlpatterns = [
 
     path("nexa/", public_views.nexa, name="nexa_public"),
     path("nexa/", include("nexa.urls")),
+    path("nexa/app/billing/", include("billing.urls")),
+    path("nexa/webhooks/stripe/", stripe_webhook, name="stripe_webhook"),
 
     path("robots.txt", public_views.robots_txt),
     path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="sitemap"),

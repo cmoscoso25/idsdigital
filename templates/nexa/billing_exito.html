@@ -1,0 +1,15 @@
+{% extends "nexa/base_nexa.html" %}
+
+{% block title %}Suscripción activada{% endblock %}
+{% block topbar_title %}Suscripción activada{% endblock %}
+
+{% block content %}
+<div class="nxa-empty-state" style="padding: 4rem 1rem; text-align: center;">
+  <div style="font-size: 3rem; margin-bottom: 1rem;">🎉</div>
+  <h2 style="margin-bottom: .5rem;">¡Bienvenido a Nexa AI!</h2>
+  <p style="color: var(--nxa-text-muted); margin-bottom: 2rem;">
+    Tu suscripción está activa. Ya puedes empezar a generar contenido para tus empresas.
+  </p>
+  <a href="{% url 'nexa:dashboard' %}" class="nxa-btn nxa-btn--primary">Ir al Dashboard</a>
+</div>
+{% endblock %}

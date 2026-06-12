@@ -39,6 +39,9 @@
       <a href="{% url 'nexa:creatividad_list' %}" class="nxa-nav-item {% if 'creatividad' in request.resolver_match.url_name %}active{% endif %}">
         <span class="nxa-nav-icon">🎨</span> Creatividades
       </a>
+      <a href="{% url 'billing:dashboard' %}" class="nxa-nav-item {% if 'billing' in request.resolver_match.namespace %}active{% endif %}">
+        <span class="nxa-nav-icon">💳</span> Mi Plan
+      </a>
     </nav>
 
     <div class="nxa-sidebar-footer">

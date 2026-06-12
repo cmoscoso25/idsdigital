@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "public",
     "agente_ia",
     "nexa",
+    "billing",
 ]
 
 # MIDDLEWARE
@@ -136,6 +137,11 @@ AUTH_USER_MODEL = "accounts.User"
 LOGIN_URL = "accounts:login"
 LOGIN_REDIRECT_URL = "crm:demorequest_list"
 LOGOUT_REDIRECT_URL = "/accounts/login/"
+
+# STRIPE
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "")
+STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY", "")
+STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET", "")
 
 # SEGURIDAD COOKIES / HTTPS
 CSRF_COOKIE_SECURE = os.environ.get("CSRF_COOKIE_SECURE", "0") == "1"
