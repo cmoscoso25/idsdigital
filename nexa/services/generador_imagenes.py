@@ -70,7 +70,15 @@ def _generar_con_fal(prompt: str, tipo: str) -> str:
 
     os.environ["FAL_KEY"] = fal_key
     modelo = getattr(settings, "NEXA_FAL_MODEL", "fal-ai/flux-pro")
-    size = "portrait_4_3" if tipo == "historia" else "square_hd"
+
+    # Tamaños correctos por formato Instagram
+    size_map = {
+        "post":     "square_hd",                          # 1:1  1080×1080
+        "carrusel": "square_hd",                          # 1:1  1080×1080
+        "historia": {"width": 608, "height": 1080},       # 9:16 vertical
+        "reel":     {"width": 608, "height": 1080},       # 9:16 vertical
+    }
+    size = size_map.get(tipo, "square_hd")
 
     resultado = fal_client.run(
         modelo,

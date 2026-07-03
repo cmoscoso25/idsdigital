@@ -16,6 +16,11 @@ def _get_client_ip(request) -> str | None:
 
 
 @require_http_methods(["GET"])
+def politica_privacidad(request):
+    return render(request, "public/politica_privacidad.html")
+
+
+@require_http_methods(["GET"])
 def landing(request):
     ok = request.GET.get("ok") == "1"
     form = DemoRequestForm()

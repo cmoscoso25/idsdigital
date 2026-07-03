@@ -1,0 +1,203 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Política de Privacidad | IDS Digital</title>
+  <meta name="description" content="Política de privacidad y tratamiento de datos personales de Inteligencia Digital y Sistemas SpA (IDS Digital)." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.idsdigital.cl/politica-de-privacidad/" />
+  <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'css/public.css' %}" />
+  <style>
+    .pp-wrap {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 60px 24px 100px;
+      color: rgba(255,255,255,0.85);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+    .pp-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #60a5fa;
+      text-decoration: none;
+      font-size: 13px;
+      margin-bottom: 36px;
+      opacity: 0.8;
+      transition: opacity .2s;
+    }
+    .pp-back:hover { opacity: 1; }
+    .pp-titulo {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .pp-fecha {
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 48px;
+      display: block;
+    }
+    .pp-wrap h2 {
+      font-size: 17px;
+      font-weight: 600;
+      color: #fff;
+      margin: 40px 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .pp-wrap p { margin: 0 0 14px; }
+    .pp-wrap ul {
+      margin: 0 0 14px 20px;
+      padding: 0;
+    }
+    .pp-wrap ul li { margin-bottom: 6px; }
+    .pp-wrap a { color: #60a5fa; }
+    .pp-highlight {
+      background: rgba(59,130,246,0.08);
+      border: 1px solid rgba(59,130,246,0.2);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 24px 0;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body class="landing-page" style="background:#060b18; min-height:100vh;">
+
+  <!-- NAV mínimo -->
+  <nav style="position:sticky;top:0;z-index:100;background:rgba(6,11,24,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 24px;">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px;">
+      <a href="{% url 'home' %}" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+        <svg width="26" height="26" viewBox="0 0 60 60" fill="none">
+          <circle cx="30" cy="28" r="7" fill="#3b82f6"/>
+          <circle cx="14" cy="14" r="4.5" fill="#60a5fa"/>
+          <circle cx="46" cy="14" r="4.5" fill="#60a5fa"/>
+          <circle cx="11" cy="38" r="3.5" fill="#60a5fa"/>
+          <circle cx="50" cy="40" r="3.5" fill="#60a5fa"/>
+          <circle cx="28" cy="48" r="3.5" fill="#60a5fa"/>
+          <line x1="30" y1="21" x2="16" y2="16" stroke="#3b82f6" stroke-width="1.5"/>
+          <line x1="30" y1="21" x2="44" y2="16" stroke="#3b82f6" stroke-width="1.5"/>
+          <line x1="24" y1="33" x2="13" y2="36" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
+          <line x1="36" y1="34" x2="48" y2="38" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
+          <line x1="29" y1="35" x2="28" y2="45" stroke="#93c5fd" stroke-width="1" opacity="0.7"/>
+        </svg>
+        <span style="font-weight:700;color:#fff;font-size:15px;font-family:'Inter',sans-serif;">IDS Digital</span>
+      </a>
+      <a href="{% url 'home' %}" style="color:rgba(255,255,255,0.5);font-size:13px;text-decoration:none;font-family:'Inter',sans-serif;">← Volver al inicio</a>
+    </div>
+  </nav>
+
+  <div class="pp-wrap">
+
+    <h1 class="pp-titulo">Política de Privacidad</h1>
+    <span class="pp-fecha">Última actualización: julio de 2026</span>
+
+    <div class="pp-highlight">
+      En IDS Digital respetamos tu privacidad. Esta política explica qué datos recopilamos, cómo los usamos y qué derechos tienes sobre ellos, en cumplimiento de la <strong>Ley N° 19.628</strong> sobre Protección de la Vida Privada de Chile.
+    </div>
+
+    <h2>1. Responsable del tratamiento</h2>
+    <p>
+      <strong>Inteligencia Digital y Sistemas SpA</strong> (en adelante, "IDS Digital"), empresa constituida bajo las leyes de la República de Chile, con domicilio en Santiago, Región Metropolitana.<br>
+      Contacto de privacidad: <a href="mailto:contacto@idsdigital.cl">contacto@idsdigital.cl</a>
+    </p>
+
+    <h2>2. Datos que recopilamos</h2>
+    <p>Recopilamos únicamente los datos que tú nos proporcionas de forma voluntaria a través de nuestros formularios:</p>
+    <ul>
+      <li><strong>Datos de contacto:</strong> nombre completo, correo electrónico, número de teléfono.</li>
+      <li><strong>Datos de tu organización:</strong> nombre de empresa o institución, cargo, área o industria.</li>
+      <li><strong>Mensaje o necesidad:</strong> descripción del proyecto o necesidad tecnológica que nos compartes.</li>
+    </ul>
+    <p>Adicionalmente, podemos recopilar de forma automática:</p>
+    <ul>
+      <li>Dirección IP, tipo de navegador y sistema operativo (para seguridad y análisis de tráfico).</li>
+      <li>Páginas visitadas y tiempo de navegación en nuestro sitio.</li>
+    </ul>
+
+    <h2>3. Finalidad del tratamiento</h2>
+    <p>Utilizamos tus datos exclusivamente para:</p>
+    <ul>
+      <li>Responder a tu solicitud de contacto o diagnóstico gratuito.</li>
+      <li>Enviarte información relevante sobre nuestros servicios, si nos lo autorizaste.</li>
+      <li>Hacer seguimiento comercial de tu solicitud (máximo 3 comunicaciones de nurturing automático en los primeros 14 días).</li>
+      <li>Mejorar la calidad de nuestros servicios y sitio web.</li>
+      <li>Cumplir con obligaciones legales aplicables.</li>
+    </ul>
+
+    <h2>4. Base legal para el tratamiento</h2>
+    <p>
+      El tratamiento de tus datos se realiza en base a tu <strong>consentimiento expreso</strong> otorgado al completar y enviar nuestro formulario de contacto. Puedes revocar este consentimiento en cualquier momento escribiéndonos a <a href="mailto:contacto@idsdigital.cl">contacto@idsdigital.cl</a>.
+    </p>
+
+    <h2>5. Compartición de datos con terceros</h2>
+    <p>IDS Digital <strong>no vende, alquila ni cede</strong> tus datos personales a terceros con fines comerciales. Podemos compartir información con:</p>
+    <ul>
+      <li><strong>Proveedores de servicios tecnológicos</strong> (servidores, email transaccional) que actúan bajo contrato y solo para prestar el servicio contratado.</li>
+      <li><strong>Autoridades competentes</strong>, únicamente cuando exista una obligación legal que así lo exija.</li>
+    </ul>
+    <p>Nuestros proveedores de infraestructura incluyen Render.com (hosting) y Resend (email transaccional). Todos operan bajo estándares de seguridad adecuados.</p>
+
+    <h2>6. Plazo de conservación</h2>
+    <p>
+      Conservamos tus datos durante el tiempo necesario para atender tu solicitud y, posteriormente, por el período que exija la normativa aplicable. Si no existe relación comercial activa, eliminamos tus datos a los <strong>24 meses</strong> desde el último contacto, salvo que exijas su eliminación antes.
+    </p>
+
+    <h2>7. Seguridad de los datos</h2>
+    <p>
+      Implementamos medidas técnicas y organizativas razonables para proteger tus datos: cifrado HTTPS, acceso restringido a personal autorizado, autenticación por roles y registros de auditoría internos. Sin embargo, ningún sistema es 100% seguro. En caso de incidente que afecte tus datos, te notificaremos en conformidad con la ley.
+    </p>
+
+    <h2>8. Tus derechos</h2>
+    <p>En virtud de la Ley N° 19.628 y la legislación aplicable, tienes derecho a:</p>
+    <ul>
+      <li><strong>Acceso:</strong> conocer qué datos tenemos sobre ti.</li>
+      <li><strong>Rectificación:</strong> corregir datos inexactos o incompletos.</li>
+      <li><strong>Cancelación:</strong> solicitar la eliminación de tus datos cuando ya no sean necesarios.</li>
+      <li><strong>Oposición:</strong> oponerte al tratamiento de tus datos para fines de marketing.</li>
+      <li><strong>Revocación del consentimiento:</strong> retirar tu consentimiento en cualquier momento sin efecto retroactivo.</li>
+    </ul>
+    <p>Para ejercer cualquiera de estos derechos, escríbenos a <a href="mailto:contacto@idsdigital.cl">contacto@idsdigital.cl</a> con el asunto "Derechos ARCO". Responderemos en un plazo máximo de <strong>15 días hábiles</strong>.</p>
+
+    <h2>9. Cookies y tecnologías similares</h2>
+    <p>
+      Nuestro sitio puede utilizar cookies técnicas estrictamente necesarias para su funcionamiento (sesión, CSRF). No utilizamos cookies de seguimiento publicitario de terceros. Puedes configurar tu navegador para bloquear o eliminar cookies, aunque esto puede afectar la funcionalidad del sitio.
+    </p>
+
+    <h2>10. Transferencias internacionales</h2>
+    <p>
+      Algunos de nuestros proveedores de infraestructura operan fuera de Chile. En esos casos, nos aseguramos de que cuenten con niveles adecuados de protección de datos o estén sujetos a cláusulas contractuales que garanticen el resguardo de tu información.
+    </p>
+
+    <h2>11. Cambios a esta política</h2>
+    <p>
+      Podemos actualizar esta política cuando sea necesario. Los cambios significativos serán notificados mediante un aviso en nuestro sitio web o por correo electrónico si tienes una solicitud activa. La fecha de "última actualización" al inicio del documento siempre reflejará la versión vigente.
+    </p>
+
+    <h2>12. Contacto</h2>
+    <p>
+      Para cualquier consulta sobre esta política o el tratamiento de tus datos personales, contáctanos:<br>
+      <strong>Inteligencia Digital y Sistemas SpA</strong><br>
+      Santiago, Chile<br>
+      <a href="mailto:contacto@idsdigital.cl">contacto@idsdigital.cl</a>
+    </p>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer style="border-top:1px solid rgba(255,255,255,0.06);padding:24px;text-align:center;font-family:'Inter',sans-serif;font-size:12px;color:rgba(255,255,255,0.3);">
+    © 2026 Inteligencia Digital y Sistemas SpA · <a href="{% url 'home' %}" style="color:rgba(255,255,255,0.4);">idsdigital.cl</a>
+  </footer>
+
+</body>
+</html>

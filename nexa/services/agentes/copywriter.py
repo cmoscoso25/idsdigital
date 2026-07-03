@@ -23,10 +23,17 @@ except ImportError:
 
 _MODELO = os.environ.get("NEXA_COPYWRITER_MODEL", "claude-haiku-4-5")
 _SISTEMA = (
-    "Eres un copywriter experto en marketing digital para PYMEs latinoamericanas. "
-    "Creas contenido auténtico, diferenciado y orientado a conversión para Instagram. "
-    "Adaptas el tono de comunicación exactamente a las instrucciones del cliente. "
-    "Responde SIEMPRE con JSON válido, sin texto adicional, sin bloques markdown."
+    "Eres un copywriter especialista en Instagram para PYMEs latinoamericanas.\n"
+    "Tu misión: crear contenido que detenga el scroll, genere engagement real y convierta seguidores en clientes.\n\n"
+    "REGLAS ABSOLUTAS:\n"
+    "- CERO frases genéricas: nunca digas 'potencia tu negocio', 'soluciones integrales', "
+    "'lleva tu empresa al siguiente nivel', 'en un mundo cada vez más digitalizado', 'apasionados por'.\n"
+    "- Sé específico y concreto: nombra el dolor real, el resultado real, la solución real.\n"
+    "- Tono auténtico LATAM: directo, cercano, sin artificialidad corporativa.\n"
+    "- El hook debe ser imposible de ignorar: pregunta que duele, dato inesperado, o afirmación contraintuitiva.\n"
+    "- Adapta el vocabulario al rubro exacto — no hables de 'empresa' o 'negocio' cuando puedes decir "
+    "'veterinaria', 'estudio', 'taller', o lo que corresponda.\n"
+    "- Responde SIEMPRE con JSON válido, sin texto adicional, sin bloques markdown."
 )
 
 
@@ -65,90 +72,129 @@ def _llamar_claude(prompt_usuario: str) -> dict | None:
 
 def _prompt_post(ctx: dict) -> str:
     partes = [
-        f"Empresa: {ctx['nombre']} ({ctx['rubro']})",
-        f"Tono: {ctx['tono']}",
-        f"Pilar: {ctx['pilar']}",
-        f"Tema: {ctx['tema']}",
+        f"EMPRESA: {ctx['nombre']} | RUBRO: {ctx['rubro']}",
+        f"TONO: {ctx['tono']} | PILAR: {ctx['pilar']}",
+        f"TEMA: {ctx['tema']}",
         f"Propuesta de valor: {ctx['propuesta']}",
-        f"Público: {ctx['publico']}",
+        f"Público objetivo: {ctx['publico']}",
         f"Servicios: {ctx['servicios'][:150]}",
     ]
+    if ctx.get("resumen"):
+        partes.append(f"Contexto de marca: {ctx['resumen'][:200]}")
+    if ctx.get("estilo"):
+        partes.append(f"Estilo de comunicación: {ctx['estilo']}")
+    if ctx.get("palabras"):
+        partes.append(f"Palabras clave de la marca: {', '.join(ctx['palabras'][:4])}")
     if ctx["instrucciones"]:
         partes.append(f"Instrucciones especiales: {ctx['instrucciones']}")
     if ctx["evitar"]:
-        partes.append(f"Evitar: {ctx['evitar']}")
+        partes.append(f"NUNCA mencionar: {ctx['evitar']}")
     partes += [
         "",
-        "Genera un post de Instagram. Estructura: Hook → Beneficio → Prueba/dato → CTA.",
+        "Genera un post de Instagram que detenga el scroll.",
+        "HOOK: pregunta que duele, dato inesperado, o afirmación contraintuitiva — máx. 2 líneas.",
+        "BENEFICIO: resultado concreto que obtiene el cliente — qué cambia en su día a día (no promesas vagas).",
+        "PRUEBA: dato real, caso o especificidad que genera credibilidad — nunca inventes estadísticas.",
+        "CTA: acción concreta y simple — no 'visita nuestro sitio', sino algo que el usuario pueda hacer ahora.",
         'Retorna SOLO este JSON: {"titulo":"...","hook":"...","beneficio":"...","prueba":"...","cta":"..."}',
-        "Límites: titulo≤80, hook≤100, beneficio≤150, prueba≤120, cta≤80 chars.",
+        "Límites: titulo≤80, hook≤120, beneficio≤160, prueba≤130, cta≤90 chars.",
     ]
     return "\n".join(partes)
 
 
 def _prompt_carrusel(ctx: dict) -> str:
     partes = [
-        f"Empresa: {ctx['nombre']} ({ctx['rubro']})",
-        f"Tono: {ctx['tono']}",
-        f"Pilar: {ctx['pilar']}",
-        f"Tema: {ctx['tema']}",
+        f"EMPRESA: {ctx['nombre']} | RUBRO: {ctx['rubro']}",
+        f"TONO: {ctx['tono']} | PILAR: {ctx['pilar']}",
+        f"TEMA: {ctx['tema']}",
         f"Propuesta de valor: {ctx['propuesta']}",
-        f"Público: {ctx['publico']}",
+        f"Público objetivo: {ctx['publico']}",
         f"Servicios: {ctx['servicios'][:150]}",
     ]
+    if ctx.get("resumen"):
+        partes.append(f"Contexto de marca: {ctx['resumen'][:200]}")
+    if ctx.get("estilo"):
+        partes.append(f"Estilo de comunicación: {ctx['estilo']}")
+    if ctx.get("palabras"):
+        partes.append(f"Palabras clave de la marca: {', '.join(ctx['palabras'][:4])}")
     if ctx["instrucciones"]:
         partes.append(f"Instrucciones especiales: {ctx['instrucciones']}")
     if ctx["evitar"]:
-        partes.append(f"Evitar: {ctx['evitar']}")
+        partes.append(f"NUNCA mencionar: {ctx['evitar']}")
     partes += [
         "",
-        "Genera un carrusel de Instagram (6 slides). Estructura OBLIGATORIA: portada → problema → consecuencia → solucion → beneficio → cta.",
+        "Genera un carrusel de Instagram de 6 slides. Cada slide debe funcionar como titular independiente — alguien que lo vea solo debe entender de qué trata.",
+        "- Slide 1 (portada): titular que obligue a deslizar — promesa clara o pregunta poderosa",
+        "- Slide 2 (problema): el dolor específico que el público reconoce al instante",
+        "- Slide 3 (consecuencia): qué le cuesta ignorar este problema — el costo real",
+        "- Slide 4 (solucion): cómo lo resuelve esta empresa — concreto, no genérico",
+        "- Slide 5 (beneficio): el resultado en la vida del cliente después de trabajar con ellos",
+        "- Slide 6 (cta): una sola acción, simple y directa — qué hace el usuario ahora mismo",
         'Retorna SOLO este JSON: {"titulo":"...","copy_intro":"...","cta_principal":"...","slides":[{"numero":1,"tipo":"portada","texto":"...","subtexto":"..."},{"numero":2,"tipo":"problema","texto":"..."},{"numero":3,"tipo":"consecuencia","texto":"..."},{"numero":4,"tipo":"solucion","texto":"..."},{"numero":5,"tipo":"beneficio","texto":"..."},{"numero":6,"tipo":"cta","texto":"..."}]}',
-        "Límites: titulo≤80, copy_intro≤200, cta_principal≤80, texto de cada slide≤80 chars.",
+        "Límites: titulo≤80, copy_intro≤200, cta_principal≤80, texto de cada slide≤90 chars.",
     ]
     return "\n".join(partes)
 
 
 def _prompt_historia(ctx: dict) -> str:
     partes = [
-        f"Empresa: {ctx['nombre']} ({ctx['rubro']})",
-        f"Tono: {ctx['tono']}",
-        f"Pilar: {ctx['pilar']}",
-        f"Tema: {ctx['tema']}",
+        f"EMPRESA: {ctx['nombre']} | RUBRO: {ctx['rubro']}",
+        f"TONO: {ctx['tono']} | PILAR: {ctx['pilar']}",
+        f"TEMA: {ctx['tema']}",
         f"Propuesta de valor: {ctx['propuesta']}",
-        f"Público: {ctx['publico']}",
+        f"Público objetivo: {ctx['publico']}",
+        f"Servicios: {ctx['servicios'][:120]}",
     ]
+    if ctx.get("resumen"):
+        partes.append(f"Contexto de marca: {ctx['resumen'][:150]}")
+    if ctx.get("estilo"):
+        partes.append(f"Estilo de comunicación: {ctx['estilo']}")
     if ctx["instrucciones"]:
         partes.append(f"Instrucciones especiales: {ctx['instrucciones']}")
     if ctx["evitar"]:
-        partes.append(f"Evitar: {ctx['evitar']}")
+        partes.append(f"NUNCA mencionar: {ctx['evitar']}")
     partes += [
         "",
-        "Genera una Historia de Instagram (3 pantallas). Estructura: problema → consecuencia → solucion+cta.",
+        "Genera una Historia de Instagram (3 pantallas). Deben leerse como una historia rápida, no como un anuncio.",
+        "- Pantalla 1 (problema): pregunta o situación que el público reconoce al instante — máx. 2 líneas, lenguaje coloquial",
+        "- Pantalla 2 (consecuencia): el costo emocional o económico de no resolverlo — específico, no abstracto",
+        "- Pantalla 3 (solucion): la salida que ofrece la empresa, con CTA directo al link en bio",
         'Retorna SOLO este JSON: {"titulo":"...","copy_corto":"...","pantallas":[{"numero":1,"duracion":"7s","rol":"problema","texto":"...","subtexto":"¿Te ha pasado? 👇","sticker":"encuesta"},{"numero":2,"duracion":"7s","rol":"consecuencia","texto":"...","subtexto":"El costo de no actuar","sticker":"deslizador"},{"numero":3,"duracion":"6s","rol":"solucion","texto":"...","subtexto":"...","sticker":"link"}]}',
-        "Límites: titulo≤60, copy_corto≤80, texto de cada pantalla≤70 chars.",
+        "Límites: titulo≤60, copy_corto≤80, texto de cada pantalla≤75 chars.",
     ]
     return "\n".join(partes)
 
 
 def _prompt_reel(ctx: dict) -> str:
     partes = [
-        f"Empresa: {ctx['nombre']} ({ctx['rubro']})",
-        f"Tono: {ctx['tono']}",
-        f"Pilar: {ctx['pilar']}",
-        f"Tema: {ctx['tema']}",
+        f"EMPRESA: {ctx['nombre']} | RUBRO: {ctx['rubro']}",
+        f"TONO: {ctx['tono']} | PILAR: {ctx['pilar']}",
+        f"TEMA: {ctx['tema']}",
         f"Propuesta de valor: {ctx['propuesta']}",
-        f"Público: {ctx['publico']}",
+        f"Público objetivo: {ctx['publico']}",
+        f"Servicios: {ctx['servicios'][:120]}",
     ]
+    if ctx.get("resumen"):
+        partes.append(f"Contexto de marca: {ctx['resumen'][:150]}")
+    if ctx.get("estilo"):
+        partes.append(f"Estilo de comunicación: {ctx['estilo']}")
     if ctx["instrucciones"]:
         partes.append(f"Instrucciones especiales: {ctx['instrucciones']}")
     if ctx["evitar"]:
-        partes.append(f"Evitar: {ctx['evitar']}")
+        partes.append(f"NUNCA mencionar: {ctx['evitar']}")
     partes += [
         "",
-        "Genera un Reel de Instagram (5 escenas, 30s). Estructura: hook(5s) → problema(5s) → solucion(10s) → beneficio(5s) → cta(5s).",
+        "Genera un Reel de Instagram (5 escenas, 30s). Escribe para quien lo ve EN MOVIMIENTO, no para quien lo lee.",
+        "- texto: narración o voz en off (puede ser más largo, descripción completa de lo que se dice)",
+        "- texto_pantalla: texto que aparece sobre el video — MUY CORTO, 3-5 palabras máximo, impacto visual inmediato",
+        "ESTRUCTURA:",
+        "- Escena 1 hook (0-5s): primera frase que impide hacer scroll — dato, pregunta o afirmación disruptiva",
+        "- Escena 2 problema (5-10s): el dolor que reconocen en 5 segundos, lenguaje cotidiano",
+        "- Escena 3 solucion (10-20s): cómo lo resuelves — nombra la empresa, sé específico",
+        "- Escena 4 beneficio (20-25s): el resultado en la vida del cliente, no lo que hace la empresa",
+        "- Escena 5 cta (25-30s): una sola acción — seguir, escribir, o ir al link",
         'Retorna SOLO este JSON: {"titulo":"...","copy":"...","escenas":[{"numero":1,"tipo":"hook","rango":"0-5s","duracion_seg":5,"texto":"...","texto_pantalla":"...","transicion":"corte"},{"numero":2,"tipo":"problema","rango":"5-10s","duracion_seg":5,"texto":"...","texto_pantalla":"...","transicion":"fundido"},{"numero":3,"tipo":"solucion","rango":"10-20s","duracion_seg":10,"texto":"...","texto_pantalla":"...","transicion":"corte"},{"numero":4,"tipo":"beneficio","rango":"20-25s","duracion_seg":5,"texto":"...","texto_pantalla":"...","transicion":"fundido"},{"numero":5,"tipo":"cta","rango":"25-30s","duracion_seg":5,"texto":"...","texto_pantalla":"...","transicion":"corte"}]}',
-        "Límites: titulo≤60, copy≤200, texto≤100, texto_pantalla≤60 chars.",
+        "Límites: titulo≤60, copy≤200, texto≤120, texto_pantalla≤35 chars.",
     ]
     return "\n".join(partes)
 

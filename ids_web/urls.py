@@ -46,6 +46,8 @@ urlpatterns = [
     path("nexa/app/billing/", include("billing.urls")),
     path("nexa/webhooks/stripe/", stripe_webhook, name="stripe_webhook"),
 
+    path("politica-de-privacidad/", public_views.politica_privacidad, name="politica_privacidad"),
+
     path("robots.txt", public_views.robots_txt),
     path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="sitemap"),
 ]

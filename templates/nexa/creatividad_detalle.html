@@ -4,6 +4,19 @@
 {% block topbar_title %}🎨 {{ creatividad.get_tipo_display }} · {{ creatividad.contenido.empresa.nombre_empresa }}{% endblock %}
 {% block topbar_actions %}
   <a href="{% url 'nexa:creatividad_list' %}" class="nxa-btn nxa-btn--ghost">← Biblioteca</a>
+  <button id="btn-descargar" class="nxa-btn nxa-btn--ghost" title="Descarga el mockup como imagen PNG">
+    ⬇ Descargar
+  </button>
+  <button id="btn-instagram" class="nxa-btn nxa-btn--ghost" style="border-color:rgba(225,48,108,0.5);color:#e1306c;" title="Publicar en Instagram">
+    📲 Instagram
+  </button>
+  <form method="post" action="{% url 'nexa:generar_imagen_ia' creatividad.pk %}" style="display:inline;">
+    {% csrf_token %}
+    <input type="hidden" name="proveedor" value="fal">
+    <button type="submit" class="nxa-btn nxa-btn--ghost" style="border-color:rgba(139,92,246,0.5);color:#a78bfa;" title="Genera imagen real con Flux Pro (Fal AI)">
+      ✨ Generar imagen IA
+    </button>
+  </form>
   <form method="post" action="{% url 'nexa:regenerar_creatividad' creatividad.pk %}" style="display:inline;">
     {% csrf_token %}
     <button type="submit" class="nxa-btn nxa-btn--primary" title="Regenera el render visual con el motor interno — sin costo, sin APIs externas">
@@ -245,4 +258,176 @@
 
   </aside>
 </div>
+
+<!-- ══ MODAL INSTAGRAM ══ -->
+<div id="modal-instagram" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);align-items:center;justify-content:center;">
+  <div style="background:#0f1623;border:1px solid rgba(225,48,108,0.3);border-radius:16px;padding:28px;max-width:480px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.6);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <h3 style="margin:0;color:#fff;font-size:15px;">📲 Publicar en Instagram</h3>
+      <button id="modal-cerrar" style="background:none;border:none;color:rgba(255,255,255,0.4);font-size:20px;cursor:pointer;padding:0;">✕</button>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <!-- Paso 1 -->
+      <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:14px 16px;">
+        <p style="margin:0 0 8px;font-size:12px;color:rgba(255,255,255,0.5);font-weight:600;letter-spacing:.05em;">PASO 1 — DESCARGA
+          {% if creatividad.tipo == 'carrusel' %}LAS 6 IMÁGENES{% elif creatividad.tipo == 'historia' %}LAS 3 PANTALLAS{% elif creatividad.tipo == 'reel' %}LOS FRAMES{% else %}LA IMAGEN{% endif %}
+        </p>
+        <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.7);">
+          {% if creatividad.tipo == 'carrusel' %}
+            Usa <strong>⬇ Descargar</strong> — se descargarán automáticamente <strong>6 archivos PNG</strong> numerados (slide1 al slide6).
+          {% elif creatividad.tipo == 'historia' %}
+            Usa <strong>⬇ Descargar</strong> — se descargarán <strong>3 imágenes PNG</strong> (pantalla1, pantalla2, pantalla3) en formato 9:16.
+          {% elif creatividad.tipo == 'reel' %}
+            Usa <strong>⬇ Descargar</strong> — se descargan los frames del storyboard como referencia visual para grabar tu Reel.
+          {% else %}
+            Usa <strong>⬇ Descargar</strong> para guardar el post como imagen PNG lista para subir.
+          {% endif %}
+        </p>
+      </div>
+
+      <!-- Paso 2 — Caption -->
+      <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:14px 16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.5);font-weight:600;letter-spacing:.05em;">PASO 2 — COPIA EL CAPTION</p>
+          <button id="btn-copiar-caption" style="background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.35);color:#a78bfa;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;">
+            Copiar
+          </button>
+        </div>
+        <textarea id="caption-text" readonly style="width:100%;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:rgba(255,255,255,0.8);font-size:12px;line-height:1.6;padding:10px;resize:vertical;min-height:100px;font-family:inherit;box-sizing:border-box;">{{ creatividad.contenido.copy }}</textarea>
+        <p id="caption-copiado" style="display:none;margin:6px 0 0;font-size:11px;color:#10b981;">✓ Caption copiado al portapapeles</p>
+      </div>
+
+      <!-- Paso 3 -->
+      <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:14px 16px;">
+        <p style="margin:0 0 8px;font-size:12px;color:rgba(255,255,255,0.5);font-weight:600;letter-spacing:.05em;">PASO 3 — SUBE A INSTAGRAM</p>
+        <p style="margin:0 0 10px;font-size:12px;color:rgba(255,255,255,0.7);">
+          {% if creatividad.tipo == 'carrusel' %}
+            Nueva publicación → selecciona las <strong>6 imágenes en orden</strong> → pega el caption → publica.
+          {% elif creatividad.tipo == 'historia' %}
+            Ve a tu Historia → sube las <strong>3 imágenes una por una</strong> en orden (pantalla1, 2, 3).
+          {% elif creatividad.tipo == 'reel' %}
+            Graba o edita tu Reel usando los frames como guión visual → súbelo con el caption copiado.
+          {% else %}
+            Nueva publicación → sube la imagen → pega el caption → publica.
+          {% endif %}
+        </p>
+        <a href="https://www.instagram.com/" target="_blank" rel="noopener"
+           style="display:block;text-align:center;background:linear-gradient(90deg,#e1306c,#f77737);color:#fff;border-radius:8px;padding:10px;font-size:13px;font-weight:600;text-decoration:none;">
+          Abrir Instagram →
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+(function () {
+  const TIPO    = '{{ creatividad.tipo }}';
+  const EMPRESA = '{{ creatividad.contenido.empresa.nombre_empresa|slugify }}';
+
+  const capturar  = (el) => html2canvas(el, { backgroundColor: '#ffffff', scale: 2, useCORS: true, logging: false });
+  const descargar = (canvas, nombre) => { const a = document.createElement('a'); a.download = nombre; a.href = canvas.toDataURL('image/png'); a.click(); };
+  const esperar   = (ms) => new Promise(r => setTimeout(r, ms));
+
+  // ── Descargar ──────────────────────────────────────────────────────────
+  document.getElementById('btn-descargar').addEventListener('click', async function () {
+    const btn = this;
+    btn.disabled = true;
+
+    try {
+      // ── CARRUSEL: un PNG por slide ───────────────────────────────────
+      const carrusel = document.getElementById('nxarCarrusel');
+      if (carrusel) {
+        const slides   = carrusel.querySelectorAll('.nxar-slide');
+        const track    = carrusel.querySelector('.nxar-slides-track');
+        const original = carrusel.querySelector('.nxar-slide--active');
+        for (let i = 0; i < slides.length; i++) {
+          btn.textContent = `⏳ Slide ${i + 1}/${slides.length}…`;
+          slides.forEach(s => s.classList.remove('nxar-slide--active'));
+          slides[i].classList.add('nxar-slide--active');
+          await esperar(150);
+          descargar(await capturar(track), `${EMPRESA}-carrusel-slide${i + 1}.png`);
+          await esperar(350);
+        }
+        slides.forEach(s => s.classList.remove('nxar-slide--active'));
+        if (original) original.classList.add('nxar-slide--active');
+        btn.textContent = `✓ ${slides.length} imágenes`;
+        return;
+      }
+
+      // ── HISTORIA: un PNG por pantalla (9:16 cada una) ───────────────
+      const historiaWrap = document.querySelector('.nxar-historia-wrap');
+      if (historiaWrap) {
+        const screens = historiaWrap.querySelectorAll('.nxar-story-screen');
+        for (let i = 0; i < screens.length; i++) {
+          btn.textContent = `⏳ Pantalla ${i + 1}/${screens.length}…`;
+          await esperar(100);
+          descargar(await capturar(screens[i]), `${EMPRESA}-historia-pantalla${i + 1}.png`);
+          await esperar(350);
+        }
+        btn.textContent = `✓ ${screens.length} imágenes`;
+        return;
+      }
+
+      // ── REEL: un PNG por frame del storyboard ───────────────────────
+      const reelGrid = document.querySelector('.nxar-escenas-grid');
+      if (reelGrid) {
+        const frames = reelGrid.querySelectorAll('.nxar-escena-frame');
+        for (let i = 0; i < frames.length; i++) {
+          btn.textContent = `⏳ Escena ${i + 1}/${frames.length}…`;
+          await esperar(100);
+          descargar(await capturar(frames[i]), `${EMPRESA}-reel-escena${i + 1}.png`);
+          await esperar(350);
+        }
+        btn.textContent = `✓ ${frames.length} frames`;
+        return;
+      }
+
+      // ── POST: imagen única ───────────────────────────────────────────
+      btn.textContent = '⏳ Generando…';
+      const panel  = document.querySelector('.nxar-render-panel');
+      const target = panel.querySelector('.nxar-stage') || panel.firstElementChild || panel;
+      descargar(await capturar(target), `${EMPRESA}-post-nexa.png`);
+      btn.textContent = '✓ Descargado';
+
+    } catch (e) {
+      console.error(e);
+      alert('No se pudo capturar. Intenta con captura de pantalla manual.');
+    } finally {
+      setTimeout(() => { btn.textContent = '⬇ Descargar'; btn.disabled = false; }, 2500);
+    }
+  });
+
+  // ── Modal Instagram ────────────────────────────────────────────────────
+  const modal = document.getElementById('modal-instagram');
+
+  document.getElementById('btn-instagram').addEventListener('click', function () {
+    modal.style.display = 'flex';
+  });
+
+  document.getElementById('modal-cerrar').addEventListener('click', function () {
+    modal.style.display = 'none';
+  });
+
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal) modal.style.display = 'none';
+  });
+
+  // ── Copiar caption ─────────────────────────────────────────────────────
+  document.getElementById('btn-copiar-caption').addEventListener('click', function () {
+    const ta = document.getElementById('caption-text');
+    ta.select();
+    navigator.clipboard.writeText(ta.value).then(function () {
+      document.getElementById('caption-copiado').style.display = 'block';
+      setTimeout(function () {
+        document.getElementById('caption-copiado').style.display = 'none';
+      }, 3000);
+    });
+  });
+})();
+</script>
 {% endblock %}

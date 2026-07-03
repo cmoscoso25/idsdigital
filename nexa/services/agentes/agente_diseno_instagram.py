@@ -31,6 +31,12 @@ Motor de Estilos Creativos: cada pieza usa un estilo diferente según el Directo
 
 from nexa.services.agentes.director_creativo import seleccionar_estilo  # noqa: E402
 from nexa.services.visual_assets import get_visual_pack, get_slide_visual  # noqa: E402
+from nexa.services.generador_prompts import (  # noqa: E402
+    generar_prompt_post,
+    generar_prompt_historia,
+    generar_prompt_carrusel,
+    generar_prompt_reel,
+)
 
 
 def _tw(text: str, max_words: int, maxlen: int = 100) -> str:
@@ -93,17 +99,7 @@ def _creatividad_post(empresa, memoria_marca, contenido) -> dict:
     propuesta = (memoria_marca.propuesta_valor[:80] if memoria_marca
                  else empresa.descripcion[:80])
 
-    prompt_visual = (
-        f"Professional Instagram square post (1080x1080px) for {nombre}, "
-        f"a {empresa.rubro} company. "
-        f"Primary brand color {color_p}, accent {color_s}. "
-        f"Clean modern layout with gradient background from {color_p} to {color_s}. "
-        f"Bold white headline: '{copy_short}'. "
-        f"Subtle brand tagline: '{propuesta}'. "
-        f"CTA button: '{cta}'. "
-        f"Company logo top-right corner. "
-        f"Minimalist design, premium B2B aesthetic, no stock photos."
-    )
+    prompt_visual = generar_prompt_post(empresa, contenido, memoria_marca)
 
     estructura = {
         "tipo": "post",
@@ -161,16 +157,7 @@ def _creatividad_historia(empresa, memoria_marca, contenido) -> dict:
 
     pantallas_contenido = contenido.estructura_json.get("pantallas", [])
 
-    prompt_visual = (
-        f"Professional Instagram Story series (1080x1920px) for {nombre}. "
-        f"3 vertically-designed screens. "
-        f"Screen 1: bold question or hook — '{copy_lines[0] if copy_lines else contenido.titulo}', "
-        f"gradient {color_p} to {color_s}, interactive poll sticker. "
-        f"Screen 2: brand proposition — '{(memoria_marca.propuesta_valor[:80] if memoria_marca else '')}', "
-        f"dark background #{_hex_dark(color_p)}, swipe-up animation. "
-        f"Screen 3: CTA — '{cta}', link sticker. "
-        f"Clean typography, brand logo on each screen, premium quality."
-    )
+    prompt_visual = generar_prompt_historia(empresa, contenido, memoria_marca)
 
     pantallas = []
     for i, p in enumerate(pantallas_contenido[:3], 1):
@@ -228,14 +215,7 @@ def _creatividad_carrusel(empresa, memoria_marca, contenido) -> dict:
 
     diapositivas = contenido.estructura_json.get("diapositivas", [])
 
-    prompt_visual = (
-        f"Professional Instagram Carousel (1080x1080px each) for {nombre}. "
-        f"{len(diapositivas) or 5} slides. "
-        f"Slide 1 (Cover): bold hook — '{contenido.titulo[:60]}', gradient {color_p} to {color_s}. "
-        f"Slides 2-4: clean content layout, dark background #0f172a, brand accent {color_p}. "
-        f"Final slide (CTA): '{cta}', gradient background, logo centered. "
-        f"Consistent typography Inter, brand colors throughout, premium B2B look."
-    )
+    prompt_visual = generar_prompt_carrusel(empresa, contenido, memoria_marca)
 
     slides = []
     tipo_color = {
@@ -308,15 +288,7 @@ def _creatividad_reel(empresa, memoria_marca, contenido) -> dict:
     escenas_contenido = contenido.estructura_json.get("escenas", [])
     hook = contenido.estructura_json.get("hook", contenido.titulo[:60])
 
-    prompt_visual = (
-        f"Professional Instagram Reel storyboard (1080x1920px, 30s) for {nombre}. "
-        f"4 scenes. "
-        f"Scene 1 (Hook, 0-5s): '{hook}', bold text animation on gradient {color_p}. "
-        f"Scene 2 (Development, 5-15s): brand message, dark background, subtitle animation. "
-        f"Scene 3 (Example, 15-25s): visual demonstration, brand colors. "
-        f"Scene 4 (CTA, 25-30s): '{cta}', logo + call to action. "
-        f"Fast cuts, text-on-screen style, premium motion graphics."
-    )
+    prompt_visual = generar_prompt_reel(empresa, contenido, memoria_marca)
 
     escenas = []
     tipo_color = {
