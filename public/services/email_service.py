@@ -92,7 +92,7 @@ def enviar_notificacion_interna(name: str, email: str, company: str = "", subjec
     try:
         resend.Emails.send({
             "from": "CRM IDS <hola@idsdigital.cl>",
-            "to": ["contacto@idsdigital.cl"],
+            "to": ["contacto@idsdigital.cl", "cmoscosom@gmail.com"],
             "subject": f"🔔 Nueva solicitud de {company or name}",
             "html": f"""
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #1e293b;">
