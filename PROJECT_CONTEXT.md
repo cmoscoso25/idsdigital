@@ -210,7 +210,7 @@ Plataforma de marketing digital con agentes de IA para pymes y empresas.
 ## Riesgos conocidos
 
 1. **Fuga de datos entre tenants:** `crm/views.py:126` — `Lead.objects.all()` sin filtrar por workspace. Cualquier usuario autenticado ve todos los leads de todos los workspaces.
-2. **`demorequest_convert` sin workspace seguro:** si `request.user` no tiene workspace en sesión, el lead se crea sin workspace y viola el constraint NOT NULL.
+2. ~~**`demorequest_convert` sin workspace seguro`~~ — **Corregido (2026-07-06):** ahora redirige a `accounts:workspace_select` si `request.workspace` es `None`, igual que el resto de vistas del CRM. Pendiente aparte: verificar que todo usuario activo tenga `Membership` asignado en producción (si no, `workspace_select` con 0 memberships redirige sin asignar nada).
 3. **`requirements.txt` con encoding BOM UTF-16:** puede causar problemas en CI/CD (hay un script `strip_bom.py` que indica que ya ocurrió este problema).
 4. **`ia_diagnostico` en INSTALLED_APPS sin migraciones funcionales:** puede generar confusión en el estado del proyecto.
 

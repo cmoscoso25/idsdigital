@@ -111,7 +111,7 @@ Detener y pedir aprobación explícita antes de:
 | Riesgo | Descripción | Archivo afectado |
 |---|---|---|
 | Fuga de datos entre tenants | `Lead.objects.all()` sin filtro de workspace | `crm/views.py:126` |
-| Lead sin workspace | `demorequest_convert` sin workspace seguro en sesión | `crm/views.py` |
+| Lead sin workspace | Corregido 2026-07-06: `demorequest_convert` ahora redirige a `workspace_select` si `request.workspace` es `None` | `crm/views.py` |
 | BOM UTF-16 en requirements | Problemas en CI/CD — ya ocurrió, hay `strip_bom.py` | `requirements.txt` |
 | `ia_diagnostico` en INSTALLED_APPS | App skeleton sin vistas ni URLs — no generar migraciones de ella | `ids_web/settings.py` |
 
