@@ -258,6 +258,9 @@ def demorequest_detail(request, request_id):
 @require_POST
 @transaction.atomic
 def demorequest_convert(request, request_id):
+    if not request.workspace:
+        return redirect("accounts:workspace_select")
+
     _ensure_demorequest_model()
     obj = get_object_or_404(DemoRequest, id=request_id)
 
