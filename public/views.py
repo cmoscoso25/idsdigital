@@ -21,6 +21,11 @@ def politica_privacidad(request):
 
 
 @require_http_methods(["GET"])
+def firma_email(request):
+    return render(request, "public/firma_email.html")
+
+
+@require_http_methods(["GET"])
 def landing(request):
     ok = request.GET.get("ok") == "1"
     form = DemoRequestForm()

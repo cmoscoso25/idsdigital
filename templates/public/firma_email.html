@@ -1,0 +1,337 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow">
+  <title>Firma de correo — IDS Digital</title>
+
+  <style>
+    .firma-tool-page {
+      background: #f1f5f9;
+      color: #0f172a;
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      padding: 32px 16px 64px;
+    }
+    .firma-tool-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .firma-tool-wrap h1 {
+      font-size: 22px;
+      margin: 0 0 4px;
+    }
+    .firma-tool-sub {
+      color: #64748b;
+      font-size: 14px;
+      margin: 0 0 20px;
+    }
+    .firma-tool-aviso {
+      background: #fff7ed;
+      border: 1px solid #fdba74;
+      color: #9a3412;
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 28px;
+    }
+    .firma-tool-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .firma-tool-card h2 {
+      font-size: 16px;
+      margin: 0 0 16px;
+      color: #0f172a;
+    }
+    .firma-tool-campo {
+      margin-bottom: 14px;
+    }
+    .firma-tool-campo label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 4px;
+    }
+    .firma-tool-campo input {
+      width: 100%;
+      max-width: 320px;
+      box-sizing: border-box;
+      padding: 8px 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .firma-tool-campo input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+    }
+    .firma-tool-campo small {
+      display: block;
+      color: #94a3b8;
+      font-size: 11px;
+      margin-top: 3px;
+    }
+    .firma-tool-preview-box {
+      border: 1px dashed #cbd5e1;
+      border-radius: 8px;
+      padding: 20px;
+      background: #ffffff;
+      overflow-x: auto;
+    }
+    .firma-tool-btn {
+      margin-top: 14px;
+      background: #0f172a;
+      color: #ffffff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .firma-tool-btn:hover {
+      background: #1e293b;
+    }
+    .firma-tool-estado {
+      display: inline-block;
+      margin-left: 12px;
+      font-size: 12px;
+      color: #64748b;
+    }
+    .firma-tool-codigo {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 8px;
+      padding: 16px;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 11px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-all;
+      max-height: 320px;
+      overflow-y: auto;
+      margin: 0;
+    }
+    .firma-tool-codigo-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #334155;
+      margin: 18px 0 6px;
+    }
+  </style>
+</head>
+<body class="firma-tool-page">
+  <div class="firma-tool-wrap">
+
+    <h1>Firma de correo — IDS Digital</h1>
+    <p class="firma-tool-sub">Vista previa interna para generar la firma HTML corporativa. Esta página no está enlazada públicamente.</p>
+
+    <div class="firma-tool-aviso">
+      ⚠️ Los botones "Copiar" de esta página son solo una herramienta de esta vista previa — no forman parte de la firma final.
+      Copian exactamente el bloque de firma tal como se ve abajo, listo para pegar en Gmail u Outlook.
+    </div>
+
+    <div class="firma-tool-card">
+      <h2>Variables editables</h2>
+
+      <div class="firma-tool-campo">
+        <label for="var-telefono">Teléfono</label>
+        <input type="text" id="var-telefono" value="+56 9 1234 5678">
+        <small>Se usa para el texto visible y el enlace tel:</small>
+      </div>
+
+      <div class="firma-tool-campo">
+        <label for="var-whatsapp">WhatsApp (solo número, con código de país)</label>
+        <input type="text" id="var-whatsapp" value="56912345678">
+        <small>Genera el enlace https://wa.me/&lt;número&gt;</small>
+      </div>
+
+      <div class="firma-tool-campo">
+        <label for="var-linkedin">LinkedIn (URL completa)</label>
+        <input type="text" id="var-linkedin" value="https://linkedin.com/in/tu-usuario">
+        <small>Reemplaza por tu perfil real antes de copiar la firma</small>
+      </div>
+    </div>
+
+    <div class="firma-tool-card">
+      <h2>Firma principal</h2>
+      <div class="firma-tool-preview-box">
+
+        <!-- ══════════ INICIO FIRMA PRINCIPAL — solo estilos inline ══════════ -->
+        <table id="firma-principal" cellpadding="0" cellspacing="0" border="0" width="580" style="width:580px;max-width:580px;border-collapse:collapse;background:#ffffff;font-family:Arial,Helvetica,sans-serif;">
+          <tr>
+            <td style="padding:0 20px 0 0;vertical-align:middle;" valign="middle">
+              <img src="https://idsdigital.cl/static/branding/logo-ids-digital-email.png"
+                   width="145" height="93" alt="IDS Digital — Inteligencia Digital y Sistemas SpA"
+                   style="display:block;width:145px;height:93px;border:0;outline:none;text-decoration:none;">
+            </td>
+            <td style="padding:0 0 0 20px;border-left:3px solid #22c55e;vertical-align:middle;" valign="middle">
+              <table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;">
+                <tr>
+                  <td style="font-size:16px;font-weight:bold;color:#0f172a;padding:0 0 2px 0;">Cristian Moscoso Muñoz</td>
+                </tr>
+                <tr>
+                  <td style="font-size:13px;font-weight:bold;color:#22c55e;padding:0 0 8px 0;">Director y Consultor Tecnológico</td>
+                </tr>
+                <tr>
+                  <td style="font-size:13px;font-weight:bold;color:#0f172a;padding:0 0 1px 0;">IDS Digital</td>
+                </tr>
+                <tr>
+                  <td style="font-size:11px;color:#64748b;padding:0 0 10px 0;">Inteligencia Digital y Sistemas SpA</td>
+                </tr>
+                <tr>
+                  <td style="font-size:12px;color:#475569;padding:0 0 4px 0;">
+                    <a href="mailto:contacto@idsdigital.cl" style="color:#0f172a;text-decoration:none;">contacto@idsdigital.cl</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="font-size:12px;color:#475569;padding:0 0 4px 0;">
+                    <a id="firma-tel-link" href="tel:+56912345678" style="color:#0f172a;text-decoration:none;"><span id="firma-tel-texto">+56 9 1234 5678</span></a>
+                    <span style="color:#cbd5e1;">&nbsp;·&nbsp;</span>
+                    <a id="firma-wa-link" href="https://wa.me/56912345678" style="color:#22c55e;text-decoration:none;font-weight:bold;">WhatsApp</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="font-size:12px;color:#475569;padding:0;">
+                    <a href="https://idsdigital.cl" style="color:#0f172a;text-decoration:none;">idsdigital.cl</a>
+                    <span style="color:#cbd5e1;">&nbsp;·&nbsp;</span>
+                    <a id="firma-li-link" href="https://linkedin.com/in/tu-usuario" style="color:#0f172a;text-decoration:none;">LinkedIn</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="font-size:11px;font-style:italic;color:#64748b;padding:10px 0 0 0;">Transformamos procesos complejos en soluciones inteligentes.</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <!-- ══════════ FIN FIRMA PRINCIPAL ══════════ -->
+
+      </div>
+      <button type="button" class="firma-tool-btn" id="btn-copiar-principal">Copiar firma principal</button>
+      <span class="firma-tool-estado" id="estado-principal"></span>
+
+      <div class="firma-tool-codigo-label">Código HTML generado</div>
+      <pre class="firma-tool-codigo" id="codigo-principal"></pre>
+    </div>
+
+    <div class="firma-tool-card">
+      <h2>Firma compacta (para respuestas)</h2>
+      <div class="firma-tool-preview-box">
+
+        <!-- ══════════ INICIO FIRMA COMPACTA — solo estilos inline ══════════ -->
+        <table id="firma-compacta" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;">
+          <tr>
+            <td style="font-size:12px;color:#0f172a;padding:0;line-height:1.6;">
+              <span style="font-weight:bold;">Cristian Moscoso Muñoz</span>
+              <span style="color:#475569;"> — Director y Consultor Tecnológico · IDS Digital</span><br>
+              <a href="mailto:contacto@idsdigital.cl" style="color:#0f172a;text-decoration:none;">contacto@idsdigital.cl</a>
+              <span style="color:#cbd5e1;">&nbsp;·&nbsp;</span>
+              <a id="firma-compacta-tel-link" href="tel:+56912345678" style="color:#0f172a;text-decoration:none;"><span id="firma-compacta-tel-texto">+56 9 1234 5678</span></a>
+              <span style="color:#cbd5e1;">&nbsp;·&nbsp;</span>
+              <a href="https://idsdigital.cl" style="color:#22c55e;text-decoration:none;font-weight:bold;">idsdigital.cl</a>
+            </td>
+          </tr>
+        </table>
+        <!-- ══════════ FIN FIRMA COMPACTA ══════════ -->
+
+      </div>
+      <button type="button" class="firma-tool-btn" id="btn-copiar-compacta">Copiar firma compacta</button>
+      <span class="firma-tool-estado" id="estado-compacta"></span>
+
+      <div class="firma-tool-codigo-label">Código HTML generado</div>
+      <pre class="firma-tool-codigo" id="codigo-compacta"></pre>
+    </div>
+
+  </div>
+
+  <script>
+  (function () {
+    function $(id) { return document.getElementById(id); }
+
+    function normalizarTelHref(valor) {
+      return 'tel:' + valor.replace(/[^0-9+]/g, '');
+    }
+
+    function actualizarCodigo() {
+      $('codigo-principal').textContent = $('firma-principal').outerHTML;
+      $('codigo-compacta').textContent = $('firma-compacta').outerHTML;
+    }
+
+    function actualizar() {
+      var tel = $('var-telefono').value.trim();
+      var wa = $('var-whatsapp').value.trim();
+      var li = $('var-linkedin').value.trim();
+
+      var telHref = normalizarTelHref(tel);
+      var waHref = 'https://wa.me/' + wa.replace(/[^0-9]/g, '');
+
+      $('firma-tel-texto').textContent = tel;
+      $('firma-tel-link').setAttribute('href', telHref);
+      $('firma-compacta-tel-texto').textContent = tel;
+      $('firma-compacta-tel-link').setAttribute('href', telHref);
+      $('firma-wa-link').setAttribute('href', waHref);
+      $('firma-li-link').setAttribute('href', li);
+
+      actualizarCodigo();
+    }
+
+    function copiarNodo(id, estadoId) {
+      var origen = $(id);
+      var temp = document.createElement('div');
+      temp.setAttribute('contenteditable', 'true');
+      temp.style.position = 'fixed';
+      temp.style.left = '-9999px';
+      temp.style.top = '0';
+      temp.innerHTML = origen.outerHTML;
+      document.body.appendChild(temp);
+
+      var rango = document.createRange();
+      rango.selectNodeContents(temp);
+      var seleccion = window.getSelection();
+      seleccion.removeAllRanges();
+      seleccion.addRange(rango);
+
+      var ok = false;
+      try {
+        ok = document.execCommand('copy');
+      } catch (e) {
+        ok = false;
+      }
+
+      seleccion.removeAllRanges();
+      document.body.removeChild(temp);
+
+      var estado = $(estadoId);
+      estado.textContent = ok
+        ? '✓ Copiada — pégala con Ctrl+V en Gmail u Outlook'
+        : 'No se pudo copiar automáticamente. Selecciona la firma manualmente y usa Ctrl+C.';
+      estado.style.color = ok ? '#16a34a' : '#dc2626';
+    }
+
+    $('var-telefono').addEventListener('input', actualizar);
+    $('var-whatsapp').addEventListener('input', actualizar);
+    $('var-linkedin').addEventListener('input', actualizar);
+
+    $('btn-copiar-principal').addEventListener('click', function () {
+      copiarNodo('firma-principal', 'estado-principal');
+    });
+    $('btn-copiar-compacta').addEventListener('click', function () {
+      copiarNodo('firma-compacta', 'estado-compacta');
+    });
+
+    actualizar();
+  })();
+  </script>
+</body>
+</html>

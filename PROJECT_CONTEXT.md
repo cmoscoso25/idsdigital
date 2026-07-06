@@ -94,6 +94,7 @@ request autenticado desde la sesión (`current_workspace_id`).
 | `/admin/` | Django Admin | Administración interna |
 | `/sitemap.xml` | Django Sitemaps | SEO |
 | `/robots.txt` | `public.robots_txt` | SEO |
+| `/firma-email/` | `public.firma_email` | Vista previa interna de firma de correo HTML (noindex, sin enlace en menú/sitemap) |
 
 ---
 
@@ -173,6 +174,7 @@ request autenticado desde la sesión (`current_workspace_id`).
 - [x] Deploy en Render.com (gunicorn + WhiteNoise)
 - [x] Email transaccional vía Resend
 - [x] Nexa AI MVP: app `nexa` con modelos, vistas, templates, servicio IA simulado y admin
+- [x] Firma de correo HTML corporativa: página interna `/firma-email/` (tabla + estilos inline, compatible Gmail/Outlook/Apple Mail). Logo optimizado en `static/branding/logo-ids-digital-email.png` (recorte + fondo transparente del logo oficial `static/img/logo1.png`, 290×186px físicos mostrados a 145×93px)
 
 ---
 
