@@ -1510,6 +1510,30 @@ body {
 }
 
 /* ─────────────────────────────────────────
+   BOTÓN FLOTANTE — WHATSAPP
+   ───────────────────────────────────────── */
+
+.landing-page .whatsapp-float {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 58px;
+  height: 58px;
+  background: #25d366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+  z-index: 999;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.landing-page .whatsapp-float:hover {
+  transform: scale(1.08);
+  box-shadow: 0 8px 26px rgba(0,0,0,0.45);
+}
+
+/* ─────────────────────────────────────────
    RESPONSIVE — LANDING
    ───────────────────────────────────────── */
 
@@ -1530,6 +1554,7 @@ body {
   .landing-page .section-title { font-size: 28px; }
   .landing-page .cta-final h2 { font-size: 30px; }
   .landing-page .footer-links { display: none; }
+  .landing-page .whatsapp-float { right: 16px; bottom: 16px; width: 52px; height: 52px; }
 }
 
 /* Mobile */
